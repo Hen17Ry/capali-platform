@@ -6,17 +6,21 @@ export default defineEventHandler(async () => {
   const now = new Date()
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1)
 
+  // Helper to safely extract count
+  const getCount = async (query: Promise<{ count: number }[]>) => {
+    const result = await query
+    return result[0]?.count ?? 0
+  }
+
   // Total users (non-deleted)
-  const [totalUsers] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(users)
-    .where(isNull(users.deletedAt))
+  const totalUsers = await getCount(
+    db.select({ count: sql<number>`count(*)::int` }).from(users).where(isNull(users.deletedAt))
+  )
 
   // New users this month
-  const [newUsersThisMonth] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(users)
-    .where(and(isNull(users.deletedAt), gte(users.createdAt, startOfMonth)))
+  const newUsersThisMonth = await getCount(
+    db.select({ count: sql<number>`count(*)::int` }).from(users).where(and(isNull(users.deletedAt), gte(users.createdAt, startOfMonth)))
+  )
 
   // Mentorship stats
   const mentorshipStats = await db
@@ -41,40 +45,36 @@ export default defineEventHandler(async () => {
   }
 
   // Pending mentor validations
-  const [pendingMentors] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(mentorProfiles)
-    .where(eq(mentorProfiles.isValidated, false))
+  const pendingMentors = await getCount(
+    db.select({ count: sql<number>`count(*)::int` }).from(mentorProfiles).where(eq(mentorProfiles.isValidated, false))
+  )
 
   // Total published resources
-  const [totalResources] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(resources)
-    .where(eq(resources.isDraft, false))
+  const totalResources = await getCount(
+    db.select({ count: sql<number>`count(*)::int` }).from(resources).where(eq(resources.isDraft, false))
+  )
 
   // Upcoming events
-  const [upcomingEvents] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(events)
-    .where(gte(events.eventDate, now))
+  const upcomingEvents = await getCount(
+    db.select({ count: sql<number>`count(*)::int` }).from(events).where(gte(events.eventDate, now))
+  )
 
   // Flagged posts
-  const [flaggedPosts] = await db
-    .select({ count: sql<number>`count(*)::int` })
-    .from(forumPosts)
-    .where(eq(forumPosts.isFlagged, true))
+  const flaggedPosts = await getCount(
+    db.select({ count: sql<number>`count(*)::int` }).from(forumPosts).where(eq(forumPosts.isFlagged, true))
+  )
 
   return {
     data: {
       users: {
-        total: totalUsers.count,
-        newThisMonth: newUsersThisMonth.count,
+        total: totalUsers,
+        newThisMonth: newUsersThisMonth,
       },
       mentorships,
-      pendingMentors: pendingMentors.count,
-      resources: totalResources.count,
-      upcomingEvents: upcomingEvents.count,
-      flaggedPosts: flaggedPosts.count,
+      pendingMentors,
+      resources: totalResources,
+      upcomingEvents,
+      flaggedPosts,
     },
   }
 })

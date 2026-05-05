@@ -7,8 +7,29 @@ export default defineEventHandler(async (event) => {
   const url = getRequestURL(event)
   if (!url.pathname.startsWith('/api/admin')) return
 
-  // TODO: Replace with real JWT session extraction when auth module is implemented
   const userId = getHeader(event, 'x-user-id')
+
+  // ─── DEV MODE BYPASS ───────────────────────────────────
+  // In development, if no auth header is sent, auto-find
+  // the first admin user or skip auth entirely.
+  // TODO: Remove this bypass when the auth module is implemented.
+  if (!userId && process.dev) {
+    const [devAdmin] = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.isAdmin, true))
+      .limit(1)
+
+    if (devAdmin) {
+      event.context.adminUser = { id: devAdmin.id }
+      return
+    }
+
+    // No admin in DB yet — allow access anyway in dev
+    event.context.adminUser = { id: 'dev-admin' }
+    return
+  }
+  // ────────────────────────────────────────────────────────
 
   if (!userId) {
     throw createError({
