@@ -1,0 +1,45 @@
+{
+  "name": "capali-platform",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@auth/core": "^0.41.2",
+    "@auth/drizzle-adapter": "^1.11.2",
+    "@aws-sdk/client-s3": "^3.1042.0",
+    "@aws-sdk/s3-request-presigner": "^3.1042.0",
+    "@nuxtjs/i18n": "^10.3.0",
+    "bcryptjs": "^3.0.3",
+    "drizzle-kit": "^0.31.10",
+    "drizzle-orm": "^0.45.2",
+    "h3-zod": "^0.5.3",
+    "ioredis": "^5.10.1",
+    "nuxt": "^4.4.4",
+    "nuxt-auth-utils": "^0.5.29",
+    "pg": "^8.20.0",
+    "resend": "^6.12.2",
+    "vue": "^3.5.33",
+    "vue-router": "^5.0.6",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@nuxt/eslint": "^1.15.2",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^25.6.0",
+    "@types/pg": "^8.20.0",
+    "eslint": "^10.3.0",
+    "prettier": "^3.8.3",
+    "typescript": "^6.0.3"
+  }
+}
