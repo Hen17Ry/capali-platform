@@ -23,7 +23,7 @@
 useScrollReveal()
 
 useHead({
-  title: 'CAP ALI - Communauté d\'Appui au Parcours des Africains et Leaders Inspirants',
+  title: 'CAP ALI — Communauté d\'Appui au Parcours des Africains et Leaders Inspirants',
   meta: [
     {
       name: 'description',
