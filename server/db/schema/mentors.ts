@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, integer, boolean, timestamp, text } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, varchar, integer, boolean, timestamp, text, pgEnum } from 'drizzle-orm/pg-core'
 import { users } from './users'
 
 export const mentorProfiles = pgTable('mentor_profiles', {
@@ -18,8 +18,6 @@ export const mentorProfiles = pgTable('mentor_profiles', {
 export const mentorshipStatusEnum = pgEnum('mentorship_status', [
   'pending', 'accepted', 'refused', 'cancelled', 'closed',
 ])
-
-import { pgEnum } from 'drizzle-orm/pg-core'
 
 export const mentorshipRequests = pgTable('mentorship_requests', {
   id: uuid('id').primaryKey().defaultRandom(),

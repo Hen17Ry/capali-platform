@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, jsonb, boolean, timestamp, pgEnum } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, jsonb, boolean, timestamp, pgEnum } from 'drizzle-orm/pg-core'
 import { users } from './users'
 
 export const notifTypeEnum = pgEnum('notif_type', [

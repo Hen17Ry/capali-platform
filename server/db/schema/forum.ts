@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, text, boolean, timestamp, pgEnum } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, varchar, text, boolean, timestamp } from 'drizzle-orm/pg-core'
 import { users } from './users'
 import { resourceThemeEnum } from './resources'
 
