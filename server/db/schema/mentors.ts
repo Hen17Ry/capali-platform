@@ -19,6 +19,7 @@ export const mentorshipStatusEnum = pgEnum('mentorship_status', [
   'pending', 'accepted', 'refused', 'cancelled', 'closed',
 ])
 
+
 export const mentorshipRequests = pgTable('mentorship_requests', {
   id: uuid('id').primaryKey().defaultRandom(),
   menteeId: uuid('mentee_id').notNull().references(() => users.id),
