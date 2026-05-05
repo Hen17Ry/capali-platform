@@ -1,0 +1,133 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "mentorship": "Mentorat",
+    "resources": "Ressources",
+    "events": "Événements",
+    "forum": "Forum",
+    "donate": "Faire un don",
+    "login": "Se connecter",
+    "register": "S'inscrire",
+    "language": "Langue"
+  },
+  "hero": {
+    "tagline": "Communauté d'Appui au Parcours des Africains et Leaders Inspirants",
+    "title_line1": "Tu n'es plus",
+    "title_highlight": "seul(e)",
+    "title_line2": "dans ton parcours.",
+    "subtitle": "CAP ALI accompagne les jeunes Béninois et Africains francophones avant, pendant et après leur arrivée en France. Mentorat, ressources, communauté tout ce qu'il te faut pour réussir.",
+    "cta_join": "Rejoindre la communauté",
+    "cta_discover": "Découvrir nos actions",
+    "stat_members": "Membres actifs",
+    "stat_mentors": "Mentors validés",
+    "stat_resources": "Ressources disponibles",
+    "stat_countries": "Pays représentés"
+  },
+  "mission": {
+    "overtitle": "Notre mission",
+    "title": "Construire des ponts entre l'Afrique et la France",
+    "description": "CAP ALI est née d'un constat simple : trop de jeunes Africains arrivent en France sans repères, sans réseau et sans accompagnement. Notre mission est de briser cet isolement en créant une communauté solidaire, structurée et accessible à tous.",
+    "pillar1_title": "Orienter",
+    "pillar1_desc": "Guider les étudiants pré-départ dans leurs choix d'orientation, les démarches Campus France et la préparation au départ.",
+    "pillar2_title": "Accompagner",
+    "pillar2_desc": "Mettre en relation chaque nouveau arrivant avec un mentor installé en France, dans sa ville et son domaine.",
+    "pillar3_title": "Fédérer",
+    "pillar3_desc": "Créer une communauté vivante d'entraide, d'échanges et d'événements pour ne plus jamais se sentir seul(e)."
+  },
+  "mentorship": {
+    "overtitle": "Programme de mentorat",
+    "title": "Un mentor qui te comprend, dans ta ville, dans ton domaine",
+    "description": "Notre programme de mentorat met en relation les nouveaux arrivants avec des membres installés en France depuis plus de 6 mois. Chaque mentor est validé par notre équipe et s'engage à accompagner 1 à 3 jeunes par mois.",
+    "step1_title": "Inscris-toi",
+    "step1_desc": "Crée ton profil en quelques minutes et indique ton domaine, ta ville et tes besoins.",
+    "step2_title": "Trouve ton mentor",
+    "step2_desc": "Parcours les profils de mentors validés, filtre par ville et domaine, et envoie ta demande.",
+    "step3_title": "Échange et grandis",
+    "step3_desc": "Ton mentor t'accompagne dans tes démarches, répond à tes questions et te guide.",
+    "cta": "Trouver un mentor",
+    "become_mentor": "Devenir mentor"
+  },
+  "resources": {
+    "overtitle": "Ressources",
+    "title": "Des guides pratiques pour chaque étape de ton parcours",
+    "description": "Articles, vidéos et webinaires sur le logement, la banque, les études, l'emploi, la santé et les démarches administratives créés par notre communauté, pour notre communauté.",
+    "empty": "Les ressources arrivent bientôt. Nous préparons du contenu de qualité pour t'accompagner.",
+    "cta": "Explorer les ressources",
+    "theme_housing": "Logement",
+    "theme_bank": "Banque & Finances",
+    "theme_studies": "Études & Université",
+    "theme_employment": "Emploi & Alternance",
+    "theme_daily": "Vie quotidienne",
+    "theme_health": "Santé",
+    "theme_orientation": "Orientation pré-départ",
+    "theme_rights": "Droits & Administratif"
+  },
+  "events": {
+    "overtitle": "Événements",
+    "title": "Rencontrons-nous, en vrai",
+    "description": "Soirées networking, ateliers pratiques, webinaires d'orientation, CAP ALI organise des événements en France, au Bénin et en ligne pour renforcer les liens de notre communauté.",
+    "empty": "Aucun événement à venir pour le moment. Reste connecté(e), les prochains arrivent bientôt !",
+    "cta": "Voir tous les événements"
+  },
+  "forum": {
+    "overtitle": "Forum communautaire",
+    "title": "Pose tes questions, partage ton expérience",
+    "description": "Un espace d'échange entre membres de la communauté CAP ALI. Logement, études, emploi, vie quotidienne il y a toujours quelqu'un pour t'aider.",
+    "empty": "Le forum ouvre bientôt ses portes. Prépare-toi à échanger avec la communauté !",
+    "cta": "Accéder au forum"
+  },
+  "founders": {
+    "overtitle": "Les fondatrices",
+    "title": "Les visages derrière CAP ALI",
+    "lucinda_name": "Lucinda FAGBEMI BALOGOUN",
+    "lucinda_role": "Fondatrice",
+    "lucinda_quote": "J'ai créé CAP ALI parce que je sais ce que c'est d'arriver dans un pays sans repères. Chaque jeune mérite d'avoir quelqu'un qui lui tend la main et lui dit : tu n'es pas seul(e). C'est cette main que nous voulons être.",
+    "jessica_name": "Jessica DURAND",
+    "jessica_role": "Co-Fondatrice",
+    "jessica_quote": "Notre force, c'est notre communauté. Chaque mentor, chaque membre actif, chaque partage d'expérience construit un pont entre deux mondes. CAP ALI, c'est la preuve que la solidarité n'a pas de frontières."
+  },
+  "impact": {
+    "overtitle": "Notre impact",
+    "title": "Des chiffres qui parlent",
+    "stat1_number": "500+",
+    "stat1_label": "Jeunes accompagnés depuis la création",
+    "stat2_number": "50+",
+    "stat2_label": "Mentors actifs en France",
+    "stat3_number": "15+",
+    "stat3_label": "Villes couvertes en France",
+    "stat4_number": "8",
+    "stat4_label": "Thématiques de ressources"
+  },
+  "partners": {
+    "overtitle": "Ils nous soutiennent",
+    "title": "Nos partenaires et soutiens",
+    "description": "Ensemble, nous construisons un réseau d'accompagnement solide pour la diaspora africaine en France.",
+    "become_partner": "Devenir partenaire"
+  },
+  "cta_section": {
+    "title": "Prêt(e) à rejoindre l'aventure ?",
+    "subtitle": "Que tu sois étudiant en pré-départ, nouveau arrivant ou installé depuis des années, ta place est ici. Rejoins CAP ALI et fais partie d'une communauté qui change la donne.",
+    "cta_join": "Créer mon compte gratuitement",
+    "cta_donate": "Soutenir notre mission"
+  },
+  "footer": {
+    "description": "Communauté d'Appui au Parcours des Africains et Leaders Inspirants. Association loi 1901 dédiée à l'accompagnement des jeunes Africains en France.",
+    "nav_title": "Navigation",
+    "resources_title": "Ressources utiles",
+    "legal_title": "Légal",
+    "contact_title": "Contact",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "legal_notices": "Mentions légales",
+    "faq": "FAQ",
+    "contact_us": "Nous contacter",
+    "press": "Presse",
+    "copyright": "© {year} CAP ALI Tous droits réservés",
+    "made_with": "Fait avec ❤️ pour la diaspora africaine"
+  },
+  "donate": {
+    "title": "Soutenez CAP ALI",
+    "description": "Votre don finance le mentorat, les événements et les ressources pour les jeunes Africains en France."
+  }
+}
