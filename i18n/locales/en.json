@@ -1,0 +1,133 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "mentorship": "Mentorship",
+    "resources": "Resources",
+    "events": "Events",
+    "forum": "Forum",
+    "donate": "Donate",
+    "login": "Log in",
+    "register": "Sign up",
+    "language": "Language"
+  },
+  "hero": {
+    "tagline": "Community Support for the Journey of Africans and Inspiring Leaders",
+    "title_line1": "You are no longer",
+    "title_highlight": "alone",
+    "title_line2": "in your journey.",
+    "subtitle": "CAP ALI supports young Beninese and French-speaking Africans before, during and after their arrival in France. Mentorship, resources, community — everything you need to succeed.",
+    "cta_join": "Join the community",
+    "cta_discover": "Discover our actions",
+    "stat_members": "Active members",
+    "stat_mentors": "Verified mentors",
+    "stat_resources": "Available resources",
+    "stat_countries": "Countries represented"
+  },
+  "mission": {
+    "overtitle": "Our mission",
+    "title": "Building bridges between Africa and France",
+    "description": "CAP ALI was born from a simple observation: too many young Africans arrive in France without guidance, without a network and without support. Our mission is to break this isolation by creating a supportive, structured and accessible community for all.",
+    "pillar1_title": "Guide",
+    "pillar1_desc": "Help pre-departure students with their academic choices, Campus France procedures and departure preparation.",
+    "pillar2_title": "Support",
+    "pillar2_desc": "Connect every newcomer with a mentor established in France, in their city and field of expertise.",
+    "pillar3_title": "Unite",
+    "pillar3_desc": "Create a vibrant community of mutual aid, exchanges and events so no one ever feels alone again."
+  },
+  "mentorship": {
+    "overtitle": "Mentorship program",
+    "title": "A mentor who understands you, in your city, in your field",
+    "description": "Our mentorship program connects newcomers with members who have been living in France for over 6 months. Each mentor is verified by our team and commits to supporting 1 to 3 young people per month.",
+    "step1_title": "Sign up",
+    "step1_desc": "Create your profile in minutes and indicate your field, city and needs.",
+    "step2_title": "Find your mentor",
+    "step2_desc": "Browse verified mentor profiles, filter by city and field, and send your request.",
+    "step3_title": "Learn and grow",
+    "step3_desc": "Your mentor guides you through procedures, answers your questions and supports you.",
+    "cta": "Find a mentor",
+    "become_mentor": "Become a mentor"
+  },
+  "resources": {
+    "overtitle": "Resources",
+    "title": "Practical guides for every step of your journey",
+    "description": "Articles, videos and webinars on housing, banking, studies, employment, health and administrative procedures — created by our community, for our community.",
+    "empty": "Resources are coming soon. We're preparing quality content to support you.",
+    "cta": "Explore resources",
+    "theme_housing": "Housing",
+    "theme_bank": "Banking & Finance",
+    "theme_studies": "Studies & University",
+    "theme_employment": "Jobs & Internships",
+    "theme_daily": "Daily life",
+    "theme_health": "Health",
+    "theme_orientation": "Pre-departure guidance",
+    "theme_rights": "Rights & Administration"
+  },
+  "events": {
+    "overtitle": "Events",
+    "title": "Let's meet, in person",
+    "description": "Networking evenings, practical workshops, orientation webinars — CAP ALI organizes events in France, Benin and online to strengthen our community bonds.",
+    "empty": "No upcoming events at the moment. Stay connected, the next ones are coming soon!",
+    "cta": "View all events"
+  },
+  "forum": {
+    "overtitle": "Community forum",
+    "title": "Ask your questions, share your experience",
+    "description": "A space for exchange between CAP ALI community members. Housing, studies, jobs, daily life — there's always someone to help.",
+    "empty": "The forum is opening soon. Get ready to connect with the community!",
+    "cta": "Access the forum"
+  },
+  "founders": {
+    "overtitle": "The founders",
+    "title": "The faces behind CAP ALI",
+    "lucinda_name": "Lucinda FAGBEMI BALOGOUN",
+    "lucinda_role": "Founder",
+    "lucinda_quote": "I created CAP ALI because I know what it's like to arrive in a country without any guidance. Every young person deserves someone who reaches out and says: you are not alone. That's the hand we want to be.",
+    "jessica_name": "Jessica DURAND",
+    "jessica_role": "Co-Founder",
+    "jessica_quote": "Our strength is our community. Every mentor, every active member, every shared experience builds a bridge between two worlds. CAP ALI is proof that solidarity knows no borders."
+  },
+  "impact": {
+    "overtitle": "Our impact",
+    "title": "Numbers that speak",
+    "stat1_number": "500+",
+    "stat1_label": "Young people supported since inception",
+    "stat2_number": "50+",
+    "stat2_label": "Active mentors in France",
+    "stat3_number": "15+",
+    "stat3_label": "Cities covered in France",
+    "stat4_number": "8",
+    "stat4_label": "Resource themes"
+  },
+  "partners": {
+    "overtitle": "They support us",
+    "title": "Our partners and supporters",
+    "description": "Together, we build a strong support network for the African diaspora in France.",
+    "become_partner": "Become a partner"
+  },
+  "cta_section": {
+    "title": "Ready to join the adventure?",
+    "subtitle": "Whether you're a pre-departure student, a newcomer or have been settled for years — your place is here. Join CAP ALI and be part of a community that makes a difference.",
+    "cta_join": "Create my free account",
+    "cta_donate": "Support our mission"
+  },
+  "footer": {
+    "description": "Community Support for the Journey of Africans and Inspiring Leaders. Non-profit association dedicated to supporting young Africans in France.",
+    "nav_title": "Navigation",
+    "resources_title": "Useful resources",
+    "legal_title": "Legal",
+    "contact_title": "Contact",
+    "privacy": "Privacy policy",
+    "terms": "Terms of use",
+    "legal_notices": "Legal notices",
+    "faq": "FAQ",
+    "contact_us": "Contact us",
+    "press": "Press",
+    "copyright": "© {year} CAP ALI — All rights reserved",
+    "made_with": "Made with ❤️ for the African diaspora"
+  },
+  "donate": {
+    "title": "Support CAP ALI",
+    "description": "Your donation funds mentorship, events and resources for young Africans in France."
+  }
+}
