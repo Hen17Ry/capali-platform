@@ -10,11 +10,11 @@ export function getRedis(): Redis {
     })
 
     redisInstance.on('error', (err) => {
-      console.error('[Redis] Connection error:', err)
+      console.error('Redis error:', err)
     })
 
     redisInstance.on('connect', () => {
-      console.log('[Redis] Connected')
+      console.log('Redis connected')
     })
   }
   return redisInstance
