@@ -1,37 +1,31 @@
 import { db } from '~~/server/db'
 import { users } from '~~/server/db/schema'
 import { eq } from 'drizzle-orm'
+import { getSessionFromEvent } from '~~/server/utils/session'
 
 export default defineEventHandler(async (event) => {
   // Only protect /api/admin/* routes
   const url = getRequestURL(event)
   if (!url.pathname.startsWith('/api/admin')) return
 
-  const userId = getHeader(event, 'x-user-id')
+  const session = await getSessionFromEvent(event)
 
   // ─── DEV MODE BYPASS ───────────────────────────────────
-  // In development, if no auth header is sent, auto-find
-  // the first admin user or skip auth entirely.
-  // TODO: Remove this bypass when the auth module is implemented.
-  if (!userId && process.dev) {
+  // In development, if no session exists, allow access.
+  // TODO: Remove this bypass when auth is fully wired in production.
+  if (!session && process.dev) {
     const [devAdmin] = await db
       .select({ id: users.id })
       .from(users)
       .where(eq(users.isAdmin, true))
       .limit(1)
 
-    if (devAdmin) {
-      event.context.adminUser = { id: devAdmin.id }
-      return
-    }
-
-    // No admin in DB yet — allow access anyway in dev
-    event.context.adminUser = { id: 'dev-admin' }
+    event.context.adminUser = { id: devAdmin?.id || 'dev-admin' }
     return
   }
   // ────────────────────────────────────────────────────────
 
-  if (!userId) {
+  if (!session) {
     throw createError({
       statusCode: 401,
       statusMessage: 'Non authentifié. Veuillez vous connecter.',
@@ -42,23 +36,16 @@ export default defineEventHandler(async (event) => {
   const [user] = await db
     .select({ id: users.id, isAdmin: users.isAdmin, deletedAt: users.deletedAt })
     .from(users)
-    .where(eq(users.id, userId))
+    .where(eq(users.id, session.userId))
     .limit(1)
 
   if (!user || user.deletedAt) {
-    throw createError({
-      statusCode: 401,
-      statusMessage: 'Utilisateur non trouvé.',
-    })
+    throw createError({ statusCode: 401, statusMessage: 'Utilisateur non trouvé.' })
   }
 
   if (!user.isAdmin) {
-    throw createError({
-      statusCode: 403,
-      statusMessage: 'Accès refusé. Droits administrateur requis.',
-    })
+    throw createError({ statusCode: 403, statusMessage: 'Accès refusé. Droits administrateur requis.' })
   }
 
-  // Attach admin user to event context for downstream handlers
   event.context.adminUser = { id: user.id }
 })

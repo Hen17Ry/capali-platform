@@ -1,5 +1,15 @@
 <template>
-  <div class="admin-layout">
+  <!-- Auth loading state -->
+  <div v-if="isLoading" class="admin-loader">
+    <div class="admin-loader__inner">
+      <img src="/logo.png" alt="CAP ALI" width="48" height="48" class="admin-loader__logo" />
+      <div class="admin-loader__spinner" />
+      <span class="admin-loader__text">Chargement...</span>
+    </div>
+  </div>
+
+  <!-- Admin layout (only when auth is resolved) -->
+  <div v-else class="admin-layout">
     <!-- Sidebar -->
     <aside class="admin-sidebar" :class="{ 'admin-sidebar--collapsed': sidebarCollapsed, 'admin-sidebar--mobile-open': mobileOpen }">
       <div class="admin-sidebar__header">
@@ -31,9 +41,13 @@
 
       <div class="admin-sidebar__footer">
         <NuxtLink to="/" class="admin-sidebar__link">
-          <span class="admin-sidebar__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+          <span class="admin-sidebar__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
           <span v-show="!sidebarCollapsed" class="admin-sidebar__link-text">Retour au site</span>
         </NuxtLink>
+        <button class="admin-sidebar__link" @click="handleLogout" style="width:100%;text-align:left;">
+          <span class="admin-sidebar__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
+          <span v-show="!sidebarCollapsed" class="admin-sidebar__link-text">Déconnexion</span>
+        </button>
       </div>
     </aside>
 
@@ -54,8 +68,8 @@
 
         <div class="admin-topbar__actions">
           <div class="admin-topbar__user">
-            <div class="admin-topbar__avatar">A</div>
-            <span class="admin-topbar__username">Admin</span>
+            <div class="admin-topbar__avatar">{{ user?.name?.[0]?.toUpperCase() ?? 'A' }}</div>
+            <span class="admin-topbar__username">{{ user?.name ?? 'Admin' }}</span>
           </div>
         </div>
       </header>
@@ -71,6 +85,12 @@
 <script setup lang="ts">
 const sidebarCollapsed = ref(false)
 const mobileOpen = ref(false)
+
+const { user, isLoading, logout } = useAuth()
+
+async function handleLogout() {
+  if (confirm('Se déconnecter ?')) await logout()
+}
 
 const mainNav = [
   { to: '/admin', label: 'Tableau de bord', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>' },
@@ -350,5 +370,50 @@ watch(() => route.path, () => {
   .admin-topbar {
     padding: 0 var(--space-4);
   }
+}
+
+/* ---- Auth Loader ---- */
+.admin-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: #f1f5f9;
+}
+
+.admin-loader__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.admin-loader__logo {
+  border-radius: var(--radius-full);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.admin-loader__spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--neutral-200);
+  border-top-color: var(--green-500);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.admin-loader__text {
+  font-size: var(--text-sm);
+  color: var(--neutral-400);
+  font-weight: 500;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 </style>
