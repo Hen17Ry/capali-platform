@@ -1,5 +1,5 @@
 import { db } from '~~/server/db'
-import { mentorProfiles } from '~~/server/db/schema'
+import { mentorProfiles, users } from '~~/server/db/schema'
 import { eq } from 'drizzle-orm'
 
 export default defineEventHandler(async (event) => {
@@ -31,6 +31,24 @@ export default defineEventHandler(async (event) => {
 
   if (!updated) {
     throw createError({ statusCode: 404, statusMessage: 'Profil mentor non trouvé.' })
+  }
+
+  // ── Send notification emails (fire-and-forget) ──
+  if (body.action === 'validate' || body.action === 'refuse') {
+    // Fetch user info for the email
+    const [user] = await db
+      .select({ name: users.name, email: users.email })
+      .from(users)
+      .where(eq(users.id, id))
+      .limit(1)
+
+    if (user) {
+      if (body.action === 'validate') {
+        sendMentorValidatedEmail({ name: user.name, email: user.email })
+      } else {
+        sendMentorRefusedEmail({ name: user.name, email: user.email })
+      }
+    }
   }
 
   return { data: updated }

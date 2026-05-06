@@ -38,7 +38,7 @@
           <div class="mentor-card__detail"><span>Présentiel</span><strong>{{ mentor.acceptsInperson ? '✅' : '❌' }}</strong></div>
         </div>
 
-        <p v-if="mentor.presentation" class="mentor-card__pres">{{ mentor.presentation }}</p>
+        <p v-if="mentor.motivation" class="mentor-card__pres"><span>Motivation : </span>{{ mentor.motivation }}</p>
 
         <div class="mentor-card__actions">
           <button v-if="!mentor.isValidated" class="btn btn--primary btn--sm" @click="doAction(mentor.userId, 'validate')">✓ Valider</button>
