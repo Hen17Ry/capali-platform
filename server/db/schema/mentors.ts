@@ -1,4 +1,4 @@
-import { pgTable, uuid, varchar, integer, boolean, timestamp, text, pgEnum } from 'drizzle-orm/pg-core'
+import { pgTable, uuid, varchar, integer, boolean, timestamp, text, pgEnum, jsonb } from 'drizzle-orm/pg-core'
 import { users } from './users'
 
 export const mentorProfiles = pgTable('mentor_profiles', {
@@ -8,6 +8,12 @@ export const mentorProfiles = pgTable('mentor_profiles', {
   maxMentees: integer('max_mentees').notNull().default(2),
   acceptsRemote: boolean('accepts_remote').notNull().default(true),
   acceptsInperson: boolean('accepts_inperson').notNull().default(false),
+  // New enriched fields
+  helpTopics: jsonb('help_topics').$type<string[]>().default([]),      // ['logement', 'etudes', 'emploi', ...]
+  motivation: text('motivation'),                                       // Why they want to mentor
+  yearsInFrance: integer('years_in_france'),                            // Seniority indicator
+  languages: jsonb('languages').$type<string[]>().default([]),          // ['français', 'anglais', 'fon', ...]
+  linkedinUrl: varchar('linkedin_url', { length: 500 }),                // Professional profile
   presentation: text('presentation'),
   isValidated: boolean('is_validated').notNull().default(false),
   isPaused: boolean('is_paused').notNull().default(false),

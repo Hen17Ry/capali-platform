@@ -24,6 +24,7 @@ export default defineEventHandler(async (event) => {
       acceptsRemote: mentorProfiles.acceptsRemote,
       acceptsInperson: mentorProfiles.acceptsInperson,
       presentation: mentorProfiles.presentation,
+      motivation: mentorProfiles.motivation,
       isValidated: mentorProfiles.isValidated,
       isPaused: mentorProfiles.isPaused,
       validatedAt: mentorProfiles.validatedAt,
