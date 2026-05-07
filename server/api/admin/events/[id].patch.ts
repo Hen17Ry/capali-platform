@@ -11,6 +11,7 @@ export default defineEventHandler(async (event) => {
 
   if (body.title) updates.title = body.title
   if (body.description !== undefined) updates.description = body.description
+  if (body.coverImage !== undefined) updates.coverImage = body.coverImage
   if (body.type) updates.type = body.type
   if (body.city !== undefined) updates.city = body.city
   if (body.eventDate) updates.eventDate = new Date(body.eventDate)

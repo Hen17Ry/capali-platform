@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
     .values({
       title: body.title,
       description: body.description || null,
+      coverImage: body.coverImage || null,
       type: body.type,
       city: body.city || null,
       eventDate: new Date(body.eventDate),

@@ -7,6 +7,7 @@ export const events = pgTable('events', {
   id: uuid('id').primaryKey().defaultRandom(),
   title: varchar('title', { length: 255 }).notNull(),
   description: text('description'),
+  coverImage: text('cover_image'),
   type: eventTypeEnum('type').notNull(),
   city: varchar('city', { length: 100 }),
   eventDate: timestamp('event_date').notNull(),
