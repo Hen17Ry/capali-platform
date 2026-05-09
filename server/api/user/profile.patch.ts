@@ -1,5 +1,5 @@
 import { db } from '~~/server/db'
-import { users, mentorProfiles } from '~~/server/db/schema'
+import { users, mentorProfiles, studentProfiles } from '~~/server/db/schema'
 import { eq } from 'drizzle-orm'
 
 import { getSessionFromEvent, updateRedisSession } from '~~/server/utils/session'
@@ -40,6 +40,27 @@ export default defineEventHandler(async (event) => {
         await db.insert(mentorProfiles).values({
           userId,
           ...mentorUpdates,
+        })
+      }
+    }
+  } else {
+    // Update student profile
+    const studentUpdates: Record<string, any> = {}
+    if (body.educationLevel !== undefined) studentUpdates.educationLevel = body.educationLevel
+    if (body.targetedCities !== undefined) studentUpdates.targetedCities = body.targetedCities
+    if (body.needsHelp !== undefined) studentUpdates.needsHelp = body.needsHelp
+    if (body.arrivalDate !== undefined) studentUpdates.arrivalDate = body.arrivalDate
+    if (body.presentation !== undefined) studentUpdates.presentation = body.presentation
+    if (body.schoolName !== undefined) studentUpdates.schoolName = body.schoolName
+    
+    if (Object.keys(studentUpdates).length > 0) {
+      const [existingStudent] = await db.select().from(studentProfiles).where(eq(studentProfiles.userId, userId))
+      if (existingStudent) {
+        await db.update(studentProfiles).set(studentUpdates).where(eq(studentProfiles.userId, userId))
+      } else {
+        await db.insert(studentProfiles).values({
+          userId,
+          ...studentUpdates,
         })
       }
     }
