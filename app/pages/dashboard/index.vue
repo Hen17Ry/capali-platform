@@ -7,12 +7,16 @@
 
     <div class="dashboard-stats" v-if="profile?.status === 'mentor'">
       <div class="stat-card">
-        <div class="stat-value">{{ profile?.mentorProfile?.maxMentees || 0 }}</div>
-        <div class="stat-label">Mentorés maximum</div>
+        <div class="stat-value">{{ stats.pendingRequests || 0 }}</div>
+        <div class="stat-label">Demandes en attente</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value">{{ profile?.mentorProfile?.availableHoursMonth || 0 }}</div>
-        <div class="stat-label">Heures par mois</div>
+        <div class="stat-value" style="color: var(--blue-600)">{{ stats.activeMentees || 0 }}</div>
+        <div class="stat-label">Mentorés actifs</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" style="color: var(--neutral-600)">{{ profile?.mentorProfile?.maxMentees || 0 }}</div>
+        <div class="stat-label">Mentorés max autorisés</div>
       </div>
     </div>
 
