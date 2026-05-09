@@ -140,12 +140,91 @@
         </div>
       </template>
 
+      <!-- SECTION: Étudiant / Mentoré -->
+      <template v-else-if="user?.status && user.status !== 'mentor'">
+        <div class="form-section">
+          <h3 class="section-title">Mon Projet d'Études / d'Installation</h3>
+          <div class="section-body">
+            <div class="form-grid">
+              <div class="form-group">
+                <label class="form-label">Niveau d'études *</label>
+                <select v-model="form.educationLevel" class="form-input" required>
+                  <option value="" disabled>Sélectionnez un niveau</option>
+                  <option value="Baccalauréat">Baccalauréat / Lycée</option>
+                  <option value="Licence">Licence / Bachelor</option>
+                  <option value="Master">Master / Ingénieur</option>
+                  <option value="Doctorat">Doctorat</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">École ciblée ou actuelle</label>
+                <input v-model="form.schoolName" type="text" class="form-input" placeholder="Ex: Sorbonne Université, INSA Lyon..." />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Date d'arrivée prévue ou réelle en France *</label>
+                <input v-model="form.arrivalDate" type="month" class="form-input" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Villes ciblées en France</label>
+                <input 
+                  type="text" 
+                  class="form-input" 
+                  placeholder="Ex: Paris, Lyon, Toulouse (séparées par des virgules)" 
+                  v-model="targetedCitiesInput"
+                  @blur="parseTargetedCities"
+                />
+              </div>
+            </div>
+
+            <div class="form-group mt-4">
+              <label class="form-label">Sur quels sujets avez-vous le plus besoin d'aide ? *</label>
+              <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Logement" /> Logement</label>
+                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Études" /> Études / Orientation</label>
+                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Emploi" /> Emploi / Alternance</label>
+                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Administratif" /> Démarches Administratives</label>
+                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Intégration" /> Intégration sociale</label>
+              </div>
+            </div>
+
+            <div class="form-group mt-4">
+              <label class="form-label">À propos de moi *</label>
+              <p class="help-text mb-2">Présentez-vous brièvement et expliquez vos objectifs. Cela aidera nos mentors à mieux vous accompagner.</p>
+              <textarea v-model="form.presentation" class="form-textarea" rows="4" required></textarea>
+            </div>
+          </div>
+        </div>
+      </template>
+
       <div class="form-actions">
         <button type="submit" class="btn btn--primary btn--lg" :disabled="isSaving" style="min-width: 200px">
           {{ isSaving ? 'Enregistrement...' : 'Enregistrer le profil' }}
         </button>
       </div>
     </form>
+
+    <!-- Modals -->
+    <UiBaseModal v-model="showValidationModal" title="Information manquante">
+      <p>Veuillez ajouter au moins une expérience professionnelle (votre parcours).</p>
+      <template #footer>
+        <button class="btn btn--primary" @click="showValidationModal = false">Compris</button>
+      </template>
+    </UiBaseModal>
+
+    <UiBaseModal v-model="showSuccessModal" title="Succès">
+      <p>Votre profil a été mis à jour avec succès.</p>
+      <template #footer>
+        <button class="btn btn--primary" @click="showSuccessModal = false">Fermer</button>
+      </template>
+    </UiBaseModal>
+
+    <UiBaseModal v-model="showErrorModal" title="Erreur">
+      <p>{{ errorMessage }}</p>
+      <template #footer>
+        <button class="btn btn--outline" @click="showErrorModal = false">Fermer</button>
+      </template>
+    </UiBaseModal>
   </div>
 </template>
 
@@ -161,6 +240,12 @@ const isMentor = computed(() => user.value?.status === 'mentor')
 const isSaving = ref(false)
 const uploadingAvatar = ref(false)
 const topicsInput = ref('')
+const targetedCitiesInput = ref('')
+
+const showValidationModal = ref(false)
+const showSuccessModal = ref(false)
+const showErrorModal = ref(false)
+const errorMessage = ref('')
 
 const form = reactive({
   name: '',
@@ -173,6 +258,13 @@ const form = reactive({
   yearsExperience: 0,
   helpTopics: [] as string[],
   experiences: [] as any[],
+  
+  // Student specific
+  educationLevel: '',
+  targetedCities: [] as string[],
+  needsHelp: [] as string[],
+  arrivalDate: '',
+  schoolName: '',
 })
 
 // Fetch initial profile
@@ -193,6 +285,17 @@ if (response.value?.data) {
     form.experiences = m.experiences || []
     topicsInput.value = form.helpTopics.join(', ')
   }
+  
+  if (d.studentProfile) {
+    const s = d.studentProfile
+    form.educationLevel = s.educationLevel || ''
+    form.targetedCities = s.targetedCities || []
+    form.needsHelp = s.needsHelp || []
+    form.arrivalDate = s.arrivalDate || ''
+    form.schoolName = s.schoolName || ''
+    form.presentation = s.presentation || form.presentation // reuse presentation field if it was set
+    targetedCitiesInput.value = form.targetedCities.join(', ')
+  }
 }
 
 function parseTopics() {
@@ -200,6 +303,16 @@ function parseTopics() {
   const topics = topicsInput.value.split(',').map(t => t.trim()).filter(Boolean)
   form.helpTopics = [...new Set([...form.helpTopics, ...topics])]
   topicsInput.value = form.helpTopics.join(', ')
+}
+
+function parseTargetedCities() {
+  if (!targetedCitiesInput.value) {
+    form.targetedCities = []
+    return
+  }
+  const cities = targetedCitiesInput.value.split(',').map(c => c.trim()).filter(Boolean)
+  form.targetedCities = [...new Set([...cities])]
+  targetedCitiesInput.value = form.targetedCities.join(', ')
 }
 
 function handleCurrentExperienceChange(exp: { current: boolean; endDate: string }) {
@@ -233,7 +346,8 @@ async function handleAvatarUpload(event: Event) {
     })
     form.avatarUrl = res.data.url
   } catch (err: any) {
-    alert(err?.data?.message || 'Erreur lors du téléchargement de l\'image.')
+    errorMessage.value = err?.data?.message || "Erreur lors du téléchargement de l'image."
+    showErrorModal.value = true
   } finally {
     uploadingAvatar.value = false
   }
@@ -241,7 +355,7 @@ async function handleAvatarUpload(event: Event) {
 
 async function saveProfile() {
   if (isMentor.value && form.experiences.length === 0) {
-    alert('Veuillez ajouter au moins une expérience (votre parcours).')
+    showValidationModal.value = true
     return
   }
 
@@ -252,16 +366,14 @@ async function saveProfile() {
       body: form
     })
     
-    // Refresh user auth context just in case (name/avatar might be used globally)
-    // await fetchUser()
-    
     if (requireCompletion.value) {
       router.push('/dashboard')
     } else {
-      alert('Profil mis à jour avec succès.')
+      showSuccessModal.value = true
     }
   } catch (err: any) {
-    alert(err?.data?.message || 'Erreur lors de la sauvegarde.')
+    errorMessage.value = err?.data?.message || 'Erreur lors de la sauvegarde.'
+    showErrorModal.value = true
   } finally {
     isSaving.value = false
   }

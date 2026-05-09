@@ -36,6 +36,20 @@
       "when": 1778176820026,
       "tag": "0004_adorable_exiles",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1778338856171,
+      "tag": "0005_strong_gideon",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1778339791725,
+      "tag": "0006_lively_polaris",
+      "breakpoints": true
     }
   ]
 }
