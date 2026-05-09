@@ -12,9 +12,19 @@ export const mentorProfiles = pgTable('mentor_profiles', {
   helpTopics: jsonb('help_topics').$type<string[]>().default([]),      // ['logement', 'etudes', 'emploi', ...]
   motivation: text('motivation'),                                       // Why they want to mentor
   yearsInFrance: integer('years_in_france'),                            // Seniority indicator
+  yearsExperience: integer('years_experience'),                         // Professional experience
+  currentProfession: varchar('current_profession', { length: 255 }),    // e.g. 'Software Engineer'
   languages: jsonb('languages').$type<string[]>().default([]),          // ['français', 'anglais', 'fon', ...]
   linkedinUrl: varchar('linkedin_url', { length: 500 }),                // Professional profile
-  presentation: text('presentation'),
+  presentation: text('presentation'),                                   // About me
+  experiences: jsonb('experiences').$type<Array<{
+    title: string,
+    company: string,
+    startDate: string,
+    endDate?: string,
+    current: boolean,
+    description?: string
+  }>>().default([]), // CV journey
   isValidated: boolean('is_validated').notNull().default(false),
   isPaused: boolean('is_paused').notNull().default(false),
   validatedAt: timestamp('validated_at'),
