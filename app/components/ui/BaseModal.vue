@@ -10,7 +10,7 @@
           <div class="modal-body">
             <slot />
           </div>
-          <div class="modal-footer" v-if="$slots.footer">
+          <div v-if="$slots.footer" class="modal-footer">
             <slot name="footer" />
           </div>
         </div>
@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   modelValue: boolean
   title: string
 }>()

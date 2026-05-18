@@ -22,8 +22,8 @@
           <h1 class="resource-title">{{ resource.title }}</h1>
           
           <div class="resource-author-date">
-            <div class="resource-author" v-if="resource.authorName">
-              <img v-if="resource.authorAvatar" :src="resource.authorAvatar" :alt="resource.authorName" class="author-avatar" />
+            <div v-if="resource.authorName" class="resource-author">
+              <img v-if="resource.authorAvatar" :src="resource.authorAvatar" :alt="resource.authorName" class="author-avatar" >
               <div v-else class="author-avatar author-avatar--placeholder">{{ resource.authorName[0] }}</div>
               <span>Par {{ resource.authorName }}</span>
             </div>
@@ -34,7 +34,7 @@
     </div>
 
     <!-- Main Content -->
-    <div class="container resource-body-container" v-if="resource">
+    <div v-if="resource" class="container resource-body-container">
       <!-- Sidebar / Quick info -->
       <aside class="resource-sidebar">
         <div v-if="resource.sourceUrl" class="sidebar-card">
@@ -49,7 +49,7 @@
         <div class="sidebar-card share-card">
           <h3 class="sidebar-title">Partager</h3>
           <div class="share-buttons">
-            <button class="share-btn" @click="copyLink" title="Copier le lien">
+            <button class="share-btn" title="Copier le lien" @click="copyLink">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
             </button>
             <a :href="`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`" target="_blank" class="share-btn" title="Twitter">
@@ -65,7 +65,7 @@
       <!-- Content -->
       <article class="resource-content-wrapper">
         <div v-if="resource.coverImage" class="resource-cover">
-          <img :src="resource.coverImage" :alt="resource.title" />
+          <img :src="resource.coverImage" :alt="resource.title" >
         </div>
         <div v-else-if="resource.excerpt" class="resource-excerpt-highlight">
           {{ resource.excerpt }}

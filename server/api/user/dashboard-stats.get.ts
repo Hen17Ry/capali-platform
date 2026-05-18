@@ -1,7 +1,6 @@
 import { db } from '~~/server/db'
 import { events, resources, forumPosts, mentorshipRequests } from '~~/server/db/schema'
-import { gte, countDistinct, eq, and } from 'drizzle-orm'
-import { sql } from 'drizzle-orm'
+import { gte, countDistinct, eq, and, sql  } from 'drizzle-orm'
 import { getSessionFromEvent } from '~~/server/utils/session'
 
 export default defineEventHandler(async (event) => {

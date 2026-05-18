@@ -30,7 +30,7 @@
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                   {{ formatTime(event.eventDate) }}
                 </div>
-                <div class="event-card__detail-item" v-if="event.city || event.type === 'online'">
+                <div v-if="event.city || event.type === 'online'" class="event-card__detail-item">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                   {{ event.type === 'online' ? 'En ligne' : event.city }}
                 </div>
@@ -67,7 +67,7 @@
           <NuxtLink to="/events" class="btn btn--outline btn--lg">{{ $t('events.cta') }}</NuxtLink>
         </div>
         <div class="events__visual reveal--right reveal">
-          <img src="/community-event.png" alt="Événement CAP ALI" loading="lazy" />
+          <img src="/community-event.png" alt="Événement CAP ALI" loading="lazy" >
         </div>
       </div>
     </div>

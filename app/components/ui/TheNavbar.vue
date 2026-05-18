@@ -3,7 +3,7 @@
     <div class="navbar__inner container container--wide">
       <!-- Logo -->
       <NuxtLink to="/" class="navbar__logo" aria-label="CAP ALI — Accueil">
-        <img src="/logo.png" alt="CAP ALI" width="48" height="48" />
+        <img src="/logo.png" alt="CAP ALI" width="48" height="48" >
         <span class="navbar__logo-text">CAP <span class="navbar__logo-highlight">ALI</span></span>
       </NuxtLink>
 
@@ -25,8 +25,8 @@
               :key="loc.code"
               class="navbar__lang-btn"
               :class="{ 'navbar__lang-btn--active': locale === loc.code }"
-              @click="switchLang(loc.code)"
               :aria-label="`Switch to ${loc.name}`"
+              @click="switchLang(loc.code)"
             >
               {{ loc.code.toUpperCase() }}
             </button>
@@ -48,12 +48,12 @@
       <button
         class="navbar__hamburger"
         :class="{ 'navbar__hamburger--open': isMobileOpen }"
-        @click="toggleMobile"
         aria-label="Menu"
+        @click="toggleMobile"
       >
-        <span></span>
-        <span></span>
-        <span></span>
+        <span/>
+        <span/>
+        <span/>
       </button>
     </div>
 

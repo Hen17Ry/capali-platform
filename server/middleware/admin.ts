@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   // ─── DEV MODE BYPASS ───────────────────────────────────
   // In development, if no session exists, allow access.
   // TODO: Remove this bypass when auth is fully wired in production.
-  if (!session && process.dev) {
+  if (!session && import.meta.dev) {
     const [devAdmin] = await db
       .select({ id: users.id })
       .from(users)

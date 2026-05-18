@@ -31,14 +31,14 @@
         <div v-if="pendingRequests.length === 0" class="empty-state">
           Aucune demande en attente.
         </div>
-        <div v-else class="request-card" v-for="req in pendingRequests" :key="req.id">
+        <div v-for="req in pendingRequests" v-else :key="req.id" class="request-card">
           <div class="card-header">
             <div class="user-info">
-              <img v-if="req.mentee.avatarUrl" :src="req.mentee.avatarUrl" class="avatar" />
+              <img v-if="req.mentee.avatarUrl" :src="req.mentee.avatarUrl" class="avatar" >
               <div v-else class="avatar-placeholder">{{ req.mentee.name[0] }}</div>
               <div>
                 <h3 class="mentee-name">{{ req.mentee.name }}</h3>
-                <p class="mentee-school" v-if="req.studentProfile?.educationLevel">
+                <p v-if="req.studentProfile?.educationLevel" class="mentee-school">
                   {{ req.studentProfile.educationLevel }} 
                   <span v-if="req.studentProfile.schoolName">à {{ req.studentProfile.schoolName }}</span>
                 </p>
@@ -52,7 +52,7 @@
           <div class="card-body">
             <p class="section-label">Projet / Villes ciblées :</p>
             <p class="text-content">
-              Arrivée prévue : {{ req.studentProfile?.arrivalDate }} <br />
+              Arrivée prévue : {{ req.studentProfile?.arrivalDate }} <br >
               <span v-if="req.studentProfile?.targetedCities?.length">
                 Villes : {{ req.studentProfile.targetedCities.join(', ') }}
               </span>
@@ -60,7 +60,7 @@
             
             <p class="section-label mt-3">Besoins :</p>
             <div class="tags">
-              <span class="tag" v-for="need in req.studentProfile?.needsHelp" :key="need">{{ need }}</span>
+              <span v-for="need in req.studentProfile?.needsHelp" :key="need" class="tag">{{ need }}</span>
             </div>
           </div>
           
@@ -78,10 +78,10 @@
         <div v-if="acceptedRequests.length === 0" class="empty-state">
           Vous n'avez aucun mentoré actif pour le moment.
         </div>
-        <div v-else class="request-card" v-for="req in acceptedRequests" :key="req.id">
+        <div v-for="req in acceptedRequests" v-else :key="req.id" class="request-card">
           <div class="card-header">
             <div class="user-info">
-              <img v-if="req.mentee.avatarUrl" :src="req.mentee.avatarUrl" class="avatar" />
+              <img v-if="req.mentee.avatarUrl" :src="req.mentee.avatarUrl" class="avatar" >
               <div v-else class="avatar-placeholder">{{ req.mentee.name[0] }}</div>
               <div>
                 <h3 class="mentee-name">{{ req.mentee.name }}</h3>
@@ -112,7 +112,7 @@
         
         <h4 class="detail-title mt-4">Besoins spécifiques</h4>
         <div class="tags">
-          <span class="tag" v-for="need in selectedReq.studentProfile?.needsHelp" :key="need">{{ need }}</span>
+          <span v-for="need in selectedReq.studentProfile?.needsHelp" :key="need" class="tag">{{ need }}</span>
         </div>
       </div>
       <template #footer>
@@ -127,11 +127,11 @@
     <UiBaseModal v-model="showRefuseModal" title="Refuser la demande">
       <p>Vous êtes sur le point de refuser la demande de <strong>{{ selectedReq?.mentee.name }}</strong>.</p>
       <p class="text-sm mt-2 text-neutral-500">Vous pouvez ajouter un mot d'explication (optionnel) :</p>
-      <textarea v-model="mentorNote" class="form-textarea mt-2" rows="3" placeholder="Ex: Désolé, je n'ai plus de disponibilité actuellement..."></textarea>
+      <textarea v-model="mentorNote" class="form-textarea mt-2" rows="3" placeholder="Ex: Désolé, je n'ai plus de disponibilité actuellement..."/>
       
       <template #footer>
         <button class="btn btn--outline" @click="showRefuseModal = false">Annuler</button>
-        <button class="btn btn--danger" @click="refuseRequest" :disabled="isUpdating">Confirmer le refus</button>
+        <button class="btn btn--danger" :disabled="isUpdating" @click="refuseRequest">Confirmer le refus</button>
       </template>
     </UiBaseModal>
   </div>
