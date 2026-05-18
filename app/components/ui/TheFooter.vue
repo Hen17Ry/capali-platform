@@ -8,7 +8,7 @@
         <!-- Brand -->
         <div class="footer__brand">
           <div class="footer__logo">
-            <img src="/logo.png" alt="CAP ALI" width="48" height="48" />
+            <img src="/logo.png" alt="CAP ALI" width="48" height="48" >
             <span>CAP <strong>ALI</strong></span>
           </div>
           <p class="footer__desc">{{ $t('footer.description') }}</p>

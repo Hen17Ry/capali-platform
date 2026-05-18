@@ -2,7 +2,7 @@
   <div class="auth-page">
     <div class="auth-page__side">
       <div class="auth-page__brand">
-        <NuxtLink to="/"><img src="/logo.png" alt="CAP ALI" width="60" height="60" /></NuxtLink>
+        <NuxtLink to="/"><img src="/logo.png" alt="CAP ALI" width="60" height="60" ></NuxtLink>
         <h1>CAP <strong>ALI</strong></h1>
         <p>Rejoins la communauté qui accompagne les parcours d'excellence</p>
       </div>
@@ -24,14 +24,14 @@
           </div>
         </div>
 
-        <form @submit.prevent="handleRegister" class="auth-form">
+        <form class="auth-form" @submit.prevent="handleRegister">
           <!-- STEP 1: Role + Identity -->
           <template v-if="step === 1">
             <div class="form-group">
               <label class="form-label">Je suis *</label>
               <div class="role-selector">
                 <label v-for="role in roles" :key="role.value" class="role-option" :class="{ 'role-option--selected': form.status === role.value }">
-                  <input type="radio" v-model="form.status" :value="role.value" class="sr-only" />
+                  <input v-model="form.status" type="radio" :value="role.value" class="sr-only" >
                   <span class="role-option__label">{{ role.label }}</span>
                   <span class="role-option__desc">{{ role.desc }}</span>
                 </label>
@@ -39,21 +39,21 @@
             </div>
             <div class="form-group">
               <label class="form-label">Nom complet *</label>
-              <input v-model="form.name" type="text" class="form-input" placeholder="Prénom et nom" required />
+              <input v-model="form.name" type="text" class="form-input" placeholder="Prénom et nom" required >
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">Pays d'origine</label>
-                <input v-model="form.countryOrigin" type="text" class="form-input" placeholder="Ex: Bénin" />
+                <input v-model="form.countryOrigin" type="text" class="form-input" placeholder="Ex: Bénin" >
               </div>
               <div class="form-group">
                 <label class="form-label">Ville en France</label>
-                <input v-model="form.cityCurrentFr" type="text" class="form-input" placeholder="Ex: Paris" />
+                <input v-model="form.cityCurrentFr" type="text" class="form-input" placeholder="Ex: Paris" >
               </div>
             </div>
             <div class="form-group">
               <label class="form-label">Domaine {{ form.status === 'mentor' ? '*' : '' }}</label>
-              <input v-model="form.domain" type="text" class="form-input" placeholder="Ex: Informatique, Droit..." :required="form.status === 'mentor'" />
+              <input v-model="form.domain" type="text" class="form-input" placeholder="Ex: Informatique, Droit..." :required="form.status === 'mentor'" >
             </div>
             <button type="button" class="btn btn--primary btn--lg" style="width:100%" @click="nextStep">Continuer</button>
           </template>
@@ -66,7 +66,7 @@
                 <label class="form-label">Sur quoi pouvez-vous aider ? *</label>
                 <div class="checkbox-grid">
                   <label v-for="t in helpTopicOptions" :key="t.value" class="checkbox-card" :class="{ 'checkbox-card--checked': form.helpTopics.includes(t.value) }">
-                    <input type="checkbox" :value="t.value" v-model="form.helpTopics" class="sr-only" />
+                    <input v-model="form.helpTopics" type="checkbox" :value="t.value" class="sr-only" >
                     <span>{{ t.label }}</span>
                   </label>
                 </div>
@@ -89,11 +89,11 @@
                 <label class="form-label">Mode d'accompagnement *</label>
                 <div class="checkbox-grid">
                   <label class="checkbox-card" :class="{ 'checkbox-card--checked': form.acceptsRemote }">
-                    <input type="checkbox" v-model="form.acceptsRemote" class="sr-only" />
+                    <input v-model="form.acceptsRemote" type="checkbox" class="sr-only" >
                     <span>À distance</span>
                   </label>
                   <label class="checkbox-card" :class="{ 'checkbox-card--checked': form.acceptsInperson }">
-                    <input type="checkbox" v-model="form.acceptsInperson" class="sr-only" />
+                    <input v-model="form.acceptsInperson" type="checkbox" class="sr-only" >
                     <span>En présentiel</span>
                   </label>
                 </div>
@@ -101,11 +101,11 @@
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Années en France</label>
-                  <input v-model.number="form.yearsInFrance" type="number" min="0" max="50" class="form-input" placeholder="Ex: 5" />
+                  <input v-model.number="form.yearsInFrance" type="number" min="0" max="50" class="form-input" placeholder="Ex: 5" >
                 </div>
                 <div class="form-group">
                   <label class="form-label">Langues parlées</label>
-                  <input v-model="languagesInput" type="text" class="form-input" placeholder="Français, Anglais, Fon..." />
+                  <input v-model="languagesInput" type="text" class="form-input" placeholder="Français, Anglais, Fon..." >
                 </div>
               </div>
               <div class="form-group">
@@ -115,7 +115,7 @@
               </div>
               <div class="form-group">
                 <label class="form-label">LinkedIn (optionnel)</label>
-                <input v-model="form.linkedinUrl" type="url" class="form-input" placeholder="https://linkedin.com/in/..." />
+                <input v-model="form.linkedinUrl" type="url" class="form-input" placeholder="https://linkedin.com/in/..." >
               </div>
               <div class="mentor-notice">
                 <p>⚠️ Votre profil mentor sera <strong>validé par un administrateur</strong> avant de pouvoir accompagner des mentorés.</p>
@@ -128,14 +128,14 @@
                 <label class="form-label">De quoi as-tu besoin d'aide ?</label>
                 <div class="checkbox-grid">
                   <label v-for="t in helpTopicOptions" :key="t.value" class="checkbox-card" :class="{ 'checkbox-card--checked': form.needsHelp.includes(t.value) }">
-                    <input type="checkbox" :value="t.value" v-model="form.needsHelp" class="sr-only" />
+                    <input v-model="form.needsHelp" type="checkbox" :value="t.value" class="sr-only" >
                     <span>{{ t.label }}</span>
                   </label>
                 </div>
               </div>
-              <div class="form-group" v-if="form.status === 'predeparture'">
+              <div v-if="form.status === 'predeparture'" class="form-group">
                 <label class="form-label">Date d'arrivée prévue</label>
-                <input v-model="form.arrivalDate" type="month" class="form-input" />
+                <input v-model="form.arrivalDate" type="month" class="form-input" >
               </div>
             </template>
 
@@ -149,19 +149,19 @@
           <template v-if="step === 3">
             <div class="form-group">
               <label class="form-label">Email *</label>
-              <input v-model="form.email" type="email" class="form-input" placeholder="votre@email.com" required autocomplete="email" />
+              <input v-model="form.email" type="email" class="form-input" placeholder="votre@email.com" required autocomplete="email" >
             </div>
             <div class="form-group">
               <label class="form-label">Mot de passe *</label>
               <div class="input-password">
-                <input v-model="form.password" :type="showPw ? 'text' : 'password'" class="form-input" placeholder="Minimum 8 caractères" required minlength="8" />
+                <input v-model="form.password" :type="showPw ? 'text' : 'password'" class="form-input" placeholder="Minimum 8 caractères" required minlength="8" >
                 <button type="button" class="input-password__toggle" @click="showPw = !showPw">👁</button>
               </div>
               <div class="password-strength"><div class="password-strength__bar" :style="{ width: pwStrength + '%' }" :class="pwClass" /></div>
             </div>
             <div class="form-group">
               <label class="form-label">Confirmer le mot de passe *</label>
-              <input v-model="form.confirmPassword" :type="showPw ? 'text' : 'password'" class="form-input" placeholder="Répétez le mot de passe" required />
+              <input v-model="form.confirmPassword" :type="showPw ? 'text' : 'password'" class="form-input" placeholder="Répétez le mot de passe" required >
             </div>
             <div class="form-actions-row">
               <button type="button" class="btn btn--outline" @click="step = 2">← Retour</button>

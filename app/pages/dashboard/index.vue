@@ -5,7 +5,7 @@
       <p class="welcome-subtitle">Bienvenue sur votre espace CAP ALI.</p>
     </div>
 
-    <div class="dashboard-stats" v-if="profile?.status === 'mentor'">
+    <div v-if="profile?.status === 'mentor'" class="dashboard-stats">
       <div class="stat-card">
         <div class="stat-value">{{ stats.pendingRequests || 0 }}</div>
         <div class="stat-label">Demandes en attente</div>

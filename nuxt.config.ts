@@ -69,12 +69,8 @@ export default defineNuxtConfig({
     },
   },
 
-  vite: {
-    server: {
-      allowedHosts: [
-        'e42d-154-72-113-89.ngrok-free.app',
-      ],
-    },
+  routeRules: {
+    '/s3/**': { proxy: 'http://localhost:9000/capali/**' },
   },
 
   css: ['~/assets/css/main.css'],

@@ -94,10 +94,20 @@ const form = reactive({
   registrationUrl: '',
 })
 
+interface EventData {
+  title?: string
+  description?: string
+  coverImage?: string
+  type?: string
+  city?: string
+  eventDate?: string
+  registrationUrl?: string
+}
+
 if (isEdit.value) {
   const { data } = await useFetch(`/api/admin/events/${route.params.id}`)
   if (data.value?.data) {
-    const d = data.value.data as any
+    const d = data.value.data as EventData
     Object.assign(form, {
       title: d.title || '',
       description: d.description || '',
@@ -124,8 +134,9 @@ async function uploadCover(event: Event) {
       body: formData,
     })
     form.coverImage = response.data.url
-  } catch (err: any) {
-    alert(err?.data?.message || 'Erreur lors de l\'upload.')
+  } catch (err) {
+    const error = err as { data?: { message?: string } }
+    alert(error?.data?.message || 'Erreur lors de l\'upload.')
   } finally {
     coverUploading.value = false
   }
@@ -140,8 +151,9 @@ async function submitForm() {
       await $fetch('/api/admin/events', { method: 'POST', body: form })
     }
     router.push('/admin/events')
-  } catch (e: any) {
-    alert(e?.data?.statusMessage || e?.data?.message || 'Erreur lors de la sauvegarde.')
+  } catch (e) {
+    const error = e as { data?: { statusMessage?: string; message?: string } }
+    alert(error?.data?.statusMessage || error?.data?.message || 'Erreur lors de la sauvegarde.')
   } finally {
     submitting.value = false
   }

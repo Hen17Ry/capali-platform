@@ -2,7 +2,7 @@
   <section id="hero" class="hero">
     <!-- Background image with overlay -->
     <div class="hero__bg">
-      <img src="/hero-community.png" alt="" aria-hidden="true" />
+      <img src="/hero-community.png" alt="" aria-hidden="true" >
       <div class="hero__overlay" />
     </div>
 
@@ -20,7 +20,7 @@
         <h1 class="hero__title">
           {{ $t('hero.title_line1') }}
           <span class="hero__highlight">{{ $t('hero.title_highlight') }}</span>
-          <br />{{ $t('hero.title_line2') }}
+          <br >{{ $t('hero.title_line2') }}
         </h1>
 
         <p class="hero__subtitle">{{ $t('hero.subtitle') }}</p>

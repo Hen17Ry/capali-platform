@@ -38,7 +38,7 @@
 
       <!-- Image -->
       <div class="mission__visual reveal">
-        <img src="/mentorship-scene.png" alt="Mentorat CAP ALI" loading="lazy" />
+        <img src="/mentorship-scene.png" alt="Mentorat CAP ALI" loading="lazy" >
         <div class="mission__visual-accent" aria-hidden="true" />
       </div>
     </div>

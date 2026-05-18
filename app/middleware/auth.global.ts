@@ -37,6 +37,6 @@ export default defineNuxtRouteMiddleware(async (to) => {
   // ── Auth pages: redirect if already logged in ──
   if (to.path.startsWith('/auth/') && isAuth) {
     if (isAdmin) return navigateTo('/admin')
-    return navigateTo('/')
+    return navigateTo('/dashboard')
   }
 })
