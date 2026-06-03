@@ -33,7 +33,7 @@
           </div>
 
           <!-- Donate Button -->
-          <a href="#donate" class="btn btn--gold btn--sm btn--donate" @click="closeMobile">
+          <a href="#" class="btn btn--gold btn--sm btn--donate" @click.prevent="openDonationModal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             {{ $t('nav.donate') }}
           </a>
@@ -72,7 +72,7 @@ const availableLocales = computed(() =>
 )
 
 function switchLang(code: string) {
-  setLocale(code)
+  setLocale(code as 'fr' | 'en')
   closeMobile()
 }
 
@@ -84,6 +84,11 @@ function toggleMobile() {
 function closeMobile() {
   isMobileOpen.value = false
   document.body.style.overflow = ''
+}
+
+function openDonationModal() {
+  closeMobile()
+  useDonationModal().open()
 }
 
 onMounted(() => {

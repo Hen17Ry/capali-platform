@@ -1,16 +1,35 @@
 import { db } from '~~/server/db'
 import { users, mentorProfiles, studentProfiles } from '~~/server/db/schema'
-import { eq, desc, and, isNull } from 'drizzle-orm'
+import { eq, desc, and, isNull, sql } from 'drizzle-orm'
 import { getSessionFromEvent } from '~~/server/utils/session'
 
-export default defineEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event) => {
   const session = await getSessionFromEvent(event)
   if (!session) throw createError({ statusCode: 401, message: 'Unauthorized' })
 
-  // Ideally, we'd fetch the student's needsHelp or targetedCities and match them against mentors
+  // Fetch the student's needsHelp and targetedCities
   const [student] = await db.select().from(studentProfiles).where(eq(studentProfiles.userId, session.userId))
   
-  // For now, we fetch up to 4 mentors. In a real app, we'd score them.
+  const needsHelpStr = JSON.stringify(student?.needsHelp || [])
+  const targetedCitiesStr = JSON.stringify(student?.targetedCities || [])
+
+  // Calculate the score natively in PostgreSQL for maximum performance
+  // 1 point for each matching helpTopic
+  const skillsScore = sql<number>`(
+    SELECT count(*)::int 
+    FROM jsonb_array_elements_text(${mentorProfiles.helpTopics}) AS h(val) 
+    JOIN jsonb_array_elements_text(${needsHelpStr}::jsonb) AS s(val) ON h.val = s.val
+  )`
+  
+  // 2 points if the mentor's city matches one of the student's targeted cities
+  const cityScore = sql<number>`
+    CASE WHEN ${users.cityCurrentFr} IN (
+      SELECT jsonb_array_elements_text(${targetedCitiesStr}::jsonb)
+    ) THEN 2 ELSE 0 END
+  `
+
+  const totalScore = sql<number>`(${skillsScore} + ${cityScore})`
+
   const recommended = await db
     .select({
       id: users.id,
@@ -20,6 +39,7 @@ export default defineEventHandler(async (event) => {
       currentProfession: mentorProfiles.currentProfession,
       yearsExperience: mentorProfiles.yearsExperience,
       helpTopics: mentorProfiles.helpTopics,
+      score: totalScore,
     })
     .from(users)
     .innerJoin(mentorProfiles, eq(users.id, mentorProfiles.userId))
@@ -29,17 +49,16 @@ export default defineEventHandler(async (event) => {
         isNull(users.deletedAt)
       )
     )
+    .orderBy(desc(totalScore), desc(users.createdAt))
     .limit(4)
-    .orderBy(desc(users.createdAt))
-
-  // Sort them so that mentors sharing "helpTopics" with student's "needsHelp" come first
-  if (student && student.needsHelp && student.needsHelp.length > 0) {
-    recommended.sort((a, b) => {
-      const aMatches = a.helpTopics?.filter((t: string) => student.needsHelp!.includes(t)).length || 0
-      const bMatches = b.helpTopics?.filter((t: string) => student.needsHelp!.includes(t)).length || 0
-      return bMatches - aMatches
-    })
-  }
 
   return { data: recommended }
+}, {
+  maxAge: 60 * 15, // Cache for 15 minutes
+  swr: true, // Serve stale while revalidating
+  getKey: (event) => {
+    // Generate a unique cache key per session
+    const sessionId = getCookie(event, 'capali_session')
+    return `mentors-recom-${sessionId || 'anonymous'}`
+  }
 })

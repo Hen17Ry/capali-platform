@@ -42,6 +42,9 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap' },
       ],
+      script: [
+        { src: 'https://cdn.kkiapay.me/k.js', defer: true }
+      ]
     },
   },
 
@@ -56,10 +59,13 @@ export default defineNuxtConfig({
     minioAccessKey: process.env.MINIO_ACCESS_KEY,
     minioSecretKey: process.env.MINIO_SECRET_KEY,
     minioBucket: process.env.MINIO_BUCKET || 'capali',
+    kkiapaySecretKey: process.env.KKIAPAY_SECRET_KEY,
+    kkiapayPrivateKey: process.env.KKIAPAY_PRIVATE_KEY,
     // Variables publiques (accessibles côté client)
     public: {
       appName: 'CAP ALI',
       appUrl: process.env.APP_URL || 'http://localhost:3000',
+      kkiapayPublicKey: process.env.KKIAPAY_PUBLIC_KEY,
     },
   },
 
@@ -71,6 +77,16 @@ export default defineNuxtConfig({
 
   routeRules: {
     '/s3/**': { proxy: 'http://localhost:9000/capali/**' },
+  },
+
+  devServer: {
+    host: '0.0.0.0' // Équivalent à host: true pour écouter sur toutes les interfaces
+  },
+  
+  vite: {
+    server: {
+      allowedHosts: true // Autorise tous les hôtes (ex: ngrok)
+    }
   },
 
   css: ['~/assets/css/main.css'],

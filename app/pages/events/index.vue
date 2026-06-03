@@ -13,7 +13,7 @@
       </div>
       
       <div v-else-if="eventsList.length" class="events-grid">
-        <div v-for="event in eventsList" :key="event.id" class="event-card">
+        <div v-for="event in eventsList" :key="event.id" class="event-card" @click="navigateTo(`/events/${event.id}`)" style="cursor: pointer;">
           <div class="event-card__cover" :style="event.coverImage ? { backgroundImage: `url(${event.coverImage})` } : {}">
             <span v-if="!event.coverImage" class="event-card__cover-placeholder">
               {{ getTypeEmoji(event.type) }}
@@ -43,10 +43,10 @@
           </div>
           
           <div class="event-card__footer">
-            <a v-if="event.registrationUrl" :href="event.registrationUrl" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--full">
+            <a v-if="event.registrationUrl" :href="event.registrationUrl" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--full" @click.stop>
               S'inscrire
             </a>
-            <button v-else class="btn btn--outline btn--full" disabled>
+            <button v-else class="btn btn--outline btn--full" disabled @click.stop>
               Inscription bientôt disponible
             </button>
           </div>
