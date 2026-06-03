@@ -3,16 +3,16 @@
     <!-- Toolbar -->
     <div v-if="editor" class="editor-toolbar">
       <div class="toolbar-group">
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('bold') }" @click="editor.chain().focus().toggleBold().run()" title="Gras">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('bold') }" title="Gras" @click="editor.chain().focus().toggleBold().run()">
           <strong>B</strong>
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('italic') }" @click="editor.chain().focus().toggleItalic().run()" title="Italique">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('italic') }" title="Italique" @click="editor.chain().focus().toggleItalic().run()">
           <em>I</em>
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('underline') }" @click="editor.chain().focus().toggleUnderline().run()" title="Souligné">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('underline') }" title="Souligné" @click="editor.chain().focus().toggleUnderline().run()">
           <span style="text-decoration:underline;">U</span>
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('strike') }" @click="editor.chain().focus().toggleStrike().run()" title="Barré">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('strike') }" title="Barré" @click="editor.chain().focus().toggleStrike().run()">
           <span style="text-decoration:line-through;">S</span>
         </button>
       </div>
@@ -20,13 +20,13 @@
       <div class="toolbar-sep" />
 
       <div class="toolbar-group">
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('heading', { level: 2 }) }" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" title="Titre 2">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('heading', { level: 2 }) }" title="Titre 2" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()">
           H2
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('heading', { level: 3 }) }" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" title="Titre 3">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('heading', { level: 3 }) }" title="Titre 3" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()">
           H3
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('heading', { level: 4 }) }" @click="editor.chain().focus().toggleHeading({ level: 4 }).run()" title="Titre 4">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('heading', { level: 4 }) }" title="Titre 4" @click="editor.chain().focus().toggleHeading({ level: 4 }).run()">
           H4
         </button>
       </div>
@@ -34,13 +34,13 @@
       <div class="toolbar-sep" />
 
       <div class="toolbar-group">
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('bulletList') }" @click="editor.chain().focus().toggleBulletList().run()" title="Liste à puces">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('bulletList') }" title="Liste à puces" @click="editor.chain().focus().toggleBulletList().run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1" fill="currentColor"/><circle cx="4" cy="12" r="1" fill="currentColor"/><circle cx="4" cy="18" r="1" fill="currentColor"/></svg>
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('orderedList') }" @click="editor.chain().focus().toggleOrderedList().run()" title="Liste numérotée">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('orderedList') }" title="Liste numérotée" @click="editor.chain().focus().toggleOrderedList().run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><text x="2" y="8" font-size="8" fill="currentColor" stroke="none">1</text><text x="2" y="14" font-size="8" fill="currentColor" stroke="none">2</text><text x="2" y="20" font-size="8" fill="currentColor" stroke="none">3</text></svg>
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('blockquote') }" @click="editor.chain().focus().toggleBlockquote().run()" title="Citation">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('blockquote') }" title="Citation" @click="editor.chain().focus().toggleBlockquote().run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V21z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3z"/></svg>
         </button>
       </div>
@@ -48,10 +48,10 @@
       <div class="toolbar-sep" />
 
       <div class="toolbar-group">
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive({ textAlign: 'left' }) }" @click="editor.chain().focus().setTextAlign('left').run()" title="Aligner à gauche">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive({ textAlign: 'left' }) }" title="Aligner à gauche" @click="editor.chain().focus().setTextAlign('left').run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="17" y1="18" x2="3" y2="18"/></svg>
         </button>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive({ textAlign: 'center' }) }" @click="editor.chain().focus().setTextAlign('center').run()" title="Centrer">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive({ textAlign: 'center' }) }" title="Centrer" @click="editor.chain().focus().setTextAlign('center').run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="18" y1="18" x2="6" y2="18"/></svg>
         </button>
       </div>
@@ -59,13 +59,13 @@
       <div class="toolbar-sep" />
 
       <div class="toolbar-group">
-        <button type="button" class="toolbar-btn" @click="addLink" title="Ajouter un lien">
+        <button type="button" class="toolbar-btn" title="Ajouter un lien" @click="addLink">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         </button>
-        <button type="button" class="toolbar-btn" @click="triggerImageUpload" title="Insérer une image">
+        <button type="button" class="toolbar-btn" title="Insérer une image" @click="triggerImageUpload">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         </button>
-        <input ref="imageInput" type="file" accept="image/*" style="display:none" @change="uploadImage" />
+        <input ref="imageInput" type="file" accept="image/*" style="display:none" @change="uploadImage" >
       </div>
 
       <div class="toolbar-sep" />
@@ -73,9 +73,9 @@
       <div class="toolbar-group">
         <label class="toolbar-color" title="Couleur du texte">
           <span class="toolbar-color__preview" :style="{ background: currentColor }" />
-          <input type="color" :value="currentColor" @input="setColor($event)" />
+          <input type="color" :value="currentColor" @input="setColor($event)" >
         </label>
-        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('highlight') }" @click="editor.chain().focus().toggleHighlight({ color: '#fef3c7' }).run()" title="Surligner">
+        <button type="button" class="toolbar-btn" :class="{ active: editor.isActive('highlight') }" title="Surligner" @click="editor.chain().focus().toggleHighlight({ color: '#fef3c7' }).run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         </button>
       </div>
@@ -83,13 +83,13 @@
       <div class="toolbar-sep" />
 
       <div class="toolbar-group">
-        <button type="button" class="toolbar-btn" @click="editor.chain().focus().setHorizontalRule().run()" title="Ligne horizontale">
+        <button type="button" class="toolbar-btn" title="Ligne horizontale" @click="editor.chain().focus().setHorizontalRule().run()">
           —
         </button>
-        <button type="button" class="toolbar-btn" @click="editor.chain().focus().undo().run()" :disabled="!editor.can().undo()" title="Annuler">
+        <button type="button" class="toolbar-btn" :disabled="!editor.can().undo()" title="Annuler" @click="editor.chain().focus().undo().run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
         </button>
-        <button type="button" class="toolbar-btn" @click="editor.chain().focus().redo().run()" :disabled="!editor.can().redo()" title="Refaire">
+        <button type="button" class="toolbar-btn" :disabled="!editor.can().redo()" title="Refaire" @click="editor.chain().focus().redo().run()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
         </button>
       </div>
@@ -186,8 +186,9 @@ async function uploadImage(event: Event) {
       body: formData,
     })
     editor.value?.chain().focus().setImage({ src: response.data.url, alt: file.name }).run()
-  } catch (err: any) {
-    alert(err?.data?.message || 'Erreur lors de l\'upload.')
+  } catch (err) {
+    const error = err as { data?: { message?: string } }
+    alert(error?.data?.message || 'Erreur lors de l\'upload.')
   } finally {
     uploading.value = false
     if (imageInput.value) imageInput.value.value = ''

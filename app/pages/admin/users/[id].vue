@@ -22,7 +22,7 @@
         <div class="detail-row"><span class="detail-label">Domaine</span><span>{{ user?.domain ?? '—' }}</span></div>
         <div class="detail-row"><span class="detail-label">Ville</span><span>{{ user?.cityCurrentFr ?? '—' }}</span></div>
         <div class="detail-row"><span class="detail-label">Inscrit le</span><span>{{ user?.createdAt ? formatDate(user.createdAt) : '—' }}</span></div>
-        <div class="detail-row" v-if="user?.deletedAt"><span class="detail-label">Suspendu le</span><span class="text-danger">{{ formatDate(user.deletedAt) }}</span></div>
+        <div v-if="user?.deletedAt" class="detail-row"><span class="detail-label">Suspendu le</span><span class="text-danger">{{ formatDate(user.deletedAt) }}</span></div>
       </div>
 
       <div v-if="user?.mentorProfile" class="detail-card">
@@ -33,7 +33,7 @@
         <div class="detail-row"><span class="detail-label">Remote</span><span>{{ user.mentorProfile.acceptsRemote ? '✅' : '❌' }}</span></div>
         <div class="detail-row"><span class="detail-label">Présentiel</span><span>{{ user.mentorProfile.acceptsInperson ? '✅' : '❌' }}</span></div>
         <div class="detail-row"><span class="detail-label">Validé</span><span>{{ user.mentorProfile.isValidated ? '✅ Oui' : '❌ Non' }}</span></div>
-        <div class="detail-row" v-if="user.mentorProfile.presentation"><span class="detail-label">Présentation</span></div>
+        <div v-if="user.mentorProfile.presentation" class="detail-row"><span class="detail-label">Présentation</span></div>
         <p v-if="user.mentorProfile.presentation" class="detail-text">{{ user.mentorProfile.presentation }}</p>
       </div>
     </div>

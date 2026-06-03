@@ -2,7 +2,7 @@
   <!-- Auth loading state -->
   <div v-if="isLoading" class="admin-loader">
     <div class="admin-loader__inner">
-      <img src="/logo.png" alt="CAP ALI" width="48" height="48" class="admin-loader__logo" />
+      <img src="/logo.png" alt="CAP ALI" width="48" height="48" class="admin-loader__logo" >
       <div class="admin-loader__spinner" />
       <span class="admin-loader__text">Chargement...</span>
     </div>
@@ -14,16 +14,16 @@
     <aside class="admin-sidebar" :class="{ 'admin-sidebar--collapsed': sidebarCollapsed, 'admin-sidebar--mobile-open': mobileOpen }">
       <div class="admin-sidebar__header">
         <NuxtLink to="/admin" class="admin-sidebar__logo">
-          <img src="/logo.png" alt="CAP ALI" width="40" height="40" />
+          <img src="/logo.png" alt="CAP ALI" width="40" height="40" >
           <span v-show="!sidebarCollapsed" class="admin-sidebar__logo-text">CAP <strong>ALI</strong></span>
         </NuxtLink>
-        <button class="admin-sidebar__toggle" @click="sidebarCollapsed = !sidebarCollapsed" aria-label="Toggle sidebar">
+        <button class="admin-sidebar__toggle" aria-label="Toggle sidebar" @click="sidebarCollapsed = !sidebarCollapsed">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline :points="sidebarCollapsed ? '9 18 15 12 9 6' : '15 18 9 12 15 6'" /></svg>
         </button>
       </div>
 
       <nav class="admin-sidebar__nav">
-        <span class="admin-sidebar__section-label" v-show="!sidebarCollapsed">Principal</span>
+        <span v-show="!sidebarCollapsed" class="admin-sidebar__section-label">Principal</span>
 
         <NuxtLink v-for="item in mainNav" :key="item.to" :to="item.to" class="admin-sidebar__link" active-class="admin-sidebar__link--active">
           <span class="admin-sidebar__link-icon" v-html="item.icon" />
@@ -31,7 +31,7 @@
           <span v-if="item.badge && !sidebarCollapsed" class="admin-sidebar__badge">{{ item.badge }}</span>
         </NuxtLink>
 
-        <span class="admin-sidebar__section-label" v-show="!sidebarCollapsed">Contenu</span>
+        <span v-show="!sidebarCollapsed" class="admin-sidebar__section-label">Contenu</span>
 
         <NuxtLink v-for="item in contentNav" :key="item.to" :to="item.to" class="admin-sidebar__link" active-class="admin-sidebar__link--active">
           <span class="admin-sidebar__link-icon" v-html="item.icon" />
@@ -44,7 +44,7 @@
           <span class="admin-sidebar__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
           <span v-show="!sidebarCollapsed" class="admin-sidebar__link-text">Retour au site</span>
         </NuxtLink>
-        <button class="admin-sidebar__link" @click="handleLogout" style="width:100%;text-align:left;">
+        <button class="admin-sidebar__link" style="width:100%;text-align:left;" @click="handleLogout">
           <span class="admin-sidebar__link-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span>
           <span v-show="!sidebarCollapsed" class="admin-sidebar__link-text">Déconnexion</span>
         </button>
@@ -58,7 +58,7 @@
     <div class="admin-main" :class="{ 'admin-main--collapsed': sidebarCollapsed }">
       <!-- Top bar -->
       <header class="admin-topbar">
-        <button class="admin-topbar__menu" @click="mobileOpen = !mobileOpen" aria-label="Menu">
+        <button class="admin-topbar__menu" aria-label="Menu" @click="mobileOpen = !mobileOpen">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
 
@@ -102,6 +102,7 @@ const mainNav = [
 const contentNav = [
   { to: '/admin/resources', label: 'Ressources', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>' },
   { to: '/admin/events', label: 'Événements', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>' },
+  { to: '/admin/donations', label: 'Dons', icon: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' },
 ]
 
 // Close mobile sidebar on route change

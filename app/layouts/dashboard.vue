@@ -4,7 +4,7 @@
     <aside class="dashboard-sidebar">
       <div class="sidebar-header">
         <NuxtLink to="/">
-          <img src="/logo.png" alt="CAP ALI" width="48" height="48" />
+          <img src="/logo.png" alt="CAP ALI" width="48" height="48" >
         </NuxtLink>
         <div class="brand-text">CAP <strong>ALI</strong></div>
       </div>
@@ -44,7 +44,7 @@
             <span class="user-name">{{ user?.name }}</span>
             <span class="user-role">{{ user?.status === 'mentor' ? 'Mentor' : 'Membre' }}</span>
           </div>
-          <img v-if="user?.avatarUrl" :src="user?.avatarUrl" :alt="user?.name" class="user-avatar" />
+          <img v-if="user?.avatarUrl" :src="user?.avatarUrl" :alt="user?.name" class="user-avatar" >
           <div v-else class="user-avatar user-avatar--placeholder">{{ user?.name?.[0] }}</div>
         </div>
       </header>

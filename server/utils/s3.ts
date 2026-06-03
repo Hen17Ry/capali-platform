@@ -43,9 +43,8 @@ export async function uploadFile(
     ACL: 'public-read',
   }))
 
-  // Build public URL
-  const endpoint = process.env.MINIO_ENDPOINT || 'http://localhost:9000'
-  return `${endpoint}/${BUCKET}/${key}`
+  // Build public URL using Nuxt proxy route
+  return `/s3/${key}`
 }
 
 /**
@@ -53,12 +52,15 @@ export async function uploadFile(
  */
 export async function deleteFile(fileUrl: string): Promise<void> {
   const client = getS3Client()
-  const endpoint = process.env.MINIO_ENDPOINT || 'http://localhost:9000'
-  const prefix = `${endpoint}/${BUCKET}/`
-
-  if (!fileUrl.startsWith(prefix)) return
-
-  const key = fileUrl.slice(prefix.length)
+  let key = fileUrl
+  if (fileUrl.startsWith('/s3/')) {
+    key = fileUrl.slice('/s3/'.length)
+  } else {
+    const endpoint = process.env.MINIO_ENDPOINT || 'http://localhost:9000'
+    const prefix = `${endpoint}/${BUCKET}/`
+    if (!fileUrl.startsWith(prefix)) return
+    key = fileUrl.slice(prefix.length)
+  }
   await client.send(new DeleteObjectCommand({
     Bucket: BUCKET,
     Key: key,

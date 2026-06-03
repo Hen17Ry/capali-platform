@@ -1,0 +1,8 @@
+{
+  "name": "CAP ALI",
+  "short_name": "CAP ALI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1B6B3A"
+}

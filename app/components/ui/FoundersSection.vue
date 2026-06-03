@@ -10,7 +10,7 @@
         <!-- Lucinda -->
         <div class="founders__card reveal--left reveal">
           <div class="founders__photo-wrap">
-            <img src="/Lucinda.png" :alt="$t('founders.lucinda_name')" loading="lazy" />
+            <img src="/Lucinda.png" :alt="$t('founders.lucinda_name')" loading="lazy" >
             <div class="founders__accent founders__accent--green" />
           </div>
           <div class="founders__info">
@@ -26,7 +26,7 @@
         <!-- Jessica -->
         <div class="founders__card reveal--right reveal">
           <div class="founders__photo-wrap">
-            <img src="/Jessica.png" :alt="$t('founders.jessica_name')" loading="lazy" />
+            <img src="/Jessica.png" :alt="$t('founders.jessica_name')" loading="lazy" >
             <div class="founders__accent founders__accent--gold" />
           </div>
           <div class="founders__info">

@@ -51,7 +51,25 @@ services:
       timeout: 10s
       retries: 3
 
+  mongodb:
+    image: mongo:7
+    container_name: capali_mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: capali
+      MONGO_INITDB_ROOT_PASSWORD: capali_password
+    ports:
+      - "27018:27017"
+    volumes:
+      - capali_mongodb_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "-u", "capali", "-p", "capali_password", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   postgres_data:
   redis_data:
   minio_data:
+  capali_mongodb_data:

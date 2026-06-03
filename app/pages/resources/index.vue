@@ -14,7 +14,7 @@
             class="search-bar__input"
             placeholder="Rechercher une ressource..."
             @input="debouncedSearch"
-          />
+          >
           <button v-if="searchQuery" class="search-bar__clear" @click="searchQuery = ''; fetchResources()">✕</button>
         </div>
       </div>
