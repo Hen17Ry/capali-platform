@@ -252,3 +252,135 @@ export async function sendMentorRefusedEmail(user: { name: string; email: string
     html: emailLayout(content),
   })
 }
+
+export async function sendMentorshipRequestNotificationEmail(args: {
+  mentorName: string
+  mentorEmail: string
+  menteeName: string
+  menteeMessage: string
+}) {
+  const requestUrl = `${APP_URL}/dashboard/mentorship`
+
+  const content = `
+    <h2>Nouvelle demande de mentorat</h2>
+    <p>Bonjour ${args.mentorName},</p>
+
+    <p><strong>${args.menteeName}</strong> vient de vous envoyer une demande de mentorat.</p>
+
+    <div class="highlight">
+      <p>Message du mentoré :</p>
+      <p>${args.menteeMessage}</p>
+    </div>
+
+    <p>Vous avez <strong>5 jours</strong> pour accepter ou refuser cette demande.</p>
+
+    <p style="text-align: center; margin-top: 28px;">
+      <a href="${requestUrl}" class="btn">Voir la demande →</a>
+    </p>
+
+    <p>Merci de votre engagement pour la communauté CAP ALI.</p>
+  `
+
+  return sendMail({
+    to: args.mentorEmail,
+    subject: `${APP_NAME} — Nouvelle demande de mentorat de ${args.menteeName}`,
+    html: emailLayout(content),
+  })
+}
+
+export async function sendMentorshipAcceptedEmail(args: {
+  menteeName: string
+  menteeEmail: string
+  mentorName: string
+}) {
+  const dashboardUrl = `${APP_URL}/dashboard`
+
+  const content = `
+    <h2>Votre demande a été acceptée 🎉</h2>
+    <p>Bonjour ${args.menteeName},</p>
+
+    <p>Bonne nouvelle ! <strong>${args.mentorName}</strong> a accepté votre demande de mentorat.</p>
+
+    <div class="info">
+      <p>Vous pouvez dès maintenant échanger avec votre mentor et commencer votre accompagnement.</p>
+    </div>
+
+    <p style="text-align: center; margin-top: 28px;">
+      <a href="${dashboardUrl}" class="btn">Voir mon espace →</a>
+    </p>
+  `
+
+  return sendMail({
+    to: args.menteeEmail,
+    subject: `${APP_NAME} — Votre demande de mentorat a été acceptée`,
+    html: emailLayout(content),
+  })
+}
+
+export async function sendMentorshipRefusedEmail(args: {
+  menteeName: string
+  menteeEmail: string
+  mentorName: string
+  mentorNote?: string
+}) {
+  const content = `
+    <h2>Demande de mentorat refusée</h2>
+    <p>Bonjour ${args.menteeName},</p>
+
+    <p>Votre demande de mentorat a été refusée par <strong>${args.mentorName}</strong>.</p>
+
+    ${args.mentorNote ? `<div class="warning"><p>Message du mentor :</p><p>${args.mentorNote}</p></div>` : ''}
+
+    <p>Vous pouvez envoyer une nouvelle demande à un autre mentor si vous le souhaitez.</p>
+  `
+
+  return sendMail({
+    to: args.menteeEmail,
+    subject: `${APP_NAME} — Votre demande de mentorat n'a pas été retenue`,
+    html: emailLayout(content),
+  })
+}
+
+export async function sendMentorshipExpiredEmail(args: {
+  mentorName: string
+  mentorEmail: string
+  menteeName: string
+  menteeEmail: string
+}) {
+  const contentForMentor = `
+    <h2>Une demande de mentorat a expiré</h2>
+    <p>Bonjour ${args.mentorName},</p>
+
+    <p>La demande de <strong>${args.menteeName}</strong> est restée en attente au-delà de la période de réponse.</p>
+
+    <div class="warning">
+      <p>Cette demande a expiré automatiquement.</p>
+    </div>
+
+    <p>Vous pouvez toujours proposer de reprendre contact via la plateforme si vous le souhaitez.</p>
+  `
+
+  const contentForMentee = `
+    <h2>Votre demande de mentorat a expiré</h2>
+    <p>Bonjour ${args.menteeName},</p>
+
+    <p>La demande envoyée à <strong>${args.mentorName}</strong> est arrivée à expiration sans réponse.</p>
+
+    <div class="warning">
+      <p>Vous pouvez soumettre une nouvelle demande à un autre mentor ou réessayer plus tard.</p>
+    </div>
+  `
+
+  await Promise.all([
+    sendMail({
+      to: args.mentorEmail,
+      subject: `${APP_NAME} — Une demande de mentorat a expiré`,
+      html: emailLayout(contentForMentor),
+    }),
+    sendMail({
+      to: args.menteeEmail,
+      subject: `${APP_NAME} — Votre demande de mentorat a expiré`,
+      html: emailLayout(contentForMentee),
+    }),
+  ])
+}

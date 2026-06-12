@@ -1,7 +1,8 @@
 import { db } from '~~/server/db'
-import { mentorshipRequests, mentorProfiles } from '~~/server/db/schema'
+import { mentorshipRequests, mentorProfiles, users } from '~~/server/db/schema'
 import { eq, and, sql } from 'drizzle-orm'
 import { getSessionFromEvent } from '~~/server/utils/session'
+import { sendMentorshipAcceptedEmail, sendMentorshipRefusedEmail } from '~~/server/utils/mail'
 
 export default defineEventHandler(async (event) => {
   const session = await getSessionFromEvent(event)
@@ -64,6 +65,29 @@ export default defineEventHandler(async (event) => {
       updatedAt: new Date(),
     })
     .where(eq(mentorshipRequests.id, id))
+
+  const [mentee] = await db
+    .select({ name: users.name, email: users.email })
+    .from(users)
+    .where(eq(users.id, existingRequest.menteeId))
+    .limit(1)
+
+  if (mentee) {
+    if (status === 'accepted') {
+      await sendMentorshipAcceptedEmail({
+        menteeName: mentee.name,
+        menteeEmail: mentee.email,
+        mentorName: session.name,
+      })
+    } else {
+      await sendMentorshipRefusedEmail({
+        menteeName: mentee.name,
+        menteeEmail: mentee.email,
+        mentorName: session.name,
+        mentorNote: mentorNote || undefined,
+      })
+    }
+  }
 
   return { success: true }
 })
