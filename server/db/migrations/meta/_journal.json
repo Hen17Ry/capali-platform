@@ -50,6 +50,13 @@
       "when": 1778339791725,
       "tag": "0006_lively_polaris",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1779117568716,
+      "tag": "0007_real_emma_frost",
+      "breakpoints": true
     }
   ]
 }

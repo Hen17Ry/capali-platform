@@ -1,6 +1,6 @@
 import { db } from '~~/server/db'
-import { mentorshipRequests } from '~~/server/db/schema'
-import { eq, and } from 'drizzle-orm'
+import { mentorshipRequests, mentorProfiles } from '~~/server/db/schema'
+import { eq, and, sql } from 'drizzle-orm'
 import { getSessionFromEvent } from '~~/server/utils/session'
 
 export default defineEventHandler(async (event) => {
@@ -36,6 +36,23 @@ export default defineEventHandler(async (event) => {
 
   if (existingRequest.status !== 'pending') {
     throw createError({ statusCode: 400, message: 'Request is no longer pending' })
+  }
+
+  // If accepting, check max mentees
+  if (status === 'accepted') {
+    const [mentorProfile] = await db.select({ maxMentees: mentorProfiles.maxMentees })
+      .from(mentorProfiles).where(eq(mentorProfiles.userId, session.userId))
+      
+    if (mentorProfile) {
+      const result = await db.select({ count: sql<number>`count(*)::int` })
+        .from(mentorshipRequests)
+        .where(and(eq(mentorshipRequests.mentorId, session.userId), eq(mentorshipRequests.status, 'accepted')))
+      
+      const count = result[0]?.count || 0
+      if (count >= mentorProfile.maxMentees) {
+        throw createError({ statusCode: 400, message: 'Vous avez atteint votre limite maximum de mentorés.' })
+      }
+    }
   }
 
   // Update status

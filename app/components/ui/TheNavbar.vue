@@ -3,7 +3,7 @@
     <div class="navbar__inner container container--wide">
       <!-- Logo -->
       <NuxtLink to="/" class="navbar__logo" aria-label="CAP ALI — Accueil">
-        <img src="/logo.png" alt="CAP ALI" width="48" height="48" />
+        <img src="/logo.png" alt="CAP ALI" width="48" height="48" >
         <span class="navbar__logo-text">CAP <span class="navbar__logo-highlight">ALI</span></span>
       </NuxtLink>
 
@@ -25,15 +25,15 @@
               :key="loc.code"
               class="navbar__lang-btn"
               :class="{ 'navbar__lang-btn--active': locale === loc.code }"
-              @click="switchLang(loc.code)"
               :aria-label="`Switch to ${loc.name}`"
+              @click="switchLang(loc.code)"
             >
               {{ loc.code.toUpperCase() }}
             </button>
           </div>
 
           <!-- Donate Button -->
-          <a href="#donate" class="btn btn--gold btn--sm btn--donate" @click="closeMobile">
+          <a href="#" class="btn btn--gold btn--sm btn--donate" @click.prevent="openDonationModal">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             {{ $t('nav.donate') }}
           </a>
@@ -48,12 +48,12 @@
       <button
         class="navbar__hamburger"
         :class="{ 'navbar__hamburger--open': isMobileOpen }"
-        @click="toggleMobile"
         aria-label="Menu"
+        @click="toggleMobile"
       >
-        <span></span>
-        <span></span>
-        <span></span>
+        <span/>
+        <span/>
+        <span/>
       </button>
     </div>
 
@@ -72,7 +72,7 @@ const availableLocales = computed(() =>
 )
 
 function switchLang(code: string) {
-  setLocale(code)
+  setLocale(code as 'fr' | 'en')
   closeMobile()
 }
 
@@ -84,6 +84,11 @@ function toggleMobile() {
 function closeMobile() {
   isMobileOpen.value = false
   document.body.style.overflow = ''
+}
+
+function openDonationModal() {
+  closeMobile()
+  useDonationModal().open()
 }
 
 onMounted(() => {

@@ -8,18 +8,18 @@
       </div>
     </div>
 
-    <form @submit.prevent="saveProfile" class="profile-form">
+    <form class="profile-form" @submit.prevent="saveProfile">
       <!-- SECTION: Identité -->
       <div class="form-section">
         <h3 class="section-title">Identité & Photo de profil</h3>
         <div class="section-body">
           <div class="avatar-upload">
-            <img v-if="form.avatarUrl" :src="form.avatarUrl" alt="Avatar" class="avatar-preview" />
+            <img v-if="form.avatarUrl" :src="form.avatarUrl" alt="Avatar" class="avatar-preview" >
             <div v-else class="avatar-placeholder">{{ form.name?.[0] }}</div>
             
             <div class="avatar-actions">
               <label class="btn btn--outline btn--sm" :class="{ 'is-loading': uploadingAvatar }">
-                <input type="file" accept="image/*" class="hidden-input" @change="handleAvatarUpload" />
+                <input type="file" accept="image/*" class="hidden-input" @change="handleAvatarUpload" >
                 {{ uploadingAvatar ? 'Upload en cours...' : 'Changer la photo' }}
               </label>
               <p class="help-text">Image recommandée : carré, max 2Mo.</p>
@@ -29,11 +29,11 @@
           <div class="form-grid">
             <div class="form-group">
               <label class="form-label">Nom complet</label>
-              <input v-model="form.name" type="text" class="form-input" required />
+              <input v-model="form.name" type="text" class="form-input" required >
             </div>
             <div class="form-group">
               <label class="form-label">Ville actuelle (France)</label>
-              <input v-model="form.cityCurrentFr" type="text" class="form-input" placeholder="Ex: Paris" />
+              <input v-model="form.cityCurrentFr" type="text" class="form-input" placeholder="Ex: Paris" >
             </div>
           </div>
         </div>
@@ -47,27 +47,27 @@
             <div class="form-grid">
               <div class="form-group">
                 <label class="form-label">Profession actuelle *</label>
-                <input v-model="form.currentProfession" type="text" class="form-input" placeholder="Ex: Développeur Senior, Chef de Projet..." required />
+                <input v-model="form.currentProfession" type="text" class="form-input" placeholder="Ex: Développeur Senior, Chef de Projet..." required >
               </div>
               <div class="form-group">
                 <label class="form-label">Lien LinkedIn *</label>
-                <input v-model="form.linkedinUrl" type="url" class="form-input" placeholder="https://linkedin.com/in/..." required />
+                <input v-model="form.linkedinUrl" type="url" class="form-input" placeholder="https://linkedin.com/in/..." required >
               </div>
               <div class="form-group">
                 <label class="form-label">Années d'expérience *</label>
-                <input v-model="form.yearsExperience" type="number" min="0" class="form-input" required />
+                <input v-model="form.yearsExperience" type="number" min="0" class="form-input" required >
               </div>
             </div>
 
             <div class="form-group mt-4">
               <label class="form-label">Centres d'intérêt / Domaines d'expertise</label>
               <input 
+                v-model="topicsInput" 
                 type="text" 
                 class="form-input" 
-                placeholder="Ex: Tech, Management, Entrepreneuriat (séparés par des virgules)" 
-                v-model="topicsInput"
+                placeholder="Ex: Tech, Management, Entrepreneuriat (séparés par des virgules)"
                 @blur="parseTopics"
-              />
+              >
               <div class="tags-container mt-2">
                 <span v-for="(topic, idx) in form.helpTopics" :key="idx" class="tag">
                   {{ topic }}
@@ -79,7 +79,7 @@
             <div class="form-group mt-4">
               <label class="form-label">À propos de moi *</label>
               <p class="help-text mb-2">Décrivez votre parcours, vos passions et ce que vous souhaitez apporter en tant que mentor.</p>
-              <textarea v-model="form.presentation" class="form-textarea" rows="5" required></textarea>
+              <textarea v-model="form.presentation" class="form-textarea" rows="5" required/>
             </div>
           </div>
         </div>
@@ -104,28 +104,28 @@
               <div class="form-grid mt-3">
                 <div class="form-group">
                   <label class="form-label">Titre du poste / Formation *</label>
-                  <input v-model="exp.title" type="text" class="form-input" required />
+                  <input v-model="exp.title" type="text" class="form-input" required >
                 </div>
                 <div class="form-group">
                   <label class="form-label">Entreprise / École *</label>
-                  <input v-model="exp.company" type="text" class="form-input" required />
+                  <input v-model="exp.company" type="text" class="form-input" required >
                 </div>
               </div>
 
               <div class="form-grid mt-3">
                 <div class="form-group">
                   <label class="form-label">Date de début *</label>
-                  <input v-model="exp.startDate" type="month" class="form-input" required />
+                  <input v-model="exp.startDate" type="month" class="form-input" required >
                 </div>
                 <div class="form-group">
                   <label class="form-label">Date de fin</label>
-                  <input v-model="exp.endDate" type="month" class="form-input" :disabled="exp.current" />
+                  <input v-model="exp.endDate" type="month" class="form-input" :disabled="exp.current" >
                   <label class="checkbox-label mt-2">
                     <input
                       v-model="exp.current"
                       type="checkbox"
                       @change="handleCurrentExperienceChange(exp)"
-                    />
+                    >
                     C'est mon poste actuel
                   </label>
                 </div>
@@ -133,7 +133,7 @@
 
               <div class="form-group mt-3">
                 <label class="form-label">Description (optionnel)</label>
-                <textarea v-model="exp.description" class="form-textarea" rows="2"></textarea>
+                <textarea v-model="exp.description" class="form-textarea" rows="2"/>
               </div>
             </div>
           </div>
@@ -159,39 +159,39 @@
               </div>
               <div class="form-group">
                 <label class="form-label">École ciblée ou actuelle</label>
-                <input v-model="form.schoolName" type="text" class="form-input" placeholder="Ex: Sorbonne Université, INSA Lyon..." />
+                <input v-model="form.schoolName" type="text" class="form-input" placeholder="Ex: Sorbonne Université, INSA Lyon..." >
               </div>
               <div class="form-group">
                 <label class="form-label">Date d'arrivée prévue ou réelle en France *</label>
-                <input v-model="form.arrivalDate" type="month" class="form-input" required />
+                <input v-model="form.arrivalDate" type="month" class="form-input" required >
               </div>
               <div class="form-group">
                 <label class="form-label">Villes ciblées en France</label>
                 <input 
+                  v-model="targetedCitiesInput" 
                   type="text" 
                   class="form-input" 
-                  placeholder="Ex: Paris, Lyon, Toulouse (séparées par des virgules)" 
-                  v-model="targetedCitiesInput"
+                  placeholder="Ex: Paris, Lyon, Toulouse (séparées par des virgules)"
                   @blur="parseTargetedCities"
-                />
+                >
               </div>
             </div>
 
             <div class="form-group mt-4">
               <label class="form-label">Sur quels sujets avez-vous le plus besoin d'aide ? *</label>
               <div class="checkbox-group">
-                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Logement" /> Logement</label>
-                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Études" /> Études / Orientation</label>
-                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Emploi" /> Emploi / Alternance</label>
-                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Administratif" /> Démarches Administratives</label>
-                <label class="checkbox-label"><input type="checkbox" v-model="form.needsHelp" value="Intégration" /> Intégration sociale</label>
+                <label class="checkbox-label"><input v-model="form.needsHelp" type="checkbox" value="Logement" > Logement</label>
+                <label class="checkbox-label"><input v-model="form.needsHelp" type="checkbox" value="Études" > Études / Orientation</label>
+                <label class="checkbox-label"><input v-model="form.needsHelp" type="checkbox" value="Emploi" > Emploi / Alternance</label>
+                <label class="checkbox-label"><input v-model="form.needsHelp" type="checkbox" value="Administratif" > Démarches Administratives</label>
+                <label class="checkbox-label"><input v-model="form.needsHelp" type="checkbox" value="Intégration" > Intégration sociale</label>
               </div>
             </div>
 
             <div class="form-group mt-4">
               <label class="form-label">À propos de moi *</label>
               <p class="help-text mb-2">Présentez-vous brièvement et expliquez vos objectifs. Cela aidera nos mentors à mieux vous accompagner.</p>
-              <textarea v-model="form.presentation" class="form-textarea" rows="4" required></textarea>
+              <textarea v-model="form.presentation" class="form-textarea" rows="4" required/>
             </div>
           </div>
         </div>

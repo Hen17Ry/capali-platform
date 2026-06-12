@@ -17,15 +17,15 @@
     <div v-else class="profile-container">
       <!-- Header Section -->
       <div class="profile-header">
-        <div class="profile-cover"></div>
+        <div class="profile-cover"/>
         <div class="profile-header-content">
           <div class="header-top-row">
             <div class="avatar-wrapper">
-              <img v-if="mentor.avatarUrl" :src="mentor.avatarUrl" :alt="mentor.name" class="avatar" />
+              <img v-if="mentor.avatarUrl" :src="mentor.avatarUrl" :alt="mentor.name" class="avatar" >
               <div v-else class="avatar-placeholder">{{ mentor.name[0] }}</div>
             </div>
             <div class="header-actions">
-              <button class="btn btn--primary" @click="initRequest" :disabled="isRequesting">
+              <button class="btn btn--primary" :disabled="isRequesting" @click="initRequest">
                 {{ isRequesting ? 'Demande en cours...' : 'Demander un mentorat' }}
               </button>
               <a v-if="mentor.linkedinUrl" :href="mentor.linkedinUrl" target="_blank" class="btn btn--outline">
@@ -41,11 +41,11 @@
             
             <div class="mentor-badges mt-3">
               <span class="badge badge--experience">{{ mentor.yearsExperience }} an(s) d'exp.</span>
-              <span class="badge badge--location" v-if="mentor.cityCurrentFr">
+              <span v-if="mentor.cityCurrentFr" class="badge badge--location">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 {{ mentor.cityCurrentFr }}
               </span>
-              <span class="badge badge--hours" v-if="mentor.availableHoursMonth">
+              <span v-if="mentor.availableHoursMonth" class="badge badge--hours">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                 {{ mentor.availableHoursMonth }}h / mois
               </span>
@@ -64,11 +64,11 @@
             </div>
           </section>
 
-          <section class="content-section" v-if="mentor.experiences?.length">
+          <section v-if="mentor.experiences?.length" class="content-section">
             <h3 class="section-title">Parcours professionnel</h3>
             <div class="timeline">
               <div v-for="(exp, idx) in mentor.experiences" :key="idx" class="timeline-item">
-                <div class="timeline-marker"></div>
+                <div class="timeline-marker"/>
                 <div class="timeline-content">
                   <h4 class="exp-title">{{ exp.title }}</h4>
                   <p class="exp-company">{{ exp.company }}</p>
@@ -83,7 +83,7 @@
         </div>
 
         <div class="side-column">
-          <section class="content-section" v-if="mentor.helpTopics?.length">
+          <section v-if="mentor.helpTopics?.length" class="content-section">
             <h3 class="section-title">Domaines d'expertise</h3>
             <div class="topics-list">
               <span v-for="topic in mentor.helpTopics" :key="topic" class="topic-tag">
