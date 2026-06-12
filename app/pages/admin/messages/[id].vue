@@ -22,7 +22,7 @@
             </template>
             <template v-else-if="msg.type === 'image'">
               <a :href="msg.mediaUrl" target="_blank">
-                <img :src="msg.mediaUrl" alt="Image envoyée" class="message-image" />
+                <img :src="msg.mediaUrl" alt="Image envoyée" class="message-image" >
               </a>
             </template>
             <span class="message-time">{{ formatTime(msg.createdAt) }}</span>

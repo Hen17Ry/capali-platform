@@ -14,18 +14,18 @@
         class="mentor-card"
       >
         <div class="mentor-card__header">
-          <img v-if="mentor.avatarUrl" :src="mentor.avatarUrl" :alt="mentor.name" class="mentor-avatar" />
+          <img v-if="mentor.avatarUrl" :src="mentor.avatarUrl" :alt="mentor.name" class="mentor-avatar" >
           <div v-else class="mentor-avatar-placeholder">{{ mentor.name[0] }}</div>
           <div class="mentor-info">
             <h4>{{ mentor.name }}</h4>
             <p class="profession">{{ mentor.currentProfession }}</p>
-            <p class="location" v-if="mentor.cityCurrentFr">
+            <p v-if="mentor.cityCurrentFr" class="location">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
               {{ mentor.cityCurrentFr }}
             </p>
           </div>
         </div>
-        <div class="mentor-card__body" v-if="mentor.helpTopics?.length">
+        <div v-if="mentor.helpTopics?.length" class="mentor-card__body">
           <div class="topics">
             <span v-for="topic in mentor.helpTopics.slice(0, 3)" :key="topic" class="topic-tag">
               {{ topic }}

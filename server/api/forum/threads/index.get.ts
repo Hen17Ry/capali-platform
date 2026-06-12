@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const search = query.search as string
   const sort = (query.sort as string) || 'newest'
 
-  let filter: any = {}
+  const filter: any = {}
   if (category && category !== 'Tous') {
     filter.category = category
   }

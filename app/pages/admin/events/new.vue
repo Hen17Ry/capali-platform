@@ -13,7 +13,7 @@
           <div class="form-card">
             <div class="form-group">
               <label class="form-label">Titre *</label>
-              <input v-model="form.title" type="text" class="form-input form-input--lg" placeholder="Titre de l'événement" required />
+              <input v-model="form.title" type="text" class="form-input form-input--lg" placeholder="Titre de l'événement" required >
             </div>
             <div class="form-group">
               <label class="form-label">Description</label>
@@ -36,11 +36,11 @@
           <div class="form-card">
             <h3 class="form-card__title">Image représentative</h3>
             <div v-if="form.coverImage" class="cover-preview">
-              <img :src="form.coverImage" alt="Couverture de l'événement" />
-              <button type="button" class="cover-preview__remove" @click="form.coverImage = ''" title="Supprimer">✕</button>
+              <img :src="form.coverImage" alt="Couverture de l'événement" >
+              <button type="button" class="cover-preview__remove" title="Supprimer" @click="form.coverImage = ''">✕</button>
             </div>
             <label class="cover-upload-btn" :class="{ 'is-uploading': coverUploading }">
-              <input type="file" accept="image/*" style="display:none" @change="uploadCover" />
+              <input type="file" accept="image/*" style="display:none" @change="uploadCover" >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               {{ coverUploading ? 'Upload...' : (form.coverImage ? 'Changer l\'image' : 'Ajouter une image') }}
             </label>
@@ -56,17 +56,17 @@
                 <option value="online">🌐 En ligne</option>
               </select>
             </div>
-            <div class="form-group" v-if="form.type !== 'online'">
+            <div v-if="form.type !== 'online'" class="form-group">
               <label class="form-label">Ville</label>
-              <input v-model="form.city" type="text" class="form-input" placeholder="Ex: Paris, Cotonou..." />
+              <input v-model="form.city" type="text" class="form-input" placeholder="Ex: Paris, Cotonou..." >
             </div>
             <div class="form-group">
               <label class="form-label">Date et heure *</label>
-              <input v-model="form.eventDate" type="datetime-local" class="form-input" required />
+              <input v-model="form.eventDate" type="datetime-local" class="form-input" required >
             </div>
             <div class="form-group">
               <label class="form-label">Lien d'inscription (externe)</label>
-              <input v-model="form.registrationUrl" type="url" class="form-input" placeholder="https://..." />
+              <input v-model="form.registrationUrl" type="url" class="form-input" placeholder="https://..." >
             </div>
           </div>
         </div>

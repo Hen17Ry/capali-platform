@@ -31,7 +31,7 @@
 
       <main class="forum-main">
         <div class="forum-filters">
-          <input type="text" v-model="searchQuery" placeholder="Rechercher une discussion..." class="form-input search-input" />
+          <input v-model="searchQuery" type="text" placeholder="Rechercher une discussion..." class="form-input search-input" >
           <select v-model="sortBy" class="form-select sort-select">
             <option value="newest">Plus récents</option>
             <option value="popular">Plus populaires</option>
@@ -39,7 +39,7 @@
         </div>
 
         <div v-if="pending" class="loading-state">
-          <span class="spinner"></span> Chargement des discussions...
+          <span class="spinner"/> Chargement des discussions...
         </div>
         <div v-else-if="error" class="error-state">
           Erreur lors du chargement des discussions.
@@ -56,7 +56,7 @@
               <p class="thread-meta">
                 Par <strong>{{ thread.authorName }}</strong> • Dernière activité {{ formatDate(thread.lastActivityAt) }}
               </p>
-              <div class="thread-tags" v-if="thread.tags && thread.tags.length">
+              <div v-if="thread.tags && thread.tags.length" class="thread-tags">
                 <span v-for="tag in thread.tags" :key="tag" class="tag">#{{ tag }}</span>
               </div>
             </div>
@@ -77,10 +77,10 @@
     <div v-if="showCreateModal" class="modal-overlay" @click.self="showCreateModal = false">
       <div class="modal-content">
         <h2>Créer une discussion</h2>
-        <form @submit.prevent="createThread" class="form">
+        <form class="form" @submit.prevent="createThread">
           <div class="form-group">
             <label>Titre *</label>
-            <input v-model="newThread.title" type="text" required class="form-input" placeholder="Titre de votre discussion" minlength="5" maxlength="150" />
+            <input v-model="newThread.title" type="text" required class="form-input" placeholder="Titre de votre discussion" minlength="5" maxlength="150" >
           </div>
           <div class="form-group">
             <label>Catégorie *</label>
@@ -90,11 +90,11 @@
           </div>
           <div class="form-group">
             <label>Contenu *</label>
-            <textarea v-model="newThread.content" required class="form-textarea" rows="6" placeholder="Posez votre question ou partagez votre expérience..."></textarea>
+            <textarea v-model="newThread.content" required class="form-textarea" rows="6" placeholder="Posez votre question ou partagez votre expérience..."/>
           </div>
           <div class="form-group">
             <label>Tags (séparés par des virgules)</label>
-            <input v-model="newThread.tags" type="text" class="form-input" placeholder="Ex: logement, crous, garants" />
+            <input v-model="newThread.tags" type="text" class="form-input" placeholder="Ex: logement, crous, garants" >
           </div>
           
           <div v-if="createError" class="auth-alert auth-alert--error">{{ createError }}</div>

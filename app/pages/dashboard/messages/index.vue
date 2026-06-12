@@ -6,7 +6,7 @@
     </header>
 
     <div v-if="pending" class="loading-state">
-      <span class="spinner"></span> Chargement des conversations...
+      <span class="spinner"/> Chargement des conversations...
     </div>
     
     <div v-else-if="!conversations.length" class="empty-state">

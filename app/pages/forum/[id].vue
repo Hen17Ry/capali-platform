@@ -1,5 +1,5 @@
 <template>
-  <div class="thread-page" v-if="!pending && threadData">
+  <div v-if="!pending && threadData" class="thread-page">
     <div class="container">
       <NuxtLink to="/forum" class="back-link">← Retour au forum</NuxtLink>
       
@@ -13,33 +13,33 @@
           <span class="dot">•</span>
           <span>👁️ {{ threadData.thread.viewCount }} vues</span>
         </div>
-        <div class="tags" v-if="threadData.thread.tags?.length">
+        <div v-if="threadData.thread.tags?.length" class="tags">
           <span v-for="tag in threadData.thread.tags" :key="tag" class="tag">#{{ tag }}</span>
         </div>
       </div>
 
       <div class="post original-post">
         <div v-if="editingThread" class="edit-form">
-          <input v-model="editThreadData.title" class="form-input mb-2" />
-          <textarea v-model="editThreadData.content" class="form-textarea mb-2" rows="4"></textarea>
+          <input v-model="editThreadData.title" class="form-input mb-2" >
+          <textarea v-model="editThreadData.content" class="form-textarea mb-2" rows="4"/>
           <div class="flex-actions">
-            <button @click="editingThread = false" class="btn btn--outline btn--sm">Annuler</button>
-            <button @click="saveThreadEdit" class="btn btn--primary btn--sm">Sauvegarder</button>
+            <button class="btn btn--outline btn--sm" @click="editingThread = false">Annuler</button>
+            <button class="btn btn--primary btn--sm" @click="saveThreadEdit">Sauvegarder</button>
           </div>
         </div>
         <div v-else class="post-content">{{ threadData.thread.content }}</div>
         
-        <div class="post-actions mt-4" v-if="isAuthenticated">
-          <button v-if="isAuthor(threadData.thread.authorId) || isAdmin" @click="startEditThread" class="action-btn">✏️ Modifier</button>
-          <button v-if="isAuthor(threadData.thread.authorId) || isAdmin" @click="deleteThread" class="action-btn text-red">🗑️ Supprimer</button>
-          <button v-if="!isAuthor(threadData.thread.authorId)" @click="openReportModal('thread', threadData.thread._id)" class="action-btn">🚩 Signaler</button>
+        <div v-if="isAuthenticated" class="post-actions mt-4">
+          <button v-if="isAuthor(threadData.thread.authorId) || isAdmin" class="action-btn" @click="startEditThread">✏️ Modifier</button>
+          <button v-if="isAuthor(threadData.thread.authorId) || isAdmin" class="action-btn text-red" @click="deleteThread">🗑️ Supprimer</button>
+          <button v-if="!isAuthor(threadData.thread.authorId)" class="action-btn" @click="openReportModal('thread', threadData.thread._id)">🚩 Signaler</button>
         </div>
       </div>
 
       <div class="replies-section">
         <h3>{{ threadData.posts.length }} Réponses</h3>
         
-        <div class="post-list" v-if="threadData.posts.length > 0">
+        <div v-if="threadData.posts.length > 0" class="post-list">
           <div v-for="post in threadData.posts" :key="post._id" class="post reply-post">
             <div class="post-meta">
               <strong>{{ post.authorName }}</strong>
@@ -47,18 +47,18 @@
             </div>
             
             <div v-if="editingPostId === post._id" class="edit-form">
-              <textarea v-model="editPostContent" class="form-textarea mb-2" rows="3"></textarea>
+              <textarea v-model="editPostContent" class="form-textarea mb-2" rows="3"/>
               <div class="flex-actions">
-                <button @click="editingPostId = null" class="btn btn--outline btn--sm">Annuler</button>
-                <button @click="savePostEdit(post._id)" class="btn btn--primary btn--sm">Sauvegarder</button>
+                <button class="btn btn--outline btn--sm" @click="editingPostId = null">Annuler</button>
+                <button class="btn btn--primary btn--sm" @click="savePostEdit(post._id)">Sauvegarder</button>
               </div>
             </div>
             <div v-else class="post-content">{{ post.content }}</div>
 
-            <div class="post-actions mt-3" v-if="isAuthenticated && editingPostId !== post._id">
-              <button v-if="isAuthor(post.authorId) || isAdmin" @click="startEditPost(post)" class="action-btn">✏️ Modifier</button>
-              <button v-if="isAuthor(post.authorId) || isAdmin" @click="deletePost(post._id)" class="action-btn text-red">🗑️ Supprimer</button>
-              <button v-if="!isAuthor(post.authorId)" @click="openReportModal('post', post._id)" class="action-btn">🚩 Signaler</button>
+            <div v-if="isAuthenticated && editingPostId !== post._id" class="post-actions mt-3">
+              <button v-if="isAuthor(post.authorId) || isAdmin" class="action-btn" @click="startEditPost(post)">✏️ Modifier</button>
+              <button v-if="isAuthor(post.authorId) || isAdmin" class="action-btn text-red" @click="deletePost(post._id)">🗑️ Supprimer</button>
+              <button v-if="!isAuthor(post.authorId)" class="action-btn" @click="openReportModal('post', post._id)">🚩 Signaler</button>
             </div>
           </div>
         </div>
@@ -66,11 +66,11 @@
           Soyez le premier à répondre !
         </div>
 
-        <div class="reply-form-container" v-if="isAuthenticated && !threadData.thread.isClosed">
+        <div v-if="isAuthenticated && !threadData.thread.isClosed" class="reply-form-container">
           <h4>Ajouter une réponse</h4>
           <div v-if="replyError" class="auth-alert auth-alert--error">{{ replyError }}</div>
           <form @submit.prevent="submitReply">
-            <textarea v-model="replyContent" required rows="4" class="form-textarea" placeholder="Votre réponse..."></textarea>
+            <textarea v-model="replyContent" required rows="4" class="form-textarea" placeholder="Votre réponse..."/>
             <div class="form-actions">
               <button type="submit" class="btn btn--primary" :disabled="isReplying">
                 {{ isReplying ? 'Envoi...' : 'Répondre' }}
@@ -92,16 +92,16 @@
       <div class="modal-content">
         <h2>Signaler ce contenu</h2>
         <p class="mb-4 text-sm text-gray">Veuillez indiquer la raison du signalement. Un administrateur l'examinera rapidement.</p>
-        <textarea v-model="reportModal.reason" rows="4" class="form-textarea mb-4" placeholder="Raison du signalement (spam, insultes, hors-sujet...)"></textarea>
+        <textarea v-model="reportModal.reason" rows="4" class="form-textarea mb-4" placeholder="Raison du signalement (spam, insultes, hors-sujet...)"/>
         <div class="modal-actions">
-          <button @click="reportModal.isOpen = false" class="btn btn--outline">Annuler</button>
-          <button @click="submitReport" class="btn btn--primary" :disabled="!reportModal.reason.trim()">Envoyer</button>
+          <button class="btn btn--outline" @click="reportModal.isOpen = false">Annuler</button>
+          <button class="btn btn--primary" :disabled="!reportModal.reason.trim()" @click="submitReport">Envoyer</button>
         </div>
       </div>
     </div>
   </div>
   <div v-else class="container loading-state">
-    <span v-if="pending" class="spinner"></span>
+    <span v-if="pending" class="spinner"/>
     <span v-if="error">Erreur lors du chargement de la discussion.</span>
   </div>
 </template>

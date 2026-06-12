@@ -5,12 +5,12 @@
         <NuxtLink to="/dashboard/messages" class="back-link">← Retour</NuxtLink>
         <div class="header-info">
           <h2>Conversation</h2>
-          <button v-if="user?.status === 'mentor' && !isClosed" @click="closeMentorship" class="btn btn--warm btn--sm">Mettre fin à la relation</button>
+          <button v-if="user?.status === 'mentor' && !isClosed" class="btn btn--warm btn--sm" @click="closeMentorship">Mettre fin à la relation</button>
           <span v-if="isClosed" class="badge badge--closed">Relation terminée</span>
         </div>
       </header>
 
-      <div class="chat-messages" ref="messagesContainer">
+      <div ref="messagesContainer" class="chat-messages">
         <div v-if="pending" class="loading-state">Chargement des messages...</div>
         <div v-else-if="!messages.length" class="empty-chat">
           <p>Aucun message. Envoyez le premier !</p>
@@ -23,7 +23,7 @@
             </template>
             <template v-else-if="msg.type === 'image'">
               <a :href="msg.mediaUrl" target="_blank">
-                <img :src="msg.mediaUrl" alt="Image envoyée" class="message-image" />
+                <img :src="msg.mediaUrl" alt="Image envoyée" class="message-image" >
               </a>
             </template>
             <span class="message-time">{{ formatTime(msg.createdAt) }}</span>
@@ -34,12 +34,12 @@
       <div v-if="!isClosed" class="chat-input-area">
         <div v-if="errorMsg" class="error-msg">{{ errorMsg }}</div>
         
-        <form @submit.prevent="sendMessage" class="input-form">
+        <form class="input-form" @submit.prevent="sendMessage">
           <label class="image-upload-btn">
             📎
-            <input type="file" accept="image/*" class="hidden" @change="uploadImage" :disabled="isUploading" />
+            <input type="file" accept="image/*" class="hidden" :disabled="isUploading" @change="uploadImage" >
           </label>
-          <input v-model="newMessage" type="text" placeholder="Écrivez un message..." class="form-input chat-input" :disabled="isSending" />
+          <input v-model="newMessage" type="text" placeholder="Écrivez un message..." class="form-input chat-input" :disabled="isSending" >
           <button type="submit" class="btn btn--primary send-btn" :disabled="!newMessage.trim() || isSending">
             Envoyer
           </button>
@@ -56,7 +56,6 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' } as any)
 const route = useRoute()
-const router = useRouter()
 const { user } = useAuth()
 const mentorshipId = route.params.id as string
 
@@ -140,7 +139,7 @@ async function closeMentorship() {
   try {
     await $fetch<any>(`/api/messages/${mentorshipId}/close`, { method: 'POST' })
     refresh()
-  } catch (err) {
+  } catch {
     alert('Erreur lors de la fermeture de la relation.')
   }
 }

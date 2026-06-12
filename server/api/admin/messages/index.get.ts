@@ -22,7 +22,7 @@ export default defineEventHandler(async (event) => {
 
   // Fetch mentor names
   const mentorIds = [...new Set(mentorships.map(m => m.mentorId))]
-  let mentorsMap: Record<string, string> = {}
+  const mentorsMap: Record<string, string> = {}
   if (mentorIds.length > 0) {
     const mentorUsers = await db.select({ id: users.id, name: users.name }).from(users).where(inArray(users.id, mentorIds))
     mentorUsers.forEach(u => mentorsMap[u.id] = u.name)

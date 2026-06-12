@@ -13,7 +13,7 @@ export default defineEventHandler(async () => {
 
   const authorIds = [...new Set([...flaggedThreads.map((t: any) => t.authorId), ...flaggedPosts.map((p: any) => p.authorId)])]
   
-  let authorsMap: Record<string, any> = {}
+  const authorsMap: Record<string, any> = {}
   if (authorIds.length > 0) {
     const authors = await db.select({ id: users.id, email: users.email }).from(users).where(inArray(users.id, authorIds))
     authors.forEach((a) => { authorsMap[a.id] = a.email })
