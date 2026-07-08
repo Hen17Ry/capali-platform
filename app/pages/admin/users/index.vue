@@ -30,17 +30,17 @@
         </thead>
         <tbody>
           <tr v-for="user in usersList" :key="user.id">
-            <td>
+            <td data-label="Utilisateur">
               <div class="user-cell">
                 <div class="user-cell__avatar" :style="{ background: getAvatarColor(user.name) }">{{ user.name?.[0]?.toUpperCase() ?? '?' }}</div>
                 <span class="user-cell__name">{{ user.name ?? 'Sans nom' }}</span>
               </div>
             </td>
-            <td class="text-muted">{{ user.email }}</td>
-            <td><span class="status-badge" :class="`status-badge--${user.status}`">{{ user.status }}</span></td>
-            <td><span v-if="user.isAdmin" class="role-badge">Admin</span><span v-else class="text-muted">—</span></td>
-            <td class="text-muted">{{ formatDate(user.createdAt) }}</td>
-            <td>
+            <td data-label="Email" class="text-muted">{{ user.email }}</td>
+            <td data-label="Statut"><span class="status-badge" :class="`status-badge--${user.status}`">{{ user.status }}</span></td>
+            <td data-label="Rôle"><span v-if="user.isAdmin" class="role-badge">Admin</span><span v-else class="text-muted">—</span></td>
+            <td data-label="Inscrit le" class="text-muted">{{ formatDate(user.createdAt) }}</td>
+            <td data-label="Actions">
               <div class="action-btns">
                 <NuxtLink :to="`/admin/users/${user.id}`" class="action-btn" title="Voir">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>

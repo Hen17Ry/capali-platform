@@ -30,8 +30,8 @@
         <div v-else class="post-content">{{ threadData.thread.content }}</div>
         
         <div v-if="isAuthenticated" class="post-actions mt-4">
-          <button v-if="isAuthor(threadData.thread.authorId) || isAdmin" class="action-btn" @click="startEditThread">✏️ Modifier</button>
-          <button v-if="isAuthor(threadData.thread.authorId) || isAdmin" class="action-btn text-red" @click="deleteThread">🗑️ Supprimer</button>
+          <button v-if="isAuthor(threadData.thread.authorId) || user?.isAdmin" class="action-btn" @click="startEditThread">✏️ Modifier</button>
+          <button v-if="isAuthor(threadData.thread.authorId) || user?.isAdmin" class="action-btn text-red" @click="deleteThread">🗑️ Supprimer</button>
           <button v-if="!isAuthor(threadData.thread.authorId)" class="action-btn" @click="openReportModal('thread', threadData.thread._id)">🚩 Signaler</button>
         </div>
       </div>
@@ -56,8 +56,8 @@
             <div v-else class="post-content">{{ post.content }}</div>
 
             <div v-if="isAuthenticated && editingPostId !== post._id" class="post-actions mt-3">
-              <button v-if="isAuthor(post.authorId) || isAdmin" class="action-btn" @click="startEditPost(post)">✏️ Modifier</button>
-              <button v-if="isAuthor(post.authorId) || isAdmin" class="action-btn text-red" @click="deletePost(post._id)">🗑️ Supprimer</button>
+              <button v-if="isAuthor(post.authorId) || user?.isAdmin" class="action-btn" @click="startEditPost(post)">✏️ Modifier</button>
+              <button v-if="isAuthor(post.authorId) || user?.isAdmin" class="action-btn text-red" @click="deletePost(post._id)">🗑️ Supprimer</button>
               <button v-if="!isAuthor(post.authorId)" class="action-btn" @click="openReportModal('post', post._id)">🚩 Signaler</button>
             </div>
           </div>

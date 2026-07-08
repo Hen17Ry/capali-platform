@@ -136,6 +136,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100vw;
 }
 
 body {
@@ -145,6 +147,7 @@ body {
   color: var(--neutral-800);
   background-color: var(--neutral-0);
   overflow-x: hidden;
+  max-width: 100vw;
 }
 
 img {
@@ -439,5 +442,83 @@ h1, h2, h3, h4, h5, h6 {
   .btn--lg {
     padding: var(--space-3) var(--space-6);
     font-size: var(--text-sm);
+  }
+}
+
+/* --- Admin Responsiveness (Tables as Cards on Mobile) --- */
+.admin-table-wrap,
+.table-container {
+  margin-bottom: var(--space-4);
+  background: var(--neutral-0);
+  border-radius: var(--radius-xl);
+}
+
+@media (max-width: 768px) {
+  .admin-table, .data-table,
+  .admin-table thead, .admin-table tbody, .admin-table th, .admin-table td, .admin-table tr,
+  .data-table thead, .data-table tbody, .data-table th, .data-table td, .data-table tr {
+    display: block;
+  }
+
+  .admin-table thead tr,
+  .data-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .admin-table tr,
+  .data-table tr {
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-4);
+    background: var(--neutral-0);
+    padding: var(--space-2);
+  }
+
+  .admin-table td,
+  .data-table td {
+    border: none !important;
+    border-bottom: 1px solid var(--neutral-100) !important;
+    position: relative;
+    padding-left: 45% !important;
+    text-align: right;
+    min-height: 44px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .admin-table td:last-child,
+  .data-table td:last-child {
+    border-bottom: none !important;
+  }
+
+  .admin-table td::before,
+  .data-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: var(--space-4);
+    width: 40%;
+    white-space: nowrap;
+    text-align: left;
+    font-weight: 600;
+    color: var(--neutral-500);
+    font-size: 11px;
+    text-transform: uppercase;
+  }
+
+  .admin-page-header {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  
+  .empty-state, .empty-row {
+    padding-left: var(--space-4) !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+  .empty-state::before, .empty-row::before {
+    display: none;
   }
 }

@@ -85,7 +85,10 @@ export default defineNuxtConfig({
   
   vite: {
     server: {
-      allowedHosts: true // Autorise tous les hôtes (ex: ngrok)
+      allowedHosts: true,
+      hmr:{
+        protocol:'wss',
+        clientPort:443      } // Autorise tous les hôtes (ex: ngrok)
     }
   },
 

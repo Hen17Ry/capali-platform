@@ -2,7 +2,7 @@
   <Teleport to="body">
     <Transition name="modal">
       <div v-if="modelValue" class="modal-backdrop" @click="close">
-        <div class="modal-container" @click.stop>
+        <div class="modal-container" :style="{ maxWidth: maxWidth || '480px' }" @click.stop>
           <div class="modal-header">
             <h3 class="modal-title">{{ title }}</h3>
             <button class="modal-close" @click="close">&times;</button>
@@ -23,6 +23,7 @@
 defineProps<{
   modelValue: boolean
   title: string
+  maxWidth?: string
 }>()
 
 const emit = defineEmits(['update:modelValue', 'close'])
@@ -52,7 +53,6 @@ function close() {
   background: white;
   border-radius: var(--radius-2xl);
   width: 90%;
-  max-width: 480px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   display: flex;

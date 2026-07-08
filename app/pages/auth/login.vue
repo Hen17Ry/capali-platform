@@ -6,7 +6,6 @@
           <img src="/logo.png" alt="CAP ALI" width="60" height="60" >
         </NuxtLink>
         <h1>CAP <strong>ALI</strong></h1>
-        <p>Communauté d'Appui au Parcours des Africains et Leaders Inspirants</p>
       </div>
     </div>
 
