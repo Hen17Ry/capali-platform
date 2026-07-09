@@ -1,6 +1,6 @@
 import { db } from '~~/server/db'
 import { mentorshipRequests, users } from '~~/server/db/schema'
-import { eq, or, and } from 'drizzle-orm'
+import { eq, or, and, inArray } from 'drizzle-orm' // Ajout de inArray
 import { getSessionFromEvent } from '~~/server/utils/session'
 import { connectMongo } from '~~/server/utils/mongo'
 import { Message } from '~~/server/models/Message'
@@ -28,37 +28,42 @@ export default defineEventHandler(async (event) => {
       )
     )
 
-  // We need to fetch the mentor's info separately or via aliases, but we can just do another query for simplicity
-  // or use two queries. Let's fetch all users involved.
   const mentorIds = activeMentorships.map(m => m.mentorId)
-  const mentors = mentorIds.length ? await db.select({ id: users.id, name: users.name, avatar: users.avatarUrl }).from(users).where(or(...mentorIds.map(id => eq(users.id, id)))) : []
+  
+  // PETIT BONUS : J'ai remplacé or(...) par inArray, c'est beaucoup plus propre et performant en SQL
+  const mentors = mentorIds.length > 0 
+    ? await db.select({ id: users.id, name: users.name, avatar: users.avatarUrl })
+        .from(users)
+        .where(inArray(users.id, mentorIds)) 
+    : []
 
   await connectMongo()
 
-  const conversations = []
+  // CORRECTION ICI : Remplacement du 'for...of' par 'Promise.all'
+  const conversations = await Promise.all(
+    activeMentorships.map(async (m) => {
+      const isMentor = session.userId === m.mentorId
+      const mentorInfo = mentors.find(user => user.id === m.mentorId)
+      
+      // Partner info is the OTHER person
+      const partnerId = isMentor ? m.menteeId : m.mentorId
+      const partnerName = isMentor ? m.menteeName : mentorInfo?.name
+      const partnerAvatar = isMentor ? m.menteeAvatar : mentorInfo?.avatar
 
-  for (const m of activeMentorships) {
-    const isMentor = session.userId === m.mentorId
-    const mentorInfo = mentors.find(user => user.id === m.mentorId)
-    
-    // Partner info is the OTHER person
-    const partnerId = isMentor ? m.menteeId : m.mentorId
-    const partnerName = isMentor ? m.menteeName : mentorInfo?.name
-    const partnerAvatar = isMentor ? m.menteeAvatar : mentorInfo?.avatar
+      // Cette requête s'exécute maintenant en parallèle pour toutes les conversations
+      const lastMsg = await (Message as any).findOne({ mentorshipId: m.id }).sort({ createdAt: -1 }).lean()
 
-    // Get last message from Mongo
-    const lastMsg = await (Message as any).findOne({ mentorshipId: m.id }).sort({ createdAt: -1 }).lean()
-
-    conversations.push({
-      id: m.id,
-      partnerId,
-      partnerName,
-      partnerAvatar,
-      lastMessage: lastMsg?.content || (lastMsg?.type === 'image' ? '📷 Image' : 'Nouvelle conversation'),
-      lastMessageAt: lastMsg?.createdAt || new Date(0),
-      unreadCount: 0 // To be implemented
+      return {
+        id: m.id,
+        partnerId,
+        partnerName,
+        partnerAvatar,
+        lastMessage: lastMsg?.content || (lastMsg?.type === 'image' ? '📷 Image' : 'Nouvelle conversation'),
+        lastMessageAt: lastMsg?.createdAt || new Date(0),
+        unreadCount: 0 // To be implemented
+      }
     })
-  }
+  )
 
   // Sort by last message date descending
   conversations.sort((a, b) => new Date(b.lastMessageAt).getTime() - new Date(a.lastMessageAt).getTime())

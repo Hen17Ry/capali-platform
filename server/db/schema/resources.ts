@@ -23,6 +23,7 @@ export const resources = pgTable('resources', {
   targetLevel: resourceLevelEnum('target_level').notNull(),
   authorId: uuid('author_id').references(() => users.id),
   isDraft: boolean('is_draft').notNull().default(true),
+  videoId: text('video_id'),
   // Social import tracking
   sourceUrl: text('source_url'),
   sourcePlatform: varchar('source_platform', { length: 50 }),

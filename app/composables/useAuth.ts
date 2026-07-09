@@ -1,4 +1,7 @@
-interface AuthUser {
+// app/composables/useAuth.ts
+
+// --- Types ---
+export interface AuthUser {
   id: string
   name: string
   email: string
@@ -15,16 +18,10 @@ interface AuthState {
   isLoading: boolean
 }
 
-/**
- * Auth composable using Redis server-side sessions.
- *
- * Uses `useState()` so the auth state is:
- * - Isolated per-request on SSR (no cross-request bleed)
- * - Shared across components within the same request/page
- * - Transferred to the client via Nuxt payload (no flash)
- */
-export const useAuth = () => {
-  // useState is SSR-safe: isolated per request on server, singleton on client
+// ============================================================================
+// 1. LE STORE (Responsabilité : Gérer l'état de l'application)
+// ============================================================================
+export const useAuthStore = () => {
   const authState = useState<AuthState>('auth', () => ({
     user: null,
     isAuthenticated: false,
@@ -33,37 +30,6 @@ export const useAuth = () => {
     isLoading: true,
   }))
 
-  /**
-   * Fetch current session from server (works SSR + client).
-   * The session cookie is forwarded via useRequestHeaders on SSR.
-   */
-  const fetchSession = async (): Promise<AuthUser | null> => {
-    try {
-      const response = await $fetch<{ data: AuthUser }>('/api/auth/me', {
-        headers: import.meta.server ? useRequestHeaders(['cookie']) : undefined,
-      })
-      setUser(response.data)
-      return response.data
-    } catch {
-      clearUser()
-      return null
-    }
-  }
-
-  /**
-   * Initialize auth — fetches the session from the server once per request.
-   */
-  const init = async () => {
-    // Skip if already initialized (isLoading starts as true, set to false after init)
-    if (!authState.value.isLoading) return
-
-    await fetchSession()
-    authState.value.isLoading = false
-  }
-
-  /**
-   * Set user in state
-   */
   const setUser = (user: AuthUser) => {
     authState.value.user = user
     authState.value.isAuthenticated = true
@@ -71,9 +37,6 @@ export const useAuth = () => {
     authState.value.isMentor = user.status === 'mentor'
   }
 
-  /**
-   * Clear state
-   */
   const clearUser = () => {
     authState.value.user = null
     authState.value.isAuthenticated = false
@@ -81,79 +44,94 @@ export const useAuth = () => {
     authState.value.isMentor = false
   }
 
+  const setLoading = (loading: boolean) => {
+    authState.value.isLoading = loading
+  }
+
+  return { state: authState, setUser, clearUser, setLoading }
+}
+
+// ============================================================================
+// 2. LE SERVICE (Responsabilité : Appels API, Logique métier et Redirections)
+// ============================================================================
+export const useAuth = () => {
+  const store = useAuthStore()
+
   /**
-   * Register a new user
+   * Récupère la session depuis le serveur (Gère SSR et Client)
    */
-  const register = async (data: {
-    name: string
-    email: string
-    password: string
-    status: string
-    countryOrigin?: string
-    cityCurrentFr?: string
-    domain?: string
-    helpTopics?: string[]
-    motivation?: string
-    availableHoursMonth?: number
-    maxMentees?: number
-    acceptsRemote?: boolean
-    acceptsInperson?: boolean
-    yearsInFrance?: number
-    languages?: string[]
-    linkedinUrl?: string
-    presentation?: string
-    needsHelp?: string[]
-    arrivalDate?: string
-    [key: string]: unknown
-  }) => {
+  const fetchSession = async (): Promise<AuthUser | null> => {
+    try {
+      const response = await $fetch<{ data: AuthUser }>('/api/auth/me', {
+        headers: import.meta.server ? useRequestHeaders(['cookie']) : undefined,
+      })
+      store.setUser(response.data)
+      return response.data
+    } catch (error) {
+      // CORRECTION : Plus de catch vide (empty-catch)
+      console.warn('[useAuth] Session introuvable ou expirée.', error)
+      store.clearUser()
+      return null
+    }
+  }
+
+  /**
+   * Initialise l'authentification (exécuté une seule fois par requête)
+   */
+  const init = async () => {
+    if (!store.state.value.isLoading) return
+    await fetchSession()
+    store.setLoading(false)
+  }
+
+  /**
+   * Inscription d'un nouvel utilisateur
+   */
+  const register = async (data: Record<string, any>) => {
     const response = await $fetch<{ data: { user: AuthUser } }>(
       '/api/auth/register',
       { method: 'POST', body: data }
     )
-
-    setUser(response.data.user)
-    authState.value.isLoading = false
-
+    store.setUser(response.data.user)
+    store.setLoading(false)
     return response.data
   }
 
   /**
-   * Login with email/password
+   * Connexion avec email/mot de passe
    */
   const login = async (email: string, password: string) => {
     const response = await $fetch<{ data: { user: AuthUser } }>(
       '/api/auth/login',
       { method: 'POST', body: { email, password } }
     )
-
-    setUser(response.data.user)
-    authState.value.isLoading = false
-
+    store.setUser(response.data.user)
+    store.setLoading(false)
     return response.data
   }
 
   /**
-   * Logout — calls server to destroy session + clear cookie
+   * Déconnexion (Détruit la session côté serveur et nettoie l'état)
    */
   const logout = async () => {
     try {
       await $fetch('/api/auth/logout', { method: 'POST' })
-    } catch {
-      // Even if the API fails, clear local state
+    } catch (error) {
+      // CORRECTION : On log l'erreur réseau même si on force la déconnexion locale
+      console.error('[useAuth] Erreur API lors de la déconnexion réseau:', error)
+    } finally {
+      store.clearUser()
+      store.setLoading(true) 
+      navigateTo('/auth/login')
     }
-
-    clearUser()
-    authState.value.isLoading = true // Reset so init re-runs after re-login
-    navigateTo('/auth/login')
   }
 
   return {
-    // Expose individual computed refs for template usage
-    user: computed(() => authState.value.user),
-    isAuthenticated: computed(() => authState.value.isAuthenticated),
-    isAdmin: computed(() => authState.value.isAdmin),
-    isMentor: computed(() => authState.value.isMentor),
-    isLoading: computed(() => authState.value.isLoading),
+    user: computed(() => store.state.value.user),
+    isAuthenticated: computed(() => store.state.value.isAuthenticated),
+    isAdmin: computed(() => store.state.value.isAdmin),
+    isMentor: computed(() => store.state.value.isMentor),
+    isLoading: computed(() => store.state.value.isLoading),
     init,
     register,
     login,

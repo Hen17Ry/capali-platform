@@ -71,7 +71,12 @@
           {{ resource.excerpt }}
         </div>
 
-        <div class="resource-content" v-html="resource.content" />
+        <div class="resource-content">
+          <div v-if="resource.videoId" class="video-wrapper">
+            <iframe :src="`https://www.youtube.com/embed/${resource.videoId}`" allowfullscreen></iframe>
+          </div>
+          <div v-if="resource.content" class="content-text">{{ resource.content }}</div>
+        </div>
       </article>
     </div>
   </div>
@@ -378,6 +383,10 @@ useHead(() => {
   font-style: italic;
   color: var(--neutral-700);
 }
+
+.video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: var(--space-8); border-radius: var(--radius-2xl); background: var(--neutral-900); }
+.video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.content-text { white-space: pre-line; }
 
 @media (max-width: 1024px) {
   .resource-body-container {

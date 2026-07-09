@@ -55,9 +55,7 @@
           </div>
 
           <div v-show="activeTab === 'edit'" class="form-group">
-            <ClientOnly>
-              <AdminRichEditor v-model="form.content" placeholder="Rédigez votre ressource..." />
-            </ClientOnly>
+            <textarea v-model="form.content" class="form-textarea" rows="15" placeholder="Contenu de la ressource (texte brut)..."></textarea>
           </div>
 
           <div v-if="activeTab === 'preview'" class="preview-pane">
@@ -72,7 +70,13 @@
               <span class="preview-badge preview-badge--level">{{ levelLabels[form.targetLevel] || form.targetLevel }}</span>
             </div>
             <hr class="preview-divider" >
-            <div class="preview-content" v-html="form.content || '<p style=&quot;color:#94a3b8&quot;>Aucun contenu pour l\'instant.</p>'" />
+            <div class="preview-content">
+              <div v-if="form.videoId" class="video-wrapper">
+                <iframe :src="`https://www.youtube.com/embed/${form.videoId}`" allowfullscreen></iframe>
+              </div>
+              <div v-if="form.content" class="content-text">{{ form.content }}</div>
+              <p v-else style="color:#94a3b8">Aucun contenu pour l'instant.</p>
+            </div>
           </div>
         </div>
 
@@ -205,6 +209,7 @@ const form = reactive({
   isDraft: true,
   sourceUrl: '',
   sourcePlatform: '',
+  videoId: '',
 })
 
 // Load existing resource for edit mode
@@ -236,6 +241,7 @@ async function importFromUrl() {
     if (scraped.image) form.coverImage = scraped.image
     if (scraped.platform) form.sourcePlatform = scraped.platform
     if (scraped.type) form.type = scraped.type
+    if (scraped.videoId) form.videoId = scraped.videoId
     form.sourceUrl = importUrl.value
 
     importSuccess.value = true
@@ -363,6 +369,10 @@ async function submitForm() {
 .preview-content :deep(img) { max-width: 100%; border-radius: var(--radius-lg); margin: 1em 0; }
 .preview-content :deep(a) { color: var(--green-600); }
 .preview-content :deep(blockquote) { border-left: 4px solid var(--green-300); padding: 0.5em 1em; margin: 1em 0; background: var(--green-50); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+
+.video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; margin-bottom: var(--space-6); border-radius: var(--radius-xl); background: var(--neutral-900); }
+.video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.content-text { white-space: pre-line; font-size: 15px; line-height: 1.75; color: var(--neutral-700); }
 
 @media (max-width: 1024px) { .form-grid { grid-template-columns: 1fr; } .form-sidebar { position: static; } }
 @keyframes spin { to { transform: rotate(360deg); } }

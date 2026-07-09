@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
   if (body.targetLevel) updates.targetLevel = body.targetLevel
   if (body.sourceUrl !== undefined) updates.sourceUrl = body.sourceUrl || null
   if (body.sourcePlatform !== undefined) updates.sourcePlatform = body.sourcePlatform || null
+  if (body.videoId !== undefined) updates.videoId = body.videoId || null
   if (typeof body.isDraft === 'boolean') {
     updates.isDraft = body.isDraft
     if (!body.isDraft) updates.publishedAt = new Date()

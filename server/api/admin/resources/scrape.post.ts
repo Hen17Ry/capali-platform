@@ -7,6 +7,7 @@ interface ScrapedData {
   image: string
   platform: string
   type: string
+  videoId?: string
 }
 
 /**
@@ -53,7 +54,7 @@ export default defineEventHandler(async (event) => {
     // Fetch the page HTML
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (compatible; CapALIBot/1.0; +https://capali.com)',
+        'User-Agent': 'Mozilla/5.0 (compatible; CapALIBot/1.0; +https://capali.org)',
         'Accept': 'text/html,application/xhtml+xml',
         'Accept-Language': 'fr-FR,fr;q=0.9,en;q=0.8',
       },
@@ -84,27 +85,20 @@ export default defineEventHandler(async (event) => {
 
     // Try to extract main content
     let mainContent = ''
+    let videoId: string | undefined = undefined
 
     // Platform-specific content extraction
     if (platform === 'LinkedIn') {
-      // LinkedIn posts usually have the content in og:description
       mainContent = ogDescription
-        ? `<p>${ogDescription.replace(/\n/g, '</p><p>')}</p>`
-        : ''
     } else if (platform === 'Instagram') {
       mainContent = ogDescription
-        ? `<p>${ogDescription.replace(/\n/g, '</p><p>')}</p>`
-        : ''
     } else if (platform === 'YouTube') {
       // YouTube description
-      const videoDesc = $('meta[name="description"]').attr('content') || ogDescription
-      mainContent = videoDesc
-        ? `<p>${videoDesc.replace(/\n/g, '</p><p>')}</p>`
-        : ''
-      // Also include embed
-      const videoId = extractYouTubeId(url)
-      if (videoId) {
-        mainContent = `<div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1em 0;border-radius:12px;"><iframe src="https://www.youtube.com/embed/${videoId}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;" allowfullscreen></iframe></div>\n${mainContent}`
+      mainContent = $('meta[name="description"]').attr('content') || ogDescription
+      
+      const extractedId = extractYouTubeId(url)
+      if (extractedId) {
+        videoId = extractedId
       }
     } else {
       // Generic: try to find article content
@@ -112,12 +106,10 @@ export default defineEventHandler(async (event) => {
       if (articleEl.length) {
         // Clean up: remove scripts, styles, nav, footer
         articleEl.find('script, style, nav, footer, .ads, .sidebar').remove()
-        mainContent = articleEl.html() || ''
+        mainContent = articleEl.text() || ''
       } else {
-        // Fallback: use og:description formatted as HTML
+        // Fallback: use og:description
         mainContent = ogDescription
-          ? `<p>${ogDescription.replace(/\n/g, '</p><p>')}</p>`
-          : ''
       }
     }
 
@@ -129,6 +121,10 @@ export default defineEventHandler(async (event) => {
       image: resolveImageUrl(ogImage, url),
       platform,
       type: detectType(platform, url),
+    }
+
+    if (videoId) {
+      result.videoId = videoId
     }
 
     return { data: result }
