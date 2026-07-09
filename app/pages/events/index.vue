@@ -13,7 +13,7 @@
       </div>
       
       <div v-else-if="eventsList.length" class="events-grid">
-        <div v-for="event in eventsList" :key="event.id" class="event-card" @click="navigateTo(`/events/${event.id}`)" style="cursor: pointer;">
+        <div v-for="event in eventsList" :key="event.id" class="event-card" style="cursor: pointer;" @click="navigateTo(`/events/${event.id}`)">
           <div class="event-card__cover" :style="event.coverImage ? { backgroundImage: `url(${event.coverImage})` } : {}">
             <span v-if="!event.coverImage" class="event-card__cover-placeholder">
               {{ getTypeEmoji(event.type) }}

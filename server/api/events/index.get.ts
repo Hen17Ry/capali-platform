@@ -1,6 +1,6 @@
 import { db } from '~~/server/db'
 import { events } from '~~/server/db/schema'
-import { desc, gte } from 'drizzle-orm'
+import { desc } from 'drizzle-orm'
 
 export default defineEventHandler(async () => {
   // Optionnel: On pourrait filtrer pour ne montrer que les événements futurs

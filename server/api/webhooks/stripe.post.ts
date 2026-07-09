@@ -31,7 +31,7 @@ export default defineEventHandler(async (event) => {
 
   // Handle the event
   switch (stripeEvent.type) {
-    case 'checkout.session.completed':
+    case 'checkout.session.completed': {
       const session = stripeEvent.data.object as Stripe.Checkout.Session
       
       const donationId = session.client_reference_id
@@ -48,6 +48,7 @@ export default defineEventHandler(async (event) => {
         console.log(`Donation ${donationId} marked as completed.`)
       }
       break
+    }
     // Handle other events as needed
     default:
       console.log(`Unhandled event type ${stripeEvent.type}`)

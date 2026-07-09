@@ -26,13 +26,13 @@
         <p class="hero__subtitle">{{ $t('hero.subtitle') }}</p>
 
         <div class="hero__cta">
-          <NuxtLink to="/auth/register" class="btn btn--gold btn--lg">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+          <NuxtLink to="/orientation" class="btn btn--gold btn--lg btn--pulse">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            {{ $t('hero.cta_orientation') }}
+          </NuxtLink>
+          <NuxtLink to="/auth/register" class="btn btn--outline-white btn--lg">
             {{ $t('hero.cta_join') }}
           </NuxtLink>
-          <a href="#mission" class="btn btn--outline-white btn--lg">
-            {{ $t('hero.cta_discover') }}
-          </a>
         </div>
       </div>
 
@@ -227,6 +227,26 @@
   flex-wrap: wrap;
   opacity: 0;
   animation: fade-up 0.8s ease-out 0.8s forwards;
+}
+
+.btn--pulse {
+  animation: pulse-glow 2s infinite;
+  box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.7);
+}
+
+@keyframes pulse-glow {
+  0% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 0 rgba(201, 168, 76, 0.7);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 0 0 12px rgba(201, 168, 76, 0);
+  }
+  100% {
+    transform: scale(0.98);
+    box-shadow: 0 0 0 0 rgba(201, 168, 76, 0);
+  }
 }
 
 /* Stats */

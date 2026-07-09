@@ -1,7 +1,7 @@
 <template>
   <div v-if="isOpen" class="donation-modal-overlay" @click.self="close">
     <div class="donation-modal">
-      <button class="donation-modal__close" @click="close" aria-label="Fermer">
+      <button class="donation-modal__close" aria-label="Fermer" @click="close">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
 
@@ -38,29 +38,29 @@
           Retour
         </button>
 
-        <form @submit.prevent="submitDonation" class="donation-form">
+        <form class="donation-form" @submit.prevent="submitDonation">
           <div class="form-row">
             <div class="form-group">
               <label for="firstName">Prénom</label>
-              <input type="text" id="firstName" v-model="form.firstName" required placeholder="Votre prénom" />
+              <input id="firstName" v-model="form.firstName" type="text" required placeholder="Votre prénom" >
             </div>
             <div class="form-group">
               <label for="lastName">Nom</label>
-              <input type="text" id="lastName" v-model="form.lastName" required placeholder="Votre nom" />
+              <input id="lastName" v-model="form.lastName" type="text" required placeholder="Votre nom" >
             </div>
           </div>
           <div class="form-group">
             <label for="email">Adresse email</label>
-            <input type="email" id="email" v-model="form.email" required placeholder="votre@email.com" />
+            <input id="email" v-model="form.email" type="email" required placeholder="votre@email.com" >
           </div>
 
           <div class="form-group mt-4">
             <label>Montant de votre don (€)</label>
             <div class="amount-grid">
               <button 
-                type="button" 
                 v-for="amt in predefinedAmounts" 
                 :key="amt" 
+                type="button" 
                 class="amount-btn" 
                 :class="{ 'amount-btn--active': !isCustomAmount && form.amount === amt }"
                 @click="selectAmount(amt)"
@@ -80,14 +80,14 @@
             <div v-if="isCustomAmount" class="custom-amount-wrapper mt-3">
               <span class="currency-symbol">€</span>
               <input 
-                type="number" 
                 v-model="form.amount" 
+                type="number" 
                 min="1" 
                 step="1" 
                 class="custom-amount-input" 
                 placeholder="Montant libre"
                 required
-              />
+              >
             </div>
           </div>
 
@@ -199,7 +199,7 @@ async function submitKkiapay() {
     const config = useRuntimeConfig()
     
     // Call Kkiapay widget function loaded via CDN
-    // @ts-ignore
+    // @ts-expect-error Kkiapay is loaded via CDN script in the head
     window.openKkiapayWidget({
       amount: amountXOF,
       api_key: config.public.kkiapayPublicKey || 'sandbox_key',

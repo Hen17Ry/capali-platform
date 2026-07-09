@@ -68,7 +68,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard', title: 'Accueil' } as any)
 
-const { data: response, error } = await useFetch<{ data: any }>('/api/user/profile')
+const { data: response } = await useFetch<{ data: any }>('/api/user/profile')
 const profile = computed(() => response.value?.data)
 
 const { data: statsResponse } = await useFetch<any>('/api/user/dashboard-stats')

@@ -1,5 +1,5 @@
 import { connectMongo } from '../utils/mongo'
 
-export default defineNitroPlugin(async (nitroApp) => {
+export default defineNitroPlugin(async (_nitroApp) => {
   await connectMongo()
 })

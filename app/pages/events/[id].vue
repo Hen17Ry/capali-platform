@@ -42,7 +42,7 @@
         <div class="event-content-layout">
           <div class="event-main-content">
             <h2>À propos de l'événement</h2>
-            <div v-if="event.description" class="event-description prose" v-html="formatDescription(event.description)"></div>
+            <div v-if="event.description" class="event-description prose" v-html="formatDescription(event.description)"/>
             <p v-else class="text-neutral-500 italic">Aucune description fournie pour cet événement.</p>
           </div>
           

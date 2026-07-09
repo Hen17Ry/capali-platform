@@ -2,7 +2,7 @@ import { db } from '~~/server/db'
 import { users, mentorProfiles, studentProfiles } from '~~/server/db/schema'
 import { eq } from 'drizzle-orm'
 
-import { getSessionFromEvent, updateRedisSession } from '~~/server/utils/session'
+import { getSessionFromEvent } from '~~/server/utils/session'
 
 export default defineEventHandler(async (event) => {
   const session = await getSessionFromEvent(event)

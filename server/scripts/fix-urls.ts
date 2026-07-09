@@ -1,7 +1,7 @@
 import 'dotenv/config'
 import { db } from '../db/index'
 import { eq, like } from 'drizzle-orm'
-import { events, resources, users, studentProfiles } from '../db/schema'
+import { events, resources, users } from '../db/schema'
 
 async function main() {
   console.log('Replacing old localhost URLs with /s3/ proxy URLs...')

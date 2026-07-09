@@ -22,16 +22,16 @@
         </thead>
         <tbody>
           <tr v-for="r in resourcesList" :key="r.id">
-            <td><span class="resource-title">{{ r.title }}</span></td>
-            <td><span class="type-badge">{{ r.type }}</span></td>
-            <td class="text-muted">{{ r.theme }}</td>
-            <td>
+            <td data-label="Titre"><span class="resource-title">{{ r.title }}</span></td>
+            <td data-label="Type"><span class="type-badge">{{ r.type }}</span></td>
+            <td data-label="Thème" class="text-muted">{{ r.theme }}</td>
+            <td data-label="Statut">
               <span class="status-pill" :class="r.isDraft ? 'status-pill--draft' : 'status-pill--published'">
                 {{ r.isDraft ? 'Brouillon' : 'Publié' }}
               </span>
             </td>
-            <td class="text-muted">{{ formatDate(r.createdAt) }}</td>
-            <td>
+            <td data-label="Créé le" class="text-muted">{{ formatDate(r.createdAt) }}</td>
+            <td data-label="Actions">
               <div class="action-btns">
                 <NuxtLink :to="`/admin/resources/${r.id}/edit`" class="action-btn" title="Modifier">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>

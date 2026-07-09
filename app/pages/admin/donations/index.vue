@@ -62,14 +62,16 @@
                 <td colspan="5" class="empty-state">Aucun don enregistré pour le moment.</td>
               </tr>
               <tr v-for="donation in donationsList" :key="donation.id">
-                <td class="whitespace-nowrap">{{ formatDate(donation.createdAt) }}</td>
-                <td>
-                  <div class="donor-name">{{ donation.firstName }} {{ donation.lastName }}</div>
-                  <div class="donor-email">{{ donation.email }}</div>
+                <td data-label="Date" class="whitespace-nowrap">{{ formatDate(donation.createdAt) }}</td>
+                <td data-label="Donateur">
+                  <div>
+                    <div class="donor-name">{{ donation.firstName }} {{ donation.lastName }}</div>
+                    <div class="donor-email">{{ donation.email }}</div>
+                  </div>
                 </td>
-                <td class="whitespace-nowrap font-bold">{{ donation.amount }} €</td>
-                <td class="whitespace-nowrap capitalize">{{ donation.method }}</td>
-                <td class="whitespace-nowrap">
+                <td data-label="Montant" class="whitespace-nowrap font-bold">{{ donation.amount }} €</td>
+                <td data-label="Méthode" class="whitespace-nowrap capitalize">{{ donation.method }}</td>
+                <td data-label="Statut" class="whitespace-nowrap">
                   <span class="status-badge" :class="`status-badge--${donation.status}`">
                     {{ donation.status }}
                   </span>
