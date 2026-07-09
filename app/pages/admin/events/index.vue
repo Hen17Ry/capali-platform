@@ -21,11 +21,11 @@
         </thead>
         <tbody>
           <tr v-for="e in eventsList" :key="e.id" :class="{ 'row--past': isPast(e.eventDate) }">
-            <td><span class="event-title">{{ e.title }}</span></td>
-            <td><span class="type-badge" :class="`type-badge--${e.type}`">{{ e.type }}</span></td>
-            <td class="text-muted">{{ e.city ?? 'En ligne' }}</td>
-            <td :class="isPast(e.eventDate) ? 'text-muted' : ''">{{ formatDate(e.eventDate) }}</td>
-            <td>
+            <td data-label="Titre"><span class="event-title">{{ e.title }}</span></td>
+            <td data-label="Type"><span class="type-badge" :class="`type-badge--${e.type}`">{{ e.type }}</span></td>
+            <td data-label="Ville" class="text-muted">{{ e.city ?? 'En ligne' }}</td>
+            <td data-label="Date" :class="isPast(e.eventDate) ? 'text-muted' : ''">{{ formatDate(e.eventDate) }}</td>
+            <td data-label="Actions">
               <div class="action-btns">
                 <NuxtLink :to="`/admin/events/${e.id}/edit`" class="action-btn" title="Modifier">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>

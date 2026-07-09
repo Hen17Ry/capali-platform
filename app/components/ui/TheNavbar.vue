@@ -10,6 +10,7 @@
       <!-- Desktop Navigation -->
       <nav class="navbar__nav" :class="{ 'navbar__nav--open': isMobileOpen }">
         <ul class="navbar__links">
+          <li><NuxtLink to="/orientation" class="navbar__link" @click="closeMobile">Orientation</NuxtLink></li>
           <li><a href="#mission" class="navbar__link" @click="closeMobile">{{ $t('nav.about') }}</a></li>
           <li><a href="#mentorship" class="navbar__link" @click="closeMobile">{{ $t('nav.mentorship') }}</a></li>
           <li><a href="#resources" class="navbar__link" @click="closeMobile">{{ $t('nav.resources') }}</a></li>
@@ -110,7 +111,8 @@ onMounted(() => {
   background: transparent;
 }
 
-.navbar--scrolled {
+.navbar--scrolled,
+.navbar--open {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   box-shadow: var(--shadow-md);
@@ -152,7 +154,8 @@ onMounted(() => {
   transition: color var(--transition-base);
 }
 
-.navbar--scrolled .navbar__logo-text {
+.navbar--scrolled .navbar__logo-text,
+.navbar--open .navbar__logo-text {
   color: var(--neutral-900);
 }
 

@@ -1,4 +1,36 @@
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: capali_app
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - APP_URL=${APP_URL:-http://localhost:3000}
+      - DATABASE_URL=postgresql://capali:capali_password@postgres:5432/capali_db
+      - REDIS_URL=redis://redis:6379
+      - MONGODB_URI=mongodb://capali:capali_password@mongodb:27017/capali_forum?authSource=admin
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_ACCESS_KEY=capali_minio
+      - MINIO_SECRET_KEY=capali_minio_password
+      - MINIO_BUCKET=capali
+      - JWT_SECRET=${JWT_SECRET:-change-this-in-production}
+      - RESEND_API_KEY=${RESEND_API_KEY:-}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
   postgres:
     image: postgres:16-alpine
     container_name: capali_postgres
