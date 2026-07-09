@@ -35,6 +35,10 @@ export default defineEventHandler(async (event) => {
       status: 'pending'
     }).returning()
 
+    if (!newDonation) {
+      throw createError({ statusCode: 500, message: 'Failed to create donation record' })
+    }
+
     // 2. Créer une session de paiement Stripe Checkout
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],

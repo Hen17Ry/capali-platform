@@ -52,7 +52,7 @@
 definePageMeta({ layout: 'admin' })
 
 const { data: response, refresh } = await useFetch('/api/admin/reports')
-const reports = computed(() => response.value?.data ?? [])
+const reports = computed(() => (response.value?.data as any[]) ?? [])
 
 async function moderate(id: string, action: string) {
   const labels: Record<string, string> = {
