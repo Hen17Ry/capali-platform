@@ -110,7 +110,7 @@
 const route = useRoute()
 const router = useRouter()
 const threadId = route.params.id as string
-const { isAuthenticated, user, isAdmin } = useAuth()
+const { isAuthenticated, user } = useAuth()
 
 const { data, pending, error, refresh } = useFetch(`/api/forum/threads/${threadId}`)
 const threadData = computed(() => data.value?.data as any)
