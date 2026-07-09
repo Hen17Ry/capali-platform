@@ -44,8 +44,8 @@
       </div>
     </div>
 
-    <UiBaseModal v-model="showComposeModal" title="Nouvelle Newsletter" maxWidth="750px">
-      <form @submit.prevent="sendNewsletter" class="compose-form">
+    <UiBaseModal v-model="showComposeModal" title="Nouvelle Newsletter" max-width="750px">
+      <form class="compose-form" @submit.prevent="sendNewsletter">
         <div class="f-field">
           <label class="f-label">Objet de l'email</label>
           <input v-model="form.subject" class="f-input" required placeholder="Ex: Nouveautés de ce mois-ci sur Cap Ali !">
@@ -55,37 +55,37 @@
           <label class="f-label">Contenu de l'email</label>
           <div class="editor-wrap">
             <div v-if="editor" class="editor-toolbar">
-              <button type="button" title="Gras" @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
+              <button type="button" title="Gras" :class="{ 'is-active': editor.isActive('bold') }" @click="editor.chain().focus().toggleBold().run()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg>
               </button>
-              <button type="button" title="Italique" @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
+              <button type="button" title="Italique" :class="{ 'is-active': editor.isActive('italic') }" @click="editor.chain().focus().toggleItalic().run()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg>
               </button>
-              <button type="button" title="Souligné" @click="editor.chain().focus().toggleUnderline().run()" :class="{ 'is-active': editor.isActive('underline') }">
+              <button type="button" title="Souligné" :class="{ 'is-active': editor.isActive('underline') }" @click="editor.chain().focus().toggleUnderline().run()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><line x1="4" y1="21" x2="20" y2="21"/></svg>
               </button>
               
-              <div class="toolbar-divider"></div>
+              <div class="toolbar-divider"/>
               
-              <button type="button" title="Titre 1" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }">
+              <button type="button" title="Titre 1" :class="{ 'is-active': editor.isActive('heading', { level: 2 }) }" @click="editor.chain().focus().toggleHeading({ level: 2 }).run()">
                 <span style="font-weight:800;font-size:15px;font-family:serif;display:block;line-height:1">T1</span>
               </button>
-              <button type="button" title="Titre 2" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()" :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }">
+              <button type="button" title="Titre 2" :class="{ 'is-active': editor.isActive('heading', { level: 3 }) }" @click="editor.chain().focus().toggleHeading({ level: 3 }).run()">
                 <span style="font-weight:700;font-size:13px;font-family:serif;display:block;line-height:1">T2</span>
               </button>
               
-              <div class="toolbar-divider"></div>
+              <div class="toolbar-divider"/>
               
-              <button type="button" title="Liste à puces" @click="editor.chain().focus().toggleBulletList().run()" :class="{ 'is-active': editor.isActive('bulletList') }">
+              <button type="button" title="Liste à puces" :class="{ 'is-active': editor.isActive('bulletList') }" @click="editor.chain().focus().toggleBulletList().run()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
               </button>
-              <button type="button" title="Liste numérotée" @click="editor.chain().focus().toggleOrderedList().run()" :class="{ 'is-active': editor.isActive('orderedList') }">
+              <button type="button" title="Liste numérotée" :class="{ 'is-active': editor.isActive('orderedList') }" @click="editor.chain().focus().toggleOrderedList().run()">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
               </button>
               
-              <div class="toolbar-divider"></div>
+              <div class="toolbar-divider"/>
               
-              <button type="button" title="Insérer un lien web" @click="addLink" :class="{ 'is-active': editor.isActive('link') }">
+              <button type="button" title="Insérer un lien web" :class="{ 'is-active': editor.isActive('link') }" @click="addLink">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               </button>
               <button type="button" title="Insérer une image" @click="addImage">
@@ -112,7 +112,7 @@
     <UiBaseModal v-model="showLinkModal" title="Insérer un lien">
       <div class="f-field">
         <label class="f-label">Adresse Web (URL)</label>
-        <input v-model="linkUrl" class="f-input" placeholder="https://..." @keyup.enter="confirmLink" autofocus>
+        <input v-model="linkUrl" class="f-input" placeholder="https://..." autofocus @keyup.enter="confirmLink">
       </div>
       <div class="modal-actions">
         <button class="btn btn--outline" @click="showLinkModal = false">Annuler</button>
@@ -135,8 +135,8 @@
     </UiBaseModal>
 
     <!-- Hidden file inputs -->
-    <input type="file" ref="imageInput" accept="image/*" style="display:none;" @change="handleImageUpload">
-    <input type="file" ref="docInput" style="display:none;" @change="handleDocUpload">
+    <input ref="imageInput" type="file" accept="image/*" style="display:none;" @change="handleImageUpload">
+    <input ref="docInput" type="file" style="display:none;" @change="handleDocUpload">
   </div>
 </template>
 

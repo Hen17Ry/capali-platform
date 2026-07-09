@@ -2,7 +2,7 @@ import { db } from '~~/server/db'
 import { users, newsletterSubscribers } from '~~/server/db/schema'
 import { eq, isNull, and } from 'drizzle-orm'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   // Get users who are not admin
   const platformUsers = await db
     .select({

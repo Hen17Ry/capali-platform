@@ -4,12 +4,12 @@
     <div v-if="currentScreen === 'question'" class="prog-bar-wrap">
       <div class="prog-label">Question {{ currentQ + 1 }} sur {{ questions.length }}</div>
       <div class="prog-track">
-        <div class="prog-fill" :style="{ width: ((currentQ / questions.length) * 100) + '%' }"></div>
+        <div class="prog-fill" :style="{ width: ((currentQ / questions.length) * 100) + '%' }"/>
       </div>
     </div>
 
     <!-- ══ SCREEN ACCUEIL ══ -->
-    <div v-if="currentScreen === 'welcome'" class="screen active" id="s-welcome">
+    <div v-if="currentScreen === 'welcome'" id="s-welcome" class="screen active">
       <div style="max-width:680px;margin:0 auto;padding:52px 24px;text-align:center">
         <div class="welcome-badge">Test d'orientation · Cap Ali</div>
         <h1 class="welcome-title">Découvre qui tu es<br>et <span>où tu vas</span> ✨</h1>
@@ -37,12 +37,12 @@
     </div>
 
     <!-- ══ SCREEN REGISTER ══ -->
-    <div v-if="currentScreen === 'register'" class="screen active" id="s-register">
+    <div v-if="currentScreen === 'register'" id="s-register" class="screen active">
       <div style="max-width:500px;margin:60px auto;padding:40px 24px;background:white;border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.05);text-align:center;">
         <h2 style="font-family:'Cormorant Garamond', serif;font-size:28px;color:var(--forest);margin-bottom:12px;">Faisons connaissance 👋</h2>
         <p style="font-size:14px;color:var(--muted);margin-bottom:24px;">Avant de commencer, laisse-nous quelques infos pour recevoir tes résultats et nos conseils d'orientation.</p>
         
-        <form @submit.prevent="submitRegister" style="text-align:left;">
+        <form style="text-align:left;" @submit.prevent="submitRegister">
           <div class="f-field" style="margin-bottom:12px;">
             <label class="f-label">Prénom</label>
             <input v-model="registerForm.firstName" class="f-input" type="text" required placeholder="Ton prénom">
@@ -65,7 +65,7 @@
     </div>
 
     <!-- ══ SCREEN QUESTION ══ -->
-    <div v-if="currentScreen === 'question'" class="screen active" id="s-question">
+    <div v-if="currentScreen === 'question'" id="s-question" class="screen active">
       <!-- Junior Question -->
       <div v-if="mode === 'junior'" class="q-wrap-junior">
         <div class="q-bloc-label-junior">{{ currentQuestionData.bloc }}</div>
@@ -112,7 +112,7 @@
     </div>
 
     <!-- ══ SCREEN RÉSULTATS ══ -->
-    <div v-if="currentScreen === 'result'" class="screen active" id="s-result">
+    <div v-if="currentScreen === 'result'" id="s-result" class="screen active">
       <div id="result-inner" class="result-inner" style="padding: 40px 0 60px;">
         <div class="result-hero fade-up">
           <div class="result-eyebrow">Tes résultats · Cap Ali</div>
@@ -136,7 +136,7 @@
               <div class="dim-bar-sub">{{ dimInfo[d]?.sub }}</div>
             </div>
             <div class="dim-bar-track">
-              <div class="dim-bar-fill" :style="{ width: Math.min(100, Math.round(((scores[d] || 0) / maxScore) * 100)) + '%', background: 'var(--col-' + d + ')' }"></div>
+              <div class="dim-bar-fill" :style="{ width: Math.min(100, Math.round(((scores[d] || 0) / maxScore) * 100)) + '%', background: 'var(--col-' + d + ')' }"/>
             </div>
             <div class="dim-bar-pct">{{ Math.min(100, Math.round(((scores[d] || 0) / maxScore) * 100)) }}%</div>
           </div>
@@ -166,7 +166,7 @@
           <div class="card-title">Filières et études à explorer</div>
           <div class="filieres-grid">
             <div v-for="f in resultProfile.filieres" :key="f" class="filiere-chip">
-              <span class="f-dot" :style="{ background: resultProfile.bg }"></span>{{ f }}
+              <span class="f-dot" :style="{ background: resultProfile.bg }"/>{{ f }}
             </div>
           </div>
         </div>
