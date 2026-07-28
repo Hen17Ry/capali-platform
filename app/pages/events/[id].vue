@@ -42,6 +42,7 @@
         <div class="event-content-layout">
           <div class="event-main-content">
             <h2>À propos de l'événement</h2>
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <div v-if="event.description" class="event-description prose" v-html="formatDescription(event.description)"/>
             <p v-else class="text-neutral-500 italic">Aucune description fournie pour cet événement.</p>
           </div>

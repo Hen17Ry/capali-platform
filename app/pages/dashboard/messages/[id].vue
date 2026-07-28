@@ -61,7 +61,7 @@ const mentorshipId = route.params.id as string
 
 const { data, pending, error: fetchError, refresh } = useFetch<any>(`/api/messages/${mentorshipId}`)
 const messages = computed(() => data.value?.data || [])
-const isClosed = computed(() => fetchError.value?.statusCode === 403 && fetchError.value?.data?.message.includes('terminée'))
+const isClosed = computed(() => fetchError.value?.statusCode === 403 && (fetchError.value?.data as any)?.message?.includes('terminée'))
 
 const newMessage = ref('')
 const isSending = ref(false)
