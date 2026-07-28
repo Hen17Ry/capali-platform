@@ -10,6 +10,7 @@
       <!-- Themes grid -->
       <div class="resources__themes reveal-stagger">
         <div v-for="(theme, i) in themes" :key="i" class="resources__theme-card">
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <div class="resources__theme-icon" v-html="theme.icon" />
           <span class="resources__theme-name">{{ $t(theme.label) }}</span>
         </div>

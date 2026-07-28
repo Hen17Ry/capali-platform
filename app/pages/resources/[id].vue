@@ -73,7 +73,7 @@
 
         <div class="resource-content">
           <div v-if="resource.videoId" class="video-wrapper">
-            <iframe :src="`https://www.youtube.com/embed/${resource.videoId}`" allowfullscreen></iframe>
+            <iframe :src="`https://www.youtube.com/embed/${resource.videoId}`" allowfullscreen/>
           </div>
           <div v-if="resource.content" class="content-text">{{ resource.content }}</div>
         </div>

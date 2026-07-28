@@ -69,6 +69,7 @@ export const useAuth = () => {
       return response.data
     } catch (error) {
       // CORRECTION : Plus de catch vide (empty-catch)
+      // eslint-disable-next-line no-console
       console.warn('[useAuth] Session introuvable ou expirée.', error)
       store.clearUser()
       return null
@@ -118,6 +119,7 @@ export const useAuth = () => {
       await $fetch('/api/auth/logout', { method: 'POST' })
     } catch (error) {
       // CORRECTION : On log l'erreur réseau même si on force la déconnexion locale
+      // eslint-disable-next-line no-console
       console.error('[useAuth] Erreur API lors de la déconnexion réseau:', error)
     } finally {
       store.clearUser()

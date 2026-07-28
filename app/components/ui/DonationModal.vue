@@ -170,6 +170,7 @@ async function submitStripe() {
     // Redirect to Stripe Checkout
     window.location.href = data.value.url
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err)
     alert("Une erreur est survenue.")
     isLoading.value = false
@@ -215,6 +216,7 @@ async function submitKkiapay() {
     isLoading.value = false
     close() // Close our modal so Kkiapay modal shows clearly
   } catch (err) {
+    // eslint-disable-next-line no-console
     console.error(err)
     alert("Erreur avec Kkiapay.")
     isLoading.value = false

@@ -55,7 +55,7 @@
           </div>
 
           <div v-show="activeTab === 'edit'" class="form-group">
-            <textarea v-model="form.content" class="form-textarea" rows="15" placeholder="Contenu de la ressource (texte brut)..."></textarea>
+            <textarea v-model="form.content" class="form-textarea" rows="15" placeholder="Contenu de la ressource (texte brut)..."/>
           </div>
 
           <div v-if="activeTab === 'preview'" class="preview-pane">
@@ -72,7 +72,7 @@
             <hr class="preview-divider" >
             <div class="preview-content">
               <div v-if="form.videoId" class="video-wrapper">
-                <iframe :src="`https://www.youtube.com/embed/${form.videoId}`" allowfullscreen></iframe>
+                <iframe :src="`https://www.youtube.com/embed/${form.videoId}`" allowfullscreen/>
               </div>
               <div v-if="form.content" class="content-text">{{ form.content }}</div>
               <p v-else style="color:#94a3b8">Aucun contenu pour l'instant.</p>
