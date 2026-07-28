@@ -21,6 +21,7 @@ export default defineEventHandler(async (event) => {
       targetLevel: body.targetLevel,
       authorId: event.context.adminUser?.id || null,
       isDraft: body.isDraft ?? true,
+      videoId: body.videoId || null,
       sourceUrl: body.sourceUrl || null,
       sourcePlatform: body.sourcePlatform || null,
       publishedAt: body.isDraft === false ? new Date() : null,

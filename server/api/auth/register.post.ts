@@ -14,10 +14,8 @@ const registerSchema = z.object({
   countryOrigin: z.string().max(100).optional(),
   cityCurrentFr: z.string().max(100).optional(),
   domain: z.string().max(100).optional(),
-  // Student-specific
-  arrivalDate: z.string().optional(),          // When they arrived / plan to arrive
-  needsHelp: z.array(z.string()).optional(),   // Topics they need help with
-  // Mentor-specific
+  arrivalDate: z.string().optional(),
+  needsHelp: z.array(z.string()).optional(),
   helpTopics: z.array(z.string()).optional(),
   motivation: z.string().max(1000).optional(),
   availableHoursMonth: z.number().min(1).max(40).optional(),
@@ -30,37 +28,23 @@ const registerSchema = z.object({
   presentation: z.string().max(500).optional(),
 })
 
-export default defineEventHandler(async (event) => {
-  const body = await readBody(event)
+type RegisterData = z.infer<typeof registerSchema>
 
-  // Validate input
-  const parsed = registerSchema.safeParse(body)
-  if (!parsed.success) {
-    throw createError({
-      statusCode: 400,
-      statusMessage: parsed.error.errors[0]?.message || 'Données invalides.',
-    })
-  }
+// --- Helpers pour découper la complexité ---
 
-  const data = parsed.data
-
-  // Check if email already exists
+async function ensureEmailIsUnique(email: string) {
   const [existing] = await db
     .select({ id: users.id })
     .from(users)
-    .where(eq(users.email, data.email.toLowerCase()))
+    .where(eq(users.email, email.toLowerCase()))
     .limit(1)
 
   if (existing) {
-    throw createError({
-      statusCode: 409,
-      statusMessage: 'Un compte existe déjà avec cet email.',
-    })
+    throw createError({ statusCode: 409, statusMessage: 'Un compte existe déjà avec cet email.' })
   }
+}
 
-  // Hash password & create user
-  const passwordHash = await hashUserPassword(data.password)
-
+async function createNewUser(data: RegisterData, passwordHash: string) {
   const [newUser] = await db
     .insert(users)
     .values({
@@ -84,32 +68,67 @@ export default defineEventHandler(async (event) => {
     })
 
   if (!newUser) {
+    throw createError({ statusCode: 500, statusMessage: 'Erreur lors de la création du compte.' })
+  }
+  return newUser
+}
+
+async function createMentorProfile(userId: any, data: RegisterData) {
+  await db.insert(mentorProfiles).values({
+    userId,
+    cityInFrance: data.cityCurrentFr || null,
+    availableHoursMonth: data.availableHoursMonth ?? 4,
+    maxMentees: data.maxMentees ?? 2,
+    acceptsRemote: data.acceptsRemote ?? true,
+    acceptsInperson: data.acceptsInperson ?? false,
+    helpTopics: data.helpTopics ?? [],
+    motivation: data.motivation || null,
+    yearsInFrance: data.yearsInFrance ?? null,
+    languages: data.languages ?? ['français'],
+    linkedinUrl: data.linkedinUrl || null,
+    presentation: data.presentation || null,
+    isValidated: false,
+  })
+}
+
+function dispatchEmails(user: any, status: string) {
+  // L'ajout du .catch() corrige l'erreur "unhandled-promise" de l'audit
+  sendWelcomeEmail({ name: user.name, email: user.email, status: user.status })
+    .catch((err) => console.error("Échec de l'envoi de l'email de bienvenue:", err))
+
+  if (status === 'mentor') {
+    sendMentorApplicationEmail({ name: user.name, email: user.email })
+      .catch((err) => console.error("Échec de l'envoi de l'email mentor:", err))
+  }
+}
+
+// --- Contrôleur Principal ---
+
+export default defineEventHandler(async (event) => {
+  const body = await readBody(event)
+
+  // 1. Validation
+  const parsed = registerSchema.safeParse(body)
+  if (!parsed.success) {
     throw createError({
-      statusCode: 500,
-      statusMessage: 'Erreur lors de la création du compte.',
+      statusCode: 400,
+      statusMessage: parsed.error.errors[0]?.message || 'Données invalides.',
     })
   }
+  const data = parsed.data
 
-  // If mentor, create mentor profile with enriched data
+  // 2. Vérification et Préparation
+  await ensureEmailIsUnique(data.email)
+  const passwordHash = await hashUserPassword(data.password)
+
+  // 3. Écriture en Base de données
+  const newUser = await createNewUser(data, passwordHash)
+  
   if (data.status === 'mentor') {
-    await db.insert(mentorProfiles).values({
-      userId: newUser.id,
-      cityInFrance: data.cityCurrentFr || null,
-      availableHoursMonth: data.availableHoursMonth ?? 4,
-      maxMentees: data.maxMentees ?? 2,
-      acceptsRemote: data.acceptsRemote ?? true,
-      acceptsInperson: data.acceptsInperson ?? false,
-      helpTopics: data.helpTopics ?? [],
-      motivation: data.motivation || null,
-      yearsInFrance: data.yearsInFrance ?? null,
-      languages: data.languages ?? ['français'],
-      linkedinUrl: data.linkedinUrl || null,
-      presentation: data.presentation || null,
-      isValidated: false,
-    })
+    await createMentorProfile(newUser.id, data)
   }
 
-  // Create session in Redis & set HTTP-only cookie
+  // 4. Création de la Session
   const sessionId = await createSession({
     userId: newUser.id,
     email: newUser.email,
@@ -118,15 +137,10 @@ export default defineEventHandler(async (event) => {
     isAdmin: newUser.isAdmin,
     avatarUrl: newUser.avatarUrl,
   })
-
   setSessionCookie(event, sessionId)
 
-  // ── Send emails (fire-and-forget — don't block the response) ──
-  sendWelcomeEmail({ name: newUser.name, email: newUser.email, status: newUser.status })
-
-  if (data.status === 'mentor') {
-    sendMentorApplicationEmail({ name: newUser.name, email: newUser.email })
-  }
+  // 5. Tâches asynchrones (fire-and-forget)
+  dispatchEmails(newUser, data.status)
 
   return {
     data: {

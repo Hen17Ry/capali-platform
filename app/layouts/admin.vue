@@ -26,6 +26,7 @@
         <span v-show="!sidebarCollapsed" class="admin-sidebar__section-label">Principal</span>
 
         <NuxtLink v-for="item in mainNav" :key="item.to" :to="item.to" class="admin-sidebar__link" active-class="admin-sidebar__link--active">
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <span class="admin-sidebar__link-icon" v-html="item.icon" />
           <span v-show="!sidebarCollapsed" class="admin-sidebar__link-text">{{ item.label }}</span>
           <span v-if="item.badge && !sidebarCollapsed" class="admin-sidebar__badge">{{ item.badge }}</span>
@@ -34,6 +35,7 @@
         <span v-show="!sidebarCollapsed" class="admin-sidebar__section-label">Contenu</span>
 
         <NuxtLink v-for="item in contentNav" :key="item.to" :to="item.to" class="admin-sidebar__link" active-class="admin-sidebar__link--active">
+          <!-- eslint-disable-next-line vue/no-v-html -->
           <span class="admin-sidebar__link-icon" v-html="item.icon" />
           <span v-show="!sidebarCollapsed" class="admin-sidebar__link-text">{{ item.label }}</span>
         </NuxtLink>

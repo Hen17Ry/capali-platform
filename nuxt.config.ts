@@ -64,7 +64,7 @@ export default defineNuxtConfig({
     // Variables publiques (accessibles côté client)
     public: {
       appName: 'CAP ALI',
-      appUrl: process.env.APP_URL || 'http://localhost:3000',
+      appUrl: process.env.APP_URL, // CORRECTION : Plus de fallback localhost en dur
       kkiapayPublicKey: process.env.KKIAPAY_PUBLIC_KEY,
     },
   },
@@ -75,12 +75,13 @@ export default defineNuxtConfig({
     },
   },
 
+  // CORRECTION : Utilisation d'une variable d'environnement pour le proxy de stockage
   routeRules: {
-    '/s3/**': { proxy: 'http://localhost:9000/capali/**' },
+    '/s3/**': { proxy: process.env.S3_PROXY_TARGET },
   },
 
   devServer: {
-    host: '0.0.0.0' // Équivalent à host: true pour écouter sur toutes les interfaces
+    host: '0.0.0.0'
   },
   
   vite: {
@@ -88,7 +89,7 @@ export default defineNuxtConfig({
       allowedHosts: true,
       hmr:{
         protocol:'wss',
-        clientPort:443      } // Autorise tous les hôtes (ex: ngrok)
+        clientPort:443      }
     }
   },
 
