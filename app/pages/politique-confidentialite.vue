@@ -1,8 +1,8 @@
 <template>
   <div class="privacy-page">
     <header class="privacy-hero">
-      <div class="privacy-hero__glow privacy-hero__glow--one" aria-hidden="true"></div>
-      <div class="privacy-hero__glow privacy-hero__glow--two" aria-hidden="true"></div>
+      <div class="privacy-hero__glow privacy-hero__glow--one" aria-hidden="true"/>
+      <div class="privacy-hero__glow privacy-hero__glow--two" aria-hidden="true"/>
 
       <div class="privacy-container privacy-hero__content">
         <div class="privacy-hero__icon" aria-hidden="true">
@@ -48,7 +48,7 @@
             </svg>
             Mise à jour le 16 août 2026
           </span>
-          <span class="privacy-meta__divider" aria-hidden="true"></span>
+          <span class="privacy-meta__divider" aria-hidden="true"/>
           <span class="privacy-meta__item">
             <svg
               class="privacy-svg privacy-svg--meta"
@@ -94,7 +94,7 @@
 
       <article class="privacy-card">
         <div class="privacy-intro">
-          <span class="privacy-intro__line" aria-hidden="true"></span>
+          <span class="privacy-intro__line" aria-hidden="true"/>
           <p>
             L’association <strong>CAP ALI</strong> s’engage à respecter la vie privée de
             ses utilisateurs. Cette politique explique quelles informations nous

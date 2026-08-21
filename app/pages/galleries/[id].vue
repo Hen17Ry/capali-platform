@@ -15,7 +15,7 @@
     <template v-else>
       <!-- Header Section -->
       <section class="gallery-header" :style="gallery.coverImage || gallery.images?.[0] ? { backgroundImage: `url(${gallery.coverImage || gallery.images[0]})` } : {}">
-        <div class="gallery-header__overlay"></div>
+        <div class="gallery-header__overlay"/>
         <div class="container relative z-10 pt-20 pb-16">
           <div class="max-w-4xl mx-auto text-center">
             <NuxtLink to="/galleries" class="back-btn mb-8">
@@ -52,7 +52,7 @@
           <div class="photo-grid">
             <div v-for="(img, idx) in gallery?.images || []" :key="idx" class="photo-card group" @click="openImage(idx)">
               <div class="photo-card__inner">
-                <img :src="img" class="photo-card__img" loading="lazy" />
+                <img :src="img" class="photo-card__img" loading="lazy" >
                 <div class="photo-card__overlay">
                   <div class="photo-card__icon">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
@@ -120,7 +120,7 @@
                   :alt="`Photo ${currentImageIndex + 1} de la galerie`"
                   class="lightbox__image"
                   draggable="false"
-                />
+                >
               </div>
 
               <!-- Informations -->
@@ -150,7 +150,7 @@
                     <img
                       :src="image"
                       :alt="`Miniature ${index + 1}`"
-                    />
+                    >
                   </button>
                 </div>
               </div>

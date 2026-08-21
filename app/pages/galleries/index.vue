@@ -2,7 +2,7 @@
   <div class="page-wrapper">
     <!-- Premium Hero Section -->
     <section class="hero-section">
-      <div class="hero-bg"></div>
+      <div class="hero-bg"/>
       <div class="container relative z-10">
         <div class="text-center max-w-3xl mx-auto">
           <span class="section__overtitle">Souvenirs</span>

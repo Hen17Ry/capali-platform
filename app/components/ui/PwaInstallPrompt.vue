@@ -41,6 +41,7 @@ const installPwa = async () => {
   deferredPrompt.prompt()
   // Attendre la réponse de l'utilisateur
   const { outcome } = await deferredPrompt.userChoice
+  // eslint-disable-next-line no-console
   console.log(`PWA installation: ${outcome}`)
   // Réinitialiser la variable
   deferredPrompt = null

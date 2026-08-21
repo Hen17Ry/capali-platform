@@ -19,7 +19,7 @@
           <div class="events-grid">
             <div v-for="event in upcomingEvents" :key="event.id" class="event-card" @click="navigateTo(`/events/${event.id}`)">
               <div class="event-card__cover" :style="event.coverImage ? { backgroundImage: `url(${event.coverImage})` } : {}">
-                <div class="event-card__overlay"></div>
+                <div class="event-card__overlay"/>
                 <span v-if="!event.coverImage" class="event-card__cover-placeholder">
                   {{ getTypeEmoji(event.type) }}
                 </span>
@@ -51,9 +51,9 @@
               </div>
               
               <div class="event-card__footer">
-                <NuxtLink :to="`/events/${event.id}`" v-if="event.registrationUrl" :href="event.registrationUrl" rel="noopener noreferrer" class="btn-register" @click.stop>
+                <NuxtLink v-if="event.registrationUrl" :to="`/events/${event.id}`" :href="event.registrationUrl" rel="noopener noreferrer" class="btn-register" @click.stop>
                   S'inscrire maintenant
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                 </NuxtLink>
                 <button v-else class="btn-register btn-disabled" disabled @click.stop>
                   Bientôt disponible
@@ -69,7 +69,7 @@
           <div class="events-grid past-events-grid">
             <div v-for="event in pastEvents" :key="event.id" class="event-card event-card--past" @click="navigateTo(`/events/${event.id}`)">
               <div class="event-card__cover" :style="event.coverImage ? { backgroundImage: `url(${event.coverImage})` } : {}">
-                <div class="event-card__overlay"></div>
+                <div class="event-card__overlay"/>
                 <span v-if="!event.coverImage" class="event-card__cover-placeholder">
                   {{ getTypeEmoji(event.type) }}
                 </span>

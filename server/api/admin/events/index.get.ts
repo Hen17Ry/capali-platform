@@ -1,7 +1,6 @@
 import { db } from '~~/server/db'
 import { events, eventAttendees } from '~~/server/db/schema'
-import { sql, eq } from 'drizzle-orm'
-import { getTableColumns } from 'drizzle-orm'
+import { sql, eq, getTableColumns  } from 'drizzle-orm'
 
 export default defineEventHandler(async () => {
   const rows = await db

@@ -1,5 +1,5 @@
 import { getRedis } from './redis'
-import { H3Event } from 'h3'
+import type { H3Event } from 'h3'
 
 interface RateLimitOptions {
   windowSeconds: number;
