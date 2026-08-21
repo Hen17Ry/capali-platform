@@ -27,7 +27,7 @@
             {{ conv.lastMessage }}
           </p>
         </div>
-        <div v-if="conv.unreadCount > 0" class="unread-dot"></div>
+        <div v-if="conv.unreadCount > 0" class="unread-dot"/>
       </NuxtLink>
     </div>
   </div>

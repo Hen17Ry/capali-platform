@@ -1,8 +1,8 @@
 <template>
   <div class="legal-page">
     <header class="legal-hero">
-      <div class="legal-hero__glow legal-hero__glow--one" aria-hidden="true"></div>
-      <div class="legal-hero__glow legal-hero__glow--two" aria-hidden="true"></div>
+      <div class="legal-hero__glow legal-hero__glow--one" aria-hidden="true"/>
+      <div class="legal-hero__glow legal-hero__glow--two" aria-hidden="true"/>
 
       <div class="legal-container legal-hero__content">
         <div class="legal-hero__icon" aria-hidden="true">
@@ -48,7 +48,7 @@
             </svg>
             Mise à jour le 16 août 2026
           </span>
-          <span class="legal-meta__divider" aria-hidden="true"></span>
+          <span class="legal-meta__divider" aria-hidden="true"/>
           <span class="legal-meta__item">
             <svg
               class="legal-svg legal-svg--meta"
@@ -96,7 +96,7 @@
 
       <article class="legal-card">
         <div class="legal-intro">
-          <span class="legal-intro__line" aria-hidden="true"></span>
+          <span class="legal-intro__line" aria-hidden="true"/>
           <p>
             Les présentes Conditions Générales d’Utilisation (CGU) encadrent
             juridiquement l’utilisation des services du site <strong>capali.org</strong>.

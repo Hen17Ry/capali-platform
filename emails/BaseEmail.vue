@@ -21,7 +21,7 @@
         />
         
         <div :style="contentStyle">
-          <slot></slot>
+          <slot/>
         </div>
 
         <EHr :style="dividerStyle" />

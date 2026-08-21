@@ -1,4 +1,4 @@
-import { ref, watchEffect, onUnmounted } from 'vue'
+import { ref } from 'vue'
 
 const unreadMessagesCount = ref(0)
 const lastMessage = ref<any>(null)
@@ -17,6 +17,7 @@ export const useWebsocket = () => {
       socket = new WebSocket(wsUrl)
       
       socket.onopen = () => {
+        // eslint-disable-next-line no-console
         console.log('[WebSocket] Connected')
       }
       
@@ -32,11 +33,13 @@ export const useWebsocket = () => {
             }
           }
         } catch (e) {
+          // eslint-disable-next-line no-console
           console.error('Erreur parsing websocket msg', e)
         }
       }
       
       socket.onclose = () => {
+        // eslint-disable-next-line no-console
         console.log('[WebSocket] Disconnected')
         socket = null
         // Reconnect after 3s

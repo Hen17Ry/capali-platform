@@ -41,13 +41,13 @@
             <div class="gallery-grid">
               <!-- Images prévisualisées -->
               <div v-for="(img, idx) in form.images" :key="idx" class="cover-preview">
-                <img :src="img" />
+                <img :src="img" alt="Preview">
                 <button type="button" class="cover-preview__remove" title="Supprimer" @click="removeImage(idx)">✕</button>
               </div>
 
               <!-- Upload Button -->
               <label class="cover-upload-btn" :class="{ 'is-uploading': uploading }">
-                <input type="file" ref="fileInput" multiple accept="image/*" style="display:none" @change="handleFileUpload" />
+                <input ref="fileInput" type="file" multiple accept="image/*" style="display:none" @change="handleFileUpload">
                 <div style="display: flex; flex-direction: column; align-items: center; gap: 8px;">
                   <svg v-if="!uploading" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
                   <svg v-else class="animate-spin" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>

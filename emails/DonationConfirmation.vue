@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { Text as EText, Button as EButton } from '@vue-email/components'
+import { Text as EText } from '@vue-email/components'
 
 defineProps<{
   amount: string
@@ -46,16 +46,5 @@ const detailStyle = {
   fontSize: '15px',
   color: '#1e293b',
   margin: '0 0 8px 0',
-}
-
-const buttonStyle = {
-  backgroundColor: '#1B6B3A',
-  color: '#ffffff',
-  padding: '12px 20px',
-  borderRadius: '6px',
-  textDecoration: 'none',
-  display: 'inline-block',
-  fontWeight: '600',
-  marginTop: '8px',
 }
 </script>

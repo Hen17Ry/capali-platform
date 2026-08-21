@@ -23,7 +23,7 @@
           <tr v-if="pending"><td colspan="5" class="empty-row">Chargement...</td></tr>
           <tr v-else-if="error"><td colspan="5" class="empty-row text-red-500">Erreur lors du chargement.</td></tr>
           <tr v-else-if="!galleries?.length"><td colspan="5" class="empty-row">Aucune galerie n'a encore été créée.</td></tr>
-          <tr v-else v-for="gallery in galleries" :key="gallery.id">
+          <tr v-for="gallery in galleries" :key="gallery.id">
             <td data-label="Événement"><span class="event-title">{{ gallery.eventTitle || 'Sans titre' }}</span></td>
             <td data-label="Description"><span class="text-muted">{{ gallery.description || '-' }}</span></td>
             <td data-label="Images">
