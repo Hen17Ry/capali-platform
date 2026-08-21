@@ -35,6 +35,7 @@ onMounted(async () => {
         body: { transactionId, donationId }
       })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Erreur lors de la vérification Kkiapay:', err)
     }
   } else if (sessionId) {
@@ -45,6 +46,7 @@ onMounted(async () => {
         body: { sessionId }
       })
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error('Erreur lors de la vérification Stripe:', err)
     }
   }

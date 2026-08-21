@@ -39,19 +39,7 @@ const textStyle = {
   marginBottom: '16px',
 }
 
-const boxStyle = {
-  backgroundColor: '#f8fafc',
-  border: '1px solid #e2e8f0',
-  borderRadius: '8px',
-  padding: '16px',
-  marginBottom: '24px',
-}
 
-const detailStyle = {
-  fontSize: '15px',
-  color: '#1e293b',
-  margin: '0 0 8px 0',
-}
 
 const buttonStyle = {
   backgroundColor: '#1B6B3A',

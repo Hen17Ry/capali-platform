@@ -60,7 +60,7 @@
       </form>
       
       <!-- Widget Container Kkiapay -->
-      <div v-show="paymentPending && form.paymentProvider === 'kkiapay'" id="kkiapay-widget-container"></div>
+      <div v-show="paymentPending && form.paymentProvider === 'kkiapay'" id="kkiapay-widget-container" />
     </div>
   </div>
 </template>
