@@ -3,7 +3,7 @@
     <div class="navbar__inner container container--wide">
       <!-- Logo -->
       <NuxtLink to="/" class="navbar__logo" aria-label="CAP ALI — Accueil">
-        <img src="/logo.png" alt="CAP ALI" width="48" height="48" >
+        <NuxtImg format="webp" src="/logo.png" alt="CAP ALI" width="48" height="48" />
         <span class="navbar__logo-text">CAP <span class="navbar__logo-highlight">ALI</span></span>
       </NuxtLink>
 
@@ -15,6 +15,7 @@
           <li><a href="#mentorship" class="navbar__link" @click="closeMobile">{{ $t('nav.mentorship') }}</a></li>
           <li><a href="#resources" class="navbar__link" @click="closeMobile">{{ $t('nav.resources') }}</a></li>
           <li><a href="#events" class="navbar__link" @click="closeMobile">{{ $t('nav.events') }}</a></li>
+          <li><NuxtLink to="/galleries" class="navbar__link" @click="closeMobile">Galerie</NuxtLink></li>
           <li><a href="#forum" class="navbar__link" @click="closeMobile">{{ $t('nav.forum') }}</a></li>
         </ul>
 
@@ -40,8 +41,15 @@
           </a>
 
           <!-- Auth Buttons -->
-          <NuxtLink to="/auth/login" class="navbar__link navbar__link--auth" @click="closeMobile">{{ $t('nav.login') }}</NuxtLink>
-          <NuxtLink to="/auth/register" class="btn btn--primary btn--sm" @click="closeMobile">{{ $t('nav.register') }}</NuxtLink>
+          <template v-if="isAuthenticated">
+            <NuxtLink :to="isAdmin ? '/admin' : '/dashboard'" class="btn btn--primary btn--sm" @click="closeMobile">
+              Mon espace
+            </NuxtLink>
+          </template>
+          <template v-else>
+            <NuxtLink to="/auth/login" class="navbar__link navbar__link--auth" @click="closeMobile">{{ $t('nav.login') }}</NuxtLink>
+            <NuxtLink to="/auth/register" class="btn btn--primary btn--sm" @click="closeMobile">{{ $t('nav.register') }}</NuxtLink>
+          </template>
         </div>
       </nav>
 
@@ -65,6 +73,7 @@
 
 <script setup lang="ts">
 const { locale, locales, setLocale } = useI18n()
+const { isAuthenticated, isAdmin } = useAuth()
 const isScrolled = ref(false)
 const isMobileOpen = ref(false)
 

@@ -22,6 +22,8 @@ export const users = pgTable('users', {
   emailVerifiedAt: timestamp('email_verified_at'),
   notifEmail: boolean('notif_email').notNull().default(true),
   notifSummary: boolean('notif_summary').notNull().default(false),
+  resetPasswordToken: varchar('reset_password_token', { length: 255 }),
+  resetPasswordExpires: timestamp('reset_password_expires'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   deletedAt: timestamp('deleted_at'),
 })

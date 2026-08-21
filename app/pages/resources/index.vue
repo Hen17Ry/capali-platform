@@ -140,7 +140,7 @@
 definePageMeta({ layout: 'default' })
 
 useHead({
-  title: 'Ressources — CAP ALI',
+  title: 'Ressources',
   meta: [{ name: 'description', content: 'Guides, articles et vidéos pour réussir votre parcours en France — CAP ALI' }],
 })
 
@@ -281,8 +281,8 @@ function formatDate(d: string | null) {
 .resource-card__meta { display: flex; gap: var(--space-2); margin-bottom: var(--space-3); }
 .resource-card__theme { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: var(--radius-full); background: var(--green-50); color: var(--green-700); }
 .resource-card__level { font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: var(--radius-full); background: #fef3c7; color: #92400e; }
-.resource-card__title { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 700; color: var(--neutral-900); margin-bottom: var(--space-2); line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-.resource-card__excerpt { font-size: var(--text-sm); color: var(--neutral-500); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-3); }
+.resource-card__title { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: 700; color: var(--neutral-900); margin-bottom: var(--space-2); line-height: 1.3; display: -webkit-box; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.resource-card__excerpt { font-size: var(--text-sm); color: var(--neutral-500); line-height: 1.5; display: -webkit-box; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: var(--space-3); }
 .resource-card__footer { display: flex; justify-content: space-between; align-items: center; }
 .resource-card__date { font-size: var(--text-xs); color: var(--neutral-400); }
 .resource-card__source { font-size: var(--text-xs); color: var(--neutral-400); font-style: italic; }

@@ -197,6 +197,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 
+useHead({
+  title: 'Orientation',
+})
+
 definePageMeta({
   layout: 'default',
   title: "Test d'Orientation",

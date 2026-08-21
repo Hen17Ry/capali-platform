@@ -200,17 +200,16 @@ async function submitKkiapay() {
     const config = useRuntimeConfig()
     
     // Call Kkiapay widget function loaded via CDN
-    // @ts-expect-error Kkiapay is loaded via CDN script in the head
     window.openKkiapayWidget({
       amount: amountXOF,
-      api_key: config.public.kkiapayPublicKey || 'sandbox_key',
+      key: config.public.kkiapayPublicKey || 'sandbox_key',
       sandbox: true,
       email: form.email,
       phone: "", // Let the user input it in the widget
       name: `${form.firstName} ${form.lastName}`,
       data: data.value.id, // We pass our donation ID
       theme: "#1B6B3A", // Cap Ali Green
-      callback: `${config.public.appUrl}/donate/success?method=kkiapay&donation_id=${data.value.id}`
+      callback: `${window.location.origin}/donate/success?method=kkiapay&donation_id=${data.value.id}`
     })
 
     isLoading.value = false

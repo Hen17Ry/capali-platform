@@ -15,7 +15,15 @@ export default defineEventHandler(async (event) => {
   if (body.type) updates.type = body.type
   if (body.city !== undefined) updates.city = body.city
   if (body.eventDate) updates.eventDate = new Date(body.eventDate)
+  if (body.registrationDeadline !== undefined) {
+    updates.registrationDeadline = body.registrationDeadline ? new Date(body.registrationDeadline) : null
+  }
   if (body.registrationUrl !== undefined) updates.registrationUrl = body.registrationUrl
+  
+  if (body.isPaid !== undefined) updates.isPaid = !!body.isPaid
+  if (body.priceEur !== undefined) updates.priceEur = Number(body.priceEur)
+  if (body.isLimited !== undefined) updates.isLimited = !!body.isLimited
+  if (body.maxAttendees !== undefined) updates.maxAttendees = body.maxAttendees ? Number(body.maxAttendees) : null
 
   const [updated] = await db.update(events).set(updates).where(eq(events.id, id)).returning()
   if (!updated) throw createError({ statusCode: 404, statusMessage: 'Événement non trouvé.' })

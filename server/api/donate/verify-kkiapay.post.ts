@@ -29,8 +29,24 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
+    // Determine which API endpoint to use based on the secret key prefix
+    const isSandbox = secretKey.startsWith('tsk_')
+    const kkiapayApiUrl = isSandbox 
+      ? 'https://api-sandbox.kkiapay.me/api/v1/transactions/status'
+      : 'https://api.kkiapay.me/api/v1/transactions/status'
+
+    // 1. Récupérer le don en attente depuis la base de données
+    const [donationRecord] = await db.select().from(donations).where(eq(donations.id, donationId))
+    
+    if (!donationRecord) {
+      throw createError({ statusCode: 404, message: 'Don introuvable' })
+    }
+
+    // Calculer le montant exact attendu en XOF
+    const expectedAmountXOF = Math.round(donationRecord.amount * 655.957)
+
     // Vérification auprès de l'API Kkiapay
-    const response = await $fetch<any>('https://api.kkiapay.me/api/v1/transactions/status', {
+    const response = await $fetch<any>(kkiapayApiUrl, {
       method: 'POST',
       headers: {
         'x-api-key': publicKey,
@@ -44,15 +60,32 @@ export default defineEventHandler(async (event) => {
       }
     })
 
-    if (response && response.status === 'SUCCESS') {
+    // 2. Vérifier que le statut est SUCCESS ET que le montant payé correspond au montant attendu
+    // (Cela empêche un attaquant de valider un don de 1000€ en payant 1€)
+    const isAmountValid = response?.amount === expectedAmountXOF
+
+    if (response && response.status === 'SUCCESS' && isAmountValid) {
       // Mettre à jour la base de données
-      await db.update(donations)
+      const [updatedDonation] = await db.update(donations)
         .set({ 
           status: 'completed',
           transactionId,
           updatedAt: new Date()
         })
         .where(eq(donations.id, donationId))
+        .returning()
+
+      if (updatedDonation) {
+        const { emailService } = await import('~~/server/utils/email')
+        emailService.sendDonationConfirmation(
+          updatedDonation.email,
+          `${updatedDonation.amount} €`, 
+          new Date().toLocaleDateString('fr-FR')
+        ).catch(err => console.error('Erreur email don:', err))
+        
+        emailService.sendAdminAlert('Nouveau Don reçu (Kkiapay)', `Un don de ${updatedDonation.amount} € a été effectué par ${updatedDonation.firstName} ${updatedDonation.lastName}.`)
+          .catch(err => console.error('Erreur email alerte don:', err))
+      }
 
       return { success: true, message: 'Don validé avec succès' }
     }

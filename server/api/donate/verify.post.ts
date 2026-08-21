@@ -24,12 +24,26 @@ export default defineEventHandler(async (event) => {
 
       if (donationId) {
         // Mettre à jour la base de données
-        await db.update(donations)
+        const [updatedDonation] = await db.update(donations)
           .set({ 
             status: 'completed',
             updatedAt: new Date()
           })
           .where(eq(donations.id, donationId))
+          .returning()
+
+        if (updatedDonation) {
+          const { emailService } = await import('~~/server/utils/email')
+          emailService.sendDonationConfirmation(
+            updatedDonation.email,
+            `${updatedDonation.amount} €`,
+            new Date().toLocaleDateString('fr-FR')
+          ).catch(err => console.error('Erreur email don:', err))
+          
+          // Alerte Admin pour un don complété
+          emailService.sendAdminAlert('Nouveau Don reçu', `Un don de ${updatedDonation.amount} € a été effectué par ${updatedDonation.firstName} ${updatedDonation.lastName}.`)
+            .catch(err => console.error('Erreur email alerte don:', err))
+        }
 
         return { success: true, message: 'Don validé avec succès' }
       }

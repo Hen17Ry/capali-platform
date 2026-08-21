@@ -20,6 +20,36 @@
               <textarea v-model="form.description" class="form-textarea" rows="8" placeholder="Description détaillée de l'événement..." />
             </div>
           </div>
+          
+          <div class="form-card mt-6">
+            <h3 class="form-card__title">Billetterie & Inscriptions</h3>
+            <div class="form-group-row">
+              <label class="form-checkbox">
+                <input v-model="form.isPaid" type="checkbox" >
+                <span>Événement payant</span>
+              </label>
+              
+              <div v-if="form.isPaid" class="form-group mb-0" style="flex:1; margin-left: 1rem;">
+                <label class="form-label">Prix (en EUR)</label>
+                <div style="position: relative;">
+                  <input v-model="form.priceEur" type="number" min="1" step="1" class="form-input" placeholder="Ex: 50" required>
+                  <span style="position: absolute; right: 12px; top: 10px; color: var(--neutral-500);">€</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group-row mt-4">
+              <label class="form-checkbox">
+                <input v-model="form.isLimited" type="checkbox" >
+                <span>Places limitées</span>
+              </label>
+              
+              <div v-if="form.isLimited" class="form-group mb-0" style="flex:1; margin-left: 1rem;">
+                <label class="form-label">Nombre maximum de places</label>
+                <input v-model="form.maxAttendees" type="number" min="1" step="1" class="form-input" placeholder="Ex: 100" required>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="form-sidebar">
@@ -61,8 +91,18 @@
               <input v-model="form.city" type="text" class="form-input" placeholder="Ex: Paris, Cotonou..." >
             </div>
             <div class="form-group">
-              <label class="form-label">Date et heure *</label>
-              <input v-model="form.eventDate" type="datetime-local" class="form-input" required >
+              <label class="form-label">Date et heure de l'événement *</label>
+              <div class="date-time-grid">
+                <input v-model="eventDateOnly" type="date" class="form-input" required >
+                <input v-model="eventTimeOnly" type="time" class="form-input" required >
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date limite d'inscription</label>
+              <div class="date-time-grid">
+                <input v-model="deadlineDateOnly" type="date" class="form-input" required >
+                <input v-model="deadlineTimeOnly" type="time" class="form-input" required >
+              </div>
             </div>
             <div class="form-group">
               <label class="form-label">Lien d'inscription (externe)</label>
@@ -91,7 +131,44 @@ const form = reactive({
   type: 'online',
   city: '',
   eventDate: '',
+  registrationDeadline: '',
   registrationUrl: '',
+  isPaid: false,
+  priceEur: '',
+  isLimited: false,
+  maxAttendees: '',
+})
+
+const eventDateOnly = computed({
+  get: () => form.eventDate ? form.eventDate.split('T')[0] : '',
+  set: (val) => {
+    const time = form.eventDate && form.eventDate.includes('T') ? form.eventDate.split('T')[1] : '00:00'
+    form.eventDate = val ? `${val}T${time}` : ''
+  }
+})
+
+const eventTimeOnly = computed({
+  get: () => form.eventDate && form.eventDate.includes('T') ? (form.eventDate.split('T')[1]?.substring(0, 5) || '') : '',
+  set: (val) => {
+    const date = form.eventDate ? form.eventDate.split('T')[0] : new Date().toISOString().split('T')[0]
+    form.eventDate = date ? `${date}T${val}` : ''
+  }
+})
+
+const deadlineDateOnly = computed({
+  get: () => form.registrationDeadline ? form.registrationDeadline.split('T')[0] : '',
+  set: (val) => {
+    const time = form.registrationDeadline && form.registrationDeadline.includes('T') ? form.registrationDeadline.split('T')[1] : '00:00'
+    form.registrationDeadline = val ? `${val}T${time}` : ''
+  }
+})
+
+const deadlineTimeOnly = computed({
+  get: () => form.registrationDeadline && form.registrationDeadline.includes('T') ? (form.registrationDeadline.split('T')[1]?.substring(0, 5) || '') : '',
+  set: (val) => {
+    const date = form.registrationDeadline ? form.registrationDeadline.split('T')[0] : new Date().toISOString().split('T')[0]
+    form.registrationDeadline = date ? `${date}T${val}` : ''
+  }
 })
 
 interface EventData {
@@ -101,7 +178,12 @@ interface EventData {
   type?: string
   city?: string
   eventDate?: string
+  registrationDeadline?: string
   registrationUrl?: string
+  isPaid?: boolean
+  priceEur?: number
+  isLimited?: boolean
+  maxAttendees?: number
 }
 
 if (isEdit.value) {
@@ -115,7 +197,12 @@ if (isEdit.value) {
       type: d.type || 'online',
       city: d.city || '',
       eventDate: d.eventDate ? new Date(d.eventDate).toISOString().slice(0, 16) : '',
+      registrationDeadline: d.registrationDeadline ? new Date(d.registrationDeadline).toISOString().slice(0, 16) : '',
       registrationUrl: d.registrationUrl || '',
+      isPaid: !!d.isPaid,
+      priceEur: d.priceEur || '',
+      isLimited: !!d.isLimited,
+      maxAttendees: d.maxAttendees || '',
     })
   }
 }
@@ -179,7 +266,19 @@ async function submitForm() {
 
 .form-input, .form-select, .form-textarea { width: 100%; padding: var(--space-3); font-size: var(--text-sm); border: 1px solid var(--neutral-200); border-radius: var(--radius-md); background: var(--neutral-0); color: var(--neutral-800); font-family: var(--font-sans); transition: border-color var(--transition-fast); }
 .form-input:focus, .form-select:focus, .form-textarea:focus { outline: none; border-color: var(--green-400); box-shadow: 0 0 0 3px rgba(27,107,58,0.1); }
-.form-input--lg { font-size: var(--text-lg); font-weight: 600; padding: var(--space-4); }
+.form-input--lg {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  padding: var(--space-4);
+}
+
+/* Grid for separating Date and Time inputs */
+.date-time-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  gap: var(--space-2);
+}
+
 .form-textarea { resize: vertical; line-height: 1.6; }
 
 /* Cover image */
@@ -193,4 +292,11 @@ async function submitForm() {
 .cover-upload-btn.is-uploading { pointer-events: none; opacity: 0.6; }
 
 @media (max-width: 1024px) { .form-grid { grid-template-columns: 1fr; } .form-sidebar { position: static; } }
+.form-group-row { display: flex; align-items: center; justify-content: space-between; }
+.form-checkbox { display: flex; align-items: center; gap: 0.5rem; cursor: pointer; user-select: none; }
+.form-checkbox input { width: 1.2rem; height: 1.2rem; accent-color: var(--primary-600); }
+.form-checkbox span { font-weight: 500; color: var(--neutral-700); }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+.mb-0 { margin-bottom: 0; }
 </style>

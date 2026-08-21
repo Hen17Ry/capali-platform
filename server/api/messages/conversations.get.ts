@@ -52,6 +52,7 @@ export default defineEventHandler(async (event) => {
 
       // Cette requête s'exécute maintenant en parallèle pour toutes les conversations
       const lastMsg = await (Message as any).findOne({ mentorshipId: m.id }).sort({ createdAt: -1 }).lean()
+      const unreadCount = await (Message as any).countDocuments({ mentorshipId: m.id, senderId: partnerId, isRead: false })
 
       return {
         id: m.id,
@@ -60,7 +61,7 @@ export default defineEventHandler(async (event) => {
         partnerAvatar,
         lastMessage: lastMsg?.content || (lastMsg?.type === 'image' ? '📷 Image' : 'Nouvelle conversation'),
         lastMessageAt: lastMsg?.createdAt || new Date(0),
-        unreadCount: 0 // To be implemented
+        unreadCount
       }
     })
   )

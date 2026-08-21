@@ -1,0 +1,4 @@
+FROM node:20-alpine
+WORKDIR /app
+# Pour éviter que npm install plante s'il manque des dépendances de compilation (ex: python, make, g++)
+RUN apk add --no-cache python3 make g++ 

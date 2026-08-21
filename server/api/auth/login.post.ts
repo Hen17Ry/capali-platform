@@ -4,6 +4,7 @@ import { users } from '~~/server/db/schema'
 import { eq, isNull, and } from 'drizzle-orm'
 import { verifyUserPassword } from '~~/server/utils/password'
 import { createSession, setSessionCookie } from '~~/server/utils/session'
+import { checkRateLimit } from '~~/server/utils/rateLimit'
 
 const loginSchema = z.object({
   email: z.string().email('Email invalide.'),
@@ -11,6 +12,9 @@ const loginSchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
+  // Limiter à 5 tentatives de connexion par minute par IP
+  await checkRateLimit(event, 'login', { windowSeconds: 60, maxRequests: 5 })
+
   const body = await readBody(event)
 
   const parsed = loginSchema.safeParse(body)

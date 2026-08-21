@@ -7,7 +7,7 @@ export default defineEventHandler(async (event) => {
   const session = await getSessionFromEvent(event)
 
   if (!session) {
-    throw createError({ statusCode: 401, statusMessage: 'Non authentifié.' })
+    throw createError({ statusCode: 401, message: 'Non authentifié.' })
   }
 
   // Fetch fresh user data from DB

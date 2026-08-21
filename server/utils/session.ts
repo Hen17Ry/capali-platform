@@ -100,7 +100,7 @@ export async function deleteAllUserSessions(userId: string): Promise<void> {
 export function setSessionCookie(event: any, sessionId: string): void {
   setCookie(event, SESSION_COOKIE_NAME, sessionId, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.APP_URL ? process.env.APP_URL.startsWith('https') : process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
     maxAge: SESSION_TTL,
@@ -113,7 +113,7 @@ export function setSessionCookie(event: any, sessionId: string): void {
 export function clearSessionCookie(event: any): void {
   deleteCookie(event, SESSION_COOKIE_NAME, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.APP_URL ? process.env.APP_URL.startsWith('https') : process.env.NODE_ENV === 'production',
     sameSite: 'lax',
     path: '/',
   })

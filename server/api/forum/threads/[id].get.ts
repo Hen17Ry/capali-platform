@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   if (!id) throw createError({ statusCode: 400, message: 'ID manquant' })
 
   // Increment view count
-  const thread = await (ForumThread as any).findByIdAndUpdate(id, { $inc: { viewCount: 1 } }, { new: true }).lean()
+  const thread = await (ForumThread as any).findByIdAndUpdate(id, { $inc: { viewCount: 1 } }, { returnDocument: 'after' }).lean()
   if (!thread) {
     throw createError({ statusCode: 404, message: 'Discussion introuvable' })
   }

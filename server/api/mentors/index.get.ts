@@ -4,8 +4,6 @@ import { eq, and, isNull } from 'drizzle-orm'
 import { getSessionFromEvent } from '~~/server/utils/session'
 
 export default defineEventHandler(async (event) => {
-  const session = await getSessionFromEvent(event)
-  if (!session) throw createError({ statusCode: 401, message: 'Unauthorized' })
 
   const allMentors = await db
     .select({

@@ -1,6 +1,6 @@
 # 🎓 CAP ALI — Plateforme Numérique Communautaire
 
-**Communauté d'Appui au Parcours des Africains et Leaders Inspirants**
+**Tracer le chemin de l'avenir**
 
 Plateforme web communautaire pour accompagner les jeunes Béninois et Africains francophones dans leur parcours d'études et d'installation en France : mentorat, ressources, forums, événements.
 

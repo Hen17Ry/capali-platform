@@ -6,6 +6,8 @@ export default defineNuxtConfig({
     '@nuxtjs/i18n',
     'nuxt-auth-utils',
     '@nuxt/eslint',
+    '@nuxt/image',
+    '@vite-pwa/nuxt',
   ],
 
   i18n: {
@@ -25,19 +27,19 @@ export default defineNuxtConfig({
 
   app: {
     head: {
-      title: 'CAP ALI — Communauté d\'Appui au Parcours des Africains et Leaders Inspirants',
+      title: 'CAP ALI',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: 'CAP ALI accompagne les jeunes Béninois et Africains francophones dans leur parcours vers et en France : mentorat, ressources, communauté.' },
         { name: 'theme-color', content: '#1B6B3A' },
-        { property: 'og:title', content: 'CAP ALI — Plateforme Communautaire' },
+        { property: 'og:title', content: 'CAP ALI' },
         { property: 'og:description', content: 'Mentorat, ressources et communauté pour les jeunes Africains en France.' },
         { property: 'og:image', content: '/logo.png' },
         { property: 'og:type', content: 'website' },
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/x-icon', href: '/logo.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap' },
@@ -46,6 +48,50 @@ export default defineNuxtConfig({
         { src: 'https://cdn.kkiapay.me/k.js', defer: true }
       ]
     },
+  },
+
+  pwa: {
+    registerType: 'autoUpdate',
+    manifest: {
+      name: 'CAP ALI Platform',
+      short_name: 'CAP ALI',
+      theme_color: '#1B6B3A',
+      background_color: '#ffffff',
+      display: 'standalone',
+      start_url: '/',
+      icons: [
+        {
+          src: '/logo.png',
+          sizes: '192x192',
+          type: 'image/png'
+        },
+        {
+          src: '/logo.png',
+          sizes: '512x512',
+          type: 'image/png'
+        },
+        {
+          src: '/logo.png',
+          sizes: '512x512',
+          type: 'image/png',
+          purpose: 'any maskable'
+        }
+      ]
+    },
+    workbox: {
+      navigateFallback: '/',
+      globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      maximumFileSizeToCacheInBytes: 3000000,
+    },
+    client: {
+      installPrompt: true,
+    },
+    devOptions: {
+      enabled: true,
+      suppressWarnings: true,
+      navigateFallbackAllowlist: [/^\/$/],
+      type: 'module',
+    }
   },
 
   runtimeConfig: {
@@ -72,12 +118,18 @@ export default defineNuxtConfig({
   nitro: {
     experimental: {
       tasks: true,
+      websocket: true,
     },
   },
 
   // CORRECTION : Utilisation d'une variable d'environnement pour le proxy de stockage
   routeRules: {
     '/s3/**': { proxy: process.env.S3_PROXY_TARGET },
+    // Cache SSR (SWR/ISR) pour les pages publiques afin de réduire la latence
+    '/': { swr: 300 },
+    '/events': { swr: 300 },
+    '/galleries': { swr: 300 },
+    '/resources': { swr: 300 },
   },
 
   devServer: {
@@ -86,10 +138,16 @@ export default defineNuxtConfig({
   
   vite: {
     server: {
-      allowedHosts: true,
+      allowedHosts: [
+      'capali.org',
+      'www.capali.org',
+      'localhost',
+    ],
       hmr:{
-        protocol:'wss',
-        clientPort:443      }
+        protocol: 'wss',
+      host: 'capali.org',
+        clientPort: 443
+      }
     }
   },
 

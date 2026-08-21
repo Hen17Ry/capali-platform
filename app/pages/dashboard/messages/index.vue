@@ -16,15 +16,18 @@
     </div>
 
     <div v-else class="conversations-list">
-      <NuxtLink v-for="conv in conversations" :key="conv.id" :to="`/dashboard/messages/${conv.id}`" class="conversation-card">
+      <NuxtLink v-for="conv in conversations" :key="conv.id" :to="`/dashboard/messages/${conv.id}`" class="conversation-card" :class="{ 'is-unread': conv.unreadCount > 0 }">
         <div class="avatar" :style="{ background: getColor(conv.partnerName || '') }">{{ conv.partnerName?.[0]?.toUpperCase() || '?' }}</div>
         <div class="conv-details">
           <div class="conv-header">
             <h3>{{ conv.partnerName || 'Utilisateur inconnu' }}</h3>
             <span class="date">{{ formatDate(conv.lastMessageAt) }}</span>
           </div>
-          <p class="last-message">{{ conv.lastMessage }}</p>
+          <p class="last-message" :class="{ 'text-bold': conv.unreadCount > 0 }">
+            {{ conv.lastMessage }}
+          </p>
         </div>
+        <div v-if="conv.unreadCount > 0" class="unread-dot"></div>
       </NuxtLink>
     </div>
   </div>
@@ -33,8 +36,13 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'dashboard' } as any)
 const { user } = useAuth()
-const { data, pending } = useFetch<any>('/api/messages/conversations')
+const { lastMessage } = useWebsocket()
+const { data, pending, refresh } = useFetch<any>('/api/messages/conversations')
 const conversations = computed(() => data.value?.data || [])
+
+watch(lastMessage, () => {
+  refresh()
+})
 
 function formatDate(d: string) { 
   if (!d || new Date(d).getTime() === 0) return ''
@@ -60,8 +68,19 @@ function getColor(name: string) {
 .conv-details { flex: 1; min-width: 0; }
 .conv-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2px; }
 .conv-header h3 { font-weight: 600; font-size: var(--text-base); color: var(--neutral-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.conversation-card.is-unread .conv-header h3 { font-weight: 800; }
 .date { font-size: var(--text-xs); color: var(--neutral-400); flex-shrink: 0; }
 .last-message { font-size: var(--text-sm); color: var(--neutral-500); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.last-message.text-bold { font-weight: 700; color: var(--neutral-900); }
+
+.unread-dot {
+  width: 12px;
+  height: 12px;
+  background: var(--blue-500, #3b82f6);
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
 
 .empty-state { text-align: center; padding: var(--space-16); color: var(--neutral-500); background: white; border-radius: var(--radius-xl); border: 1px dashed var(--neutral-300); }
 .empty-state svg { margin: 0 auto var(--space-4); color: var(--neutral-400); }

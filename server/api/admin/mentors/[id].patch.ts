@@ -43,10 +43,13 @@ export default defineEventHandler(async (event) => {
       .limit(1)
 
     if (user) {
+      const { emailService } = await import('~~/server/utils/email')
       if (body.action === 'validate') {
-        sendMentorValidatedEmail({ name: user.name, email: user.email })
+        emailService.sendMentorRequestConfirmedEmail(user.email, user.name)
+          .catch(err => console.error("Erreur email validation mentor:", err))
       } else {
-        sendMentorRefusedEmail({ name: user.name, email: user.email })
+        emailService.sendMentorRequestRefusedEmail(user.email, user.name)
+          .catch(err => console.error("Erreur email refus mentor:", err))
       }
     }
   }

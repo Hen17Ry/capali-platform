@@ -46,5 +46,49 @@ export default defineEventHandler(async (event) => {
   thread.lastActivityAt = new Date()
   await thread.save()
 
+  // ── Send notification emails (fire-and-forget) ──
+  try {
+    const { emailService } = await import('~~/server/utils/email')
+    
+    // 1. Notifier l'auteur du thread s'il est différent de l'auteur de la réponse
+    if (thread.authorId !== session.userId) {
+      const [threadAuthor] = await db
+        .select({ email: users.email })
+        .from(users)
+        .where(eq(users.id, thread.authorId))
+        .limit(1)
+
+      if (threadAuthor) {
+        emailService.sendForumReply(threadAuthor.email, thread.title, user.name)
+          .catch(err => console.error("Erreur email forum reply:", err))
+      }
+    }
+
+    // 2. Extraire les mentions (@username) et notifier
+    const mentionRegex = /@([a-zA-Z0-9_]+)/g
+    const matches = Array.from(parsed.data.content.matchAll(mentionRegex))
+    const mentions = matches.map((m: any) => m[1]).filter(Boolean) as string[]
+
+    if (mentions.length > 0) {
+      // Trouver les emails des utilisateurs mentionnés (on limite à 5 par précaution)
+      for (const mention of mentions.slice(0, 5)) {
+        // Supposons que "name" ou "username" corresponde à la mention
+        // Ici on cherche par nom pour simplifier (la logique exacte dépend de ton choix d'identifiant)
+        const [mentionedUser] = await db
+          .select({ email: users.email })
+          .from(users)
+          .where(eq(users.name, mention)) // ou .ilike(users.name, mention) etc.
+          .limit(1)
+
+        if (mentionedUser && mentionedUser.email) {
+          emailService.sendForumMention(mentionedUser.email, thread.title, user.name)
+            .catch(err => console.error("Erreur email forum mention:", err))
+        }
+      }
+    }
+  } catch (err) {
+    console.error("Erreur préparation emails forum:", err)
+  }
+
   return { data: post }
 })
