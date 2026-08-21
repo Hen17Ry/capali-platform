@@ -188,4 +188,5 @@ emails.forEach(email => {
   fs.writeFileSync(path.join(__dirname, 'emails', email.name), template(email.content, email.props));
 });
 
+// eslint-disable-next-line no-console
 console.log('All templates created.');

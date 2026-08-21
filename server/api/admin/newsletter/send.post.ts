@@ -10,7 +10,9 @@ export default defineEventHandler(async (event) => {
   const body = await readValidatedBody(event, bodySchema.parse)
 
   // TODO: intégrer un système SMTP complet (Nodemailer ou Resend)
+  // eslint-disable-next-line no-console
   console.log(`[NEWSLETTER MOCK] Sending email "${body.subject}" to ${body.recipientEmails.length} recipients.`)
+  // eslint-disable-next-line no-console
   console.log(`[NEWSLETTER HTML CONTENT] : \n${body.html}`)
   
   // Simule le délai d'envoi SMTP

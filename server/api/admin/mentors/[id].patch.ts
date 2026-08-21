@@ -46,9 +46,11 @@ export default defineEventHandler(async (event) => {
       const { emailService } = await import('~~/server/utils/email')
       if (body.action === 'validate') {
         emailService.sendMentorRequestConfirmedEmail(user.email, user.name)
+          // eslint-disable-next-line no-console
           .catch(err => console.error("Erreur email validation mentor:", err))
       } else {
         emailService.sendMentorRequestRefusedEmail(user.email, user.name)
+          // eslint-disable-next-line no-console
           .catch(err => console.error("Erreur email refus mentor:", err))
       }
     }
