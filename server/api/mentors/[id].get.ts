@@ -1,7 +1,6 @@
 import { db } from '~~/server/db'
 import { users, mentorProfiles } from '~~/server/db/schema'
 import { eq, and, isNull } from 'drizzle-orm'
-import { getSessionFromEvent } from '~~/server/utils/session'
 
 export default defineEventHandler(async (event) => {
 

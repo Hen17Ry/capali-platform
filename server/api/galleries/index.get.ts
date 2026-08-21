@@ -2,7 +2,7 @@ import { db } from '~~/server/db'
 import { galleries, events } from '~~/server/db/schema'
 import { desc, eq } from 'drizzle-orm'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async () => {
   const list = await db
     .select({
       id: galleries.id,

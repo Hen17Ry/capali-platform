@@ -21,7 +21,7 @@ export default defineNitroPlugin((nitroApp) => {
   })
 
   // Stocker l'instance IO globalement pour l'utiliser dans nos routes API
-  // @ts-ignore
+  // @ts-expect-error global property
   global.__io = io
 
   nitroApp.router.use('/socket.io/', defineEventHandler({
@@ -33,8 +33,6 @@ export default defineNitroPlugin((nitroApp) => {
       open(peer) {
         // @ts-expect-error private method and property
         const nodeReq = peer._internal.nodeReq
-        // @ts-expect-error private method and property
-        const nodeRes = peer._internal.nodeRes
         
         // Let Engine.io handle the upgrade
         engine.handleUpgrade(nodeReq, nodeReq.socket, Buffer.alloc(0))

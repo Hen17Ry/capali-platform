@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
     // Retourner l'ID pour le widget Kkiapay (passé dans "data" ou "custom_data")
     return { id: newDonation.id }
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.error('Erreur DB Kkiapay:', error)
     throw createError({
       statusCode: 500,

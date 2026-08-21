@@ -51,6 +51,7 @@ export default defineEventHandler(async (event) => {
       message: "Mot de passe réinitialisé avec succès" 
     }
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.error('Erreur lors de la réinitialisation:', error)
     if (error.statusCode) throw error
     throw createError({

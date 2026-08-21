@@ -38,10 +38,12 @@ export default defineEventHandler(async (event) => {
             updatedDonation.email,
             `${updatedDonation.amount} €`,
             new Date().toLocaleDateString('fr-FR')
+          // eslint-disable-next-line no-console
           ).catch(err => console.error('Erreur email don:', err))
           
           // Alerte Admin pour un don complété
           emailService.sendAdminAlert('Nouveau Don reçu', `Un don de ${updatedDonation.amount} € a été effectué par ${updatedDonation.firstName} ${updatedDonation.lastName}.`)
+            // eslint-disable-next-line no-console
             .catch(err => console.error('Erreur email alerte don:', err))
         }
 
@@ -51,6 +53,7 @@ export default defineEventHandler(async (event) => {
 
     return { success: false, message: 'Paiement non validé ou en attente' }
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.error('Erreur lors de la vérification de la session Stripe:', error)
     throw createError({
       statusCode: 500,

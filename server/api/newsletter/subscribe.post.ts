@@ -26,11 +26,13 @@ export default defineEventHandler(async (event) => {
       const config = useRuntimeConfig()
       const confirmLink = `${config.public.appUrl || 'https://capali.org'}` // Fallback link
       emailService.sendNewsletterOptIn(email, confirmLink)
+        // eslint-disable-next-line no-console
         .catch(err => console.error("Erreur email newsletter:", err))
     }
 
     return { success: true, message: 'Inscrit avec succès' }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error('Erreur inscription newsletter:', error)
     throw createError({ statusCode: 500, message: 'Erreur lors de l\'inscription' })
   }

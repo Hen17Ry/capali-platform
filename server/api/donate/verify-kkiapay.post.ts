@@ -16,9 +16,11 @@ export default defineEventHandler(async (event) => {
   const privateKey = config.kkiapayPrivateKey
 
   if (!publicKey || !secretKey || !privateKey) {
+    // eslint-disable-next-line no-console
     console.error('Clés Kkiapay manquantes dans les variables d\'environnement.')
     // En mode développement sans clé, on simule un succès pour faciliter les tests
     if (process.env.NODE_ENV === 'development') {
+      // eslint-disable-next-line no-console
       console.warn('Simulation de succès Kkiapay (Clés manquantes en dev)')
       await db.update(donations)
         .set({ status: 'completed', transactionId, updatedAt: new Date() })
@@ -81,9 +83,11 @@ export default defineEventHandler(async (event) => {
           updatedDonation.email,
           `${updatedDonation.amount} €`, 
           new Date().toLocaleDateString('fr-FR')
+        // eslint-disable-next-line no-console
         ).catch(err => console.error('Erreur email don:', err))
         
         emailService.sendAdminAlert('Nouveau Don reçu (Kkiapay)', `Un don de ${updatedDonation.amount} € a été effectué par ${updatedDonation.firstName} ${updatedDonation.lastName}.`)
+          // eslint-disable-next-line no-console
           .catch(err => console.error('Erreur email alerte don:', err))
       }
 
@@ -92,6 +96,7 @@ export default defineEventHandler(async (event) => {
 
     return { success: false, message: 'Paiement non validé ou en attente' }
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.error('Erreur lors de la vérification de la transaction Kkiapay:', error)
     
     // Si la vérification échoue, on peut passer le statut en failed (ou laisser en pending)

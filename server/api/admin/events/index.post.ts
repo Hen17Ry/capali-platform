@@ -41,7 +41,6 @@ export default defineEventHandler(async (event) => {
 
         // Envoi de l'email en tâche de fond
         // Note: L'idéal est de ne pas bloquer la transaction sur l'envoi d'email lent
-        // eslint-disable-next-line no-console
         emailService.sendNewEventAlert(emails, created.title, eventLink)
           // eslint-disable-next-line no-console
           .catch(err => console.error("Erreur lors de l'envoi de l'alerte événement:", err))
