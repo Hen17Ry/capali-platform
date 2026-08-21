@@ -8,7 +8,7 @@
         <!-- Brand -->
         <div class="footer__brand">
           <div class="footer__logo">
-            <img src="/logo.png" alt="CAP ALI" width="48" height="48" >
+            <NuxtImg format="webp" src="/logo.png" alt="CAP ALI" width="48" height="48" />
             <span>CAP <strong>ALI</strong></span>
           </div>
           <p class="footer__desc">{{ $t('footer.description') }}</p>
@@ -43,7 +43,6 @@
           <ul>
             <li><a href="#">{{ $t('footer.faq') }}</a></li>
             <li><a href="#">{{ $t('footer.contact_us') }}</a></li>
-            <li><a href="#">{{ $t('footer.press') }}</a></li>
           </ul>
         </div>
 
@@ -51,9 +50,9 @@
         <div class="footer__col">
           <h4 class="footer__col-title">{{ $t('footer.legal_title') }}</h4>
           <ul>
-            <li><a href="#">{{ $t('footer.privacy') }}</a></li>
-            <li><a href="#">{{ $t('footer.terms') }}</a></li>
-            <li><a href="#">{{ $t('footer.legal_notices') }}</a></li>
+            <li><NuxtLink to="/politique-confidentialite">{{ $t('footer.privacy') }}</NuxtLink></li>
+            <li><NuxtLink to="/conditions-utilisation">{{ $t('footer.terms') }}</NuxtLink></li>
+            <li><NuxtLink to="/mentions-legales">{{ $t('footer.legal_notices') }}</NuxtLink></li>
           </ul>
         </div>
       </div>

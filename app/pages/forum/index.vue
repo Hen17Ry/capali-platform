@@ -112,6 +112,11 @@
 </template>
 
 <script setup lang="ts">
+
+useHead({
+  title: 'Forum Communautaire',
+})
+
 const { isAuthenticated } = useAuth()
 const router = useRouter()
 

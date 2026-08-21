@@ -49,7 +49,7 @@ export function getEmailLayout(content: string): string {
         ${content}
       </div>
       <div class="email-footer">
-        <p>&copy; ${new Date().getFullYear()} ${APP_NAME} — Communauté d'Appui au Parcours des Africains et Leaders Inspirants</p>
+        <p>&copy; ${new Date().getFullYear()} ${APP_NAME} — Tracer le chemin de l'avenir</p>
         <p style="margin-top: 8px;"><a href="${APP_URL}">Visiter le site</a></p>
       </div>
     </div>

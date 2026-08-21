@@ -4,6 +4,8 @@ import { eq } from 'drizzle-orm'
 import { getSessionFromEvent } from '~~/server/utils/session'
 import { connectMongo } from '~~/server/utils/mongo'
 import { Message } from '~~/server/models/Message'
+import { checkRateLimit } from '~~/server/utils/rateLimit'
+import { notifyUser } from '~~/server/utils/ws'
 import { z } from 'zod'
 
 const messageSchema = z.object({
@@ -13,6 +15,9 @@ const messageSchema = z.object({
 })
 
 export default defineEventHandler(async (event) => {
+  // Limite anti-spam: 30 messages par minute
+  await checkRateLimit(event, 'send-message', { windowSeconds: 60, maxRequests: 30 })
+
   const session = await getSessionFromEvent(event)
   if (!session) throw createError({ statusCode: 401, message: 'Non authentifié' })
 
@@ -46,6 +51,10 @@ export default defineEventHandler(async (event) => {
   })
 
   await msg.save()
+
+  // Notify receiver via WebSocket
+  const receiverId = mentorship.menteeId === session.userId ? mentorship.mentorId : mentorship.menteeId
+  notifyUser(receiverId, { type: 'new_message', data: msg })
 
   return { data: msg }
 })

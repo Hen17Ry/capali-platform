@@ -58,6 +58,7 @@ definePageMeta({ layout: 'dashboard' } as any)
 const route = useRoute()
 const { user } = useAuth()
 const mentorshipId = route.params.id as string
+const { lastMessage, resetUnreadCount } = useWebsocket()
 
 const { data, pending, error: fetchError, refresh } = useFetch<any>(`/api/messages/${mentorshipId}`)
 const messages = computed(() => data.value?.data || [])
@@ -82,7 +83,18 @@ const scrollToBottom = () => {
 }
 
 watch(messages, scrollToBottom, { deep: true })
-onMounted(scrollToBottom)
+
+watch(lastMessage, (newMsg) => {
+  if (newMsg && newMsg.mentorshipId === mentorshipId) {
+    refresh()
+    resetUnreadCount()
+  }
+})
+
+onMounted(() => {
+  scrollToBottom()
+  resetUnreadCount()
+})
 
 async function sendMessage() {
   if (!newMessage.value.trim() || isSending.value) return

@@ -14,8 +14,9 @@
           <tr>
             <th>Titre</th>
             <th>Type</th>
-            <th>Ville</th>
             <th>Date</th>
+            <th>Places / Inscrits</th>
+            <th>Prix</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -23,10 +24,22 @@
           <tr v-for="e in eventsList" :key="e.id" :class="{ 'row--past': isPast(e.eventDate) }">
             <td data-label="Titre"><span class="event-title">{{ e.title }}</span></td>
             <td data-label="Type"><span class="type-badge" :class="`type-badge--${e.type}`">{{ e.type }}</span></td>
-            <td data-label="Ville" class="text-muted">{{ e.city ?? 'En ligne' }}</td>
             <td data-label="Date" :class="isPast(e.eventDate) ? 'text-muted' : ''">{{ formatDate(e.eventDate) }}</td>
+            <td data-label="Places">
+              <NuxtLink :to="`/admin/events/${e.id}/attendees`" class="attendees-link">
+                {{ e.attendeesCount || 0 }} {{ e.isLimited ? `/ ${e.maxAttendees}` : '' }}
+              </NuxtLink>
+            </td>
+            <td data-label="Prix">
+              <span class="price-badge" :class="e.isPaid ? 'price-badge--paid' : 'price-badge--free'">
+                {{ e.isPaid ? `${(e.priceEur || 0)} €` : 'Gratuit' }}
+              </span>
+            </td>
             <td data-label="Actions">
               <div class="action-btns">
+                <NuxtLink :to="`/admin/events/${e.id}/attendees`" class="action-btn" title="Voir les inscrits">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </NuxtLink>
                 <NuxtLink :to="`/admin/events/${e.id}/edit`" class="action-btn" title="Modifier">
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                 </NuxtLink>
@@ -80,4 +93,10 @@ async function deleteEvent(id: string) {
 .action-btn { width: 30px; height: 30px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--neutral-400); transition: all var(--transition-fast); }
 .action-btn:hover { background: var(--neutral-100); color: var(--neutral-700); }
 .action-btn--danger:hover { background: var(--red-50); color: var(--red-500); }
+
+.attendees-link { font-weight: 600; color: var(--blue-600); text-decoration: none; padding: 4px 8px; border-radius: var(--radius-md); background: var(--blue-50); transition: background 0.2s; }
+.attendees-link:hover { background: var(--blue-100); }
+.price-badge { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-full); display: inline-block; }
+.price-badge--free { background: var(--green-50); color: var(--green-700); }
+.price-badge--paid { background: var(--gold-50); color: var(--gold-700); }
 </style>

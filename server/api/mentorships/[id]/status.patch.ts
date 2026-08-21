@@ -65,5 +65,23 @@ export default defineEventHandler(async (event) => {
     })
     .where(eq(mentorshipRequests.id, id))
 
+  // ── Send notification email to the mentee (student) ──
+  try {
+    const { users } = await import('~~/server/db/schema')
+    const [mentee] = await db
+      .select({ email: users.email })
+      .from(users)
+      .where(eq(users.id, existingRequest.menteeId))
+      .limit(1)
+
+    if (mentee) {
+      const { emailService } = await import('~~/server/utils/email')
+      emailService.sendMentorshipResponse(mentee.email, session.name, status === 'accepted')
+        .catch(err => console.error("Erreur email réponse mentorat:", err))
+    }
+  } catch (err) {
+    console.error("Erreur lors de la préparation de l'email de réponse mentor:", err)
+  }
+
   return { success: true }
 })

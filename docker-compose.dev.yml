@@ -1,0 +1,13 @@
+services:
+  app:
+    # On écrase l'image de production par une image Node basique pour le dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: sh -c "npm install && npm run dev"
+    volumes:
+      # On monte le code source en direct pour le Hot Reloading
+      - .:/app
+    environment:
+      - NODE_ENV=development
+      - HOST=0.0.0.0

@@ -5,17 +5,17 @@
     <main>
       <UiHeroSection />
       <UiMissionSection />
-      <UiMentorshipSection />
-      <UiResourcesSection />
-      <UiEventsSection />
-      <UiForumSection />
-      <UiFoundersSection />
-      <UiImpactSection />
-      <UiPartnersSection />
-      <UiCtaSection />
+      <LazyUiMentorshipSection />
+      <LazyUiResourcesSection />
+      <LazyUiEventsSection />
+      <LazyUiForumSection />
+      <LazyUiFoundersSection />
+      <LazyUiImpactSection />
+      <LazyUiPartnersSection />
+      <LazyUiCtaSection />
     </main>
 
-    <UiTheFooter />
+    <LazyUiTheFooter />
   </div>
 </template>
 
@@ -23,7 +23,7 @@
 useScrollReveal()
 
 useHead({
-  title: 'CAP ALI — Communauté d\'Appui au Parcours des Africains et Leaders Inspirants',
+  title: 'CAP ALI',
   meta: [
     {
       name: 'description',

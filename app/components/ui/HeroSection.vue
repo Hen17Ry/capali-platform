@@ -2,7 +2,7 @@
   <section id="hero" class="hero">
     <!-- Background image with overlay -->
     <div class="hero__bg">
-      <img src="/hero-community.png" alt="" aria-hidden="true" >
+      <NuxtImg format="webp" src="/hero-community.png" alt="" aria-hidden="true" />
       <div class="hero__overlay" />
     </div>
 

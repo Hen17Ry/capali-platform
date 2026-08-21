@@ -71,6 +71,41 @@
       "when": 1783603367948,
       "tag": "0009_nice_puck",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1785496893365,
+      "tag": "0010_left_omega_flight",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1785540038431,
+      "tag": "0011_giant_squirrel_girl",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1786094175529,
+      "tag": "0012_eager_wong",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1786099755352,
+      "tag": "0013_violet_meltdown",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1786114900665,
+      "tag": "0014_graceful_whirlwind",
+      "breakpoints": true
     }
   ]
 }

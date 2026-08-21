@@ -10,12 +10,24 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    await db.insert(newsletterSubscribers).values({
+    const [inserted] = await db.insert(newsletterSubscribers).values({
       firstName,
       lastName,
       email,
       source: source || 'orientation_test',
-    }).onConflictDoNothing() // Prevent crashing if email already exists
+    })
+      .onConflictDoNothing()
+      .returning() // Prevent crashing if email already exists
+
+    // Send opt-in / confirmation email if actually inserted
+    if (inserted) {
+      const { emailService } = await import('~~/server/utils/email')
+      // Normally we would have an opt-in link, but here we can just send a welcome
+      const config = useRuntimeConfig()
+      const confirmLink = `${config.public.appUrl || 'https://capali.org'}` // Fallback link
+      emailService.sendNewsletterOptIn(email, confirmLink)
+        .catch(err => console.error("Erreur email newsletter:", err))
+    }
 
     return { success: true, message: 'Inscrit avec succès' }
   } catch (error) {

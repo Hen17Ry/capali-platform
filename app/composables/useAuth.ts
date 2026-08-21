@@ -67,10 +67,12 @@ export const useAuth = () => {
       })
       store.setUser(response.data)
       return response.data
-    } catch (error) {
-      // CORRECTION : Plus de catch vide (empty-catch)
-      // eslint-disable-next-line no-console
-      console.warn('[useAuth] Session introuvable ou expirée.', error)
+    } catch (error: any) {
+      // On ne loggue l'erreur que si ce n'est pas un banal 401 (Non authentifié)
+      if (error?.response?.status !== 401) {
+        // eslint-disable-next-line no-console
+        console.warn('[useAuth] Erreur lors de la récupération de session:', error instanceof Error ? error.message : String(error))
+      }
       store.clearUser()
       return null
     }

@@ -1,12 +1,8 @@
 import { db } from '~~/server/db'
 import { events } from '~~/server/db/schema'
-import { desc } from 'drizzle-orm'
+import { desc, gt, or, isNull } from 'drizzle-orm'
 
 export default defineEventHandler(async () => {
-  // Optionnel: On pourrait filtrer pour ne montrer que les événements futurs
-  // const now = new Date()
-  // const rows = await db.select().from(events).where(gte(events.eventDate, now)).orderBy(desc(events.eventDate))
-  
   const rows = await db
     .select({
       id: events.id,
@@ -16,6 +12,7 @@ export default defineEventHandler(async () => {
       type: events.type,
       city: events.city,
       eventDate: events.eventDate,
+      registrationDeadline: events.registrationDeadline,
       registrationUrl: events.registrationUrl,
     })
     .from(events)

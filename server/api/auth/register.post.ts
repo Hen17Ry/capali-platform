@@ -4,7 +4,8 @@ import { users, mentorProfiles } from '~~/server/db/schema'
 import { eq } from 'drizzle-orm'
 import { hashUserPassword } from '~~/server/utils/password'
 import { createSession, setSessionCookie } from '~~/server/utils/session'
-import { sendMentorApplicationEmail, sendWelcomeEmail } from '~~/server/utils/mail'
+import { emailService } from '~~/server/utils/email'
+import { checkRateLimit } from '~~/server/utils/rateLimit'
 
 const registerSchema = z.object({
   name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères.').max(100),
@@ -44,67 +45,26 @@ async function ensureEmailIsUnique(email: string) {
   }
 }
 
-async function createNewUser(data: RegisterData, passwordHash: string) {
-  const [newUser] = await db
-    .insert(users)
-    .values({
-      name: data.name,
-      email: data.email.toLowerCase(),
-      passwordHash,
-      status: data.status,
-      countryOrigin: data.countryOrigin || null,
-      cityCurrentFr: data.cityCurrentFr || null,
-      domain: data.domain || null,
-      bio: data.needsHelp?.length ? `Besoin d'aide : ${data.needsHelp.join(', ')}` : null,
-      isAdmin: false,
-    })
-    .returning({
-      id: users.id,
-      name: users.name,
-      email: users.email,
-      status: users.status,
-      isAdmin: users.isAdmin,
-      avatarUrl: users.avatarUrl,
-    })
 
-  if (!newUser) {
-    throw createError({ statusCode: 500, statusMessage: 'Erreur lors de la création du compte.' })
-  }
-  return newUser
-}
-
-async function createMentorProfile(userId: any, data: RegisterData) {
-  await db.insert(mentorProfiles).values({
-    userId,
-    cityInFrance: data.cityCurrentFr || null,
-    availableHoursMonth: data.availableHoursMonth ?? 4,
-    maxMentees: data.maxMentees ?? 2,
-    acceptsRemote: data.acceptsRemote ?? true,
-    acceptsInperson: data.acceptsInperson ?? false,
-    helpTopics: data.helpTopics ?? [],
-    motivation: data.motivation || null,
-    yearsInFrance: data.yearsInFrance ?? null,
-    languages: data.languages ?? ['français'],
-    linkedinUrl: data.linkedinUrl || null,
-    presentation: data.presentation || null,
-    isValidated: false,
-  })
-}
 
 function dispatchEmails(user: any, status: string) {
   // L'ajout du .catch() corrige l'erreur "unhandled-promise" de l'audit
-  sendWelcomeEmail({ name: user.name, email: user.email, status: user.status })
+  emailService.sendWelcomeEmail(user.email, user.name)
     .catch((err) => console.error("Échec de l'envoi de l'email de bienvenue:", err))
 
   if (status === 'mentor') {
-    sendMentorApplicationEmail({ name: user.name, email: user.email })
-      .catch((err) => console.error("Échec de l'envoi de l'email mentor:", err))
+    // Envoyer une notification aux admins
+    emailService.sendAdminAlert('Nouveau Mentor', `${user.name} a postulé pour devenir mentor.`)
+      .catch((err) => console.error("Échec de l'envoi de l'alerte admin:", err))
   }
 }
 
 // --- Contrôleur Principal ---
 
 export default defineEventHandler(async (event) => {
+  // Limite à 3 inscriptions par minute par IP
+  await checkRateLimit(event, 'register', { windowSeconds: 60, maxRequests: 3 })
+
   const body = await readBody(event)
 
   // 1. Validation
@@ -121,14 +81,54 @@ export default defineEventHandler(async (event) => {
   await ensureEmailIsUnique(data.email)
   const passwordHash = await hashUserPassword(data.password)
 
-  // 3. Écriture en Base de données
-  const newUser = await createNewUser(data, passwordHash)
-  
-  if (data.status === 'mentor') {
-    await createMentorProfile(newUser.id, data)
-  }
+  // 3. Écriture en Base de données (Transaction = Atomicité)
+  const newUser = await db.transaction(async (tx) => {
+    const [insertedUser] = await tx
+      .insert(users)
+      .values({
+        name: data.name,
+        email: data.email.toLowerCase(),
+        passwordHash,
+        status: data.status,
+        countryOrigin: data.countryOrigin || null,
+        cityCurrentFr: data.cityCurrentFr || null,
+        domain: data.domain || null,
+        bio: data.needsHelp?.length ? `Besoin d'aide : ${data.needsHelp.join(', ')}` : null,
+        isAdmin: false,
+      })
+      .returning({
+        id: users.id,
+        name: users.name,
+        email: users.email,
+        status: users.status,
+        isAdmin: users.isAdmin,
+        avatarUrl: users.avatarUrl,
+      })
 
-  // 4. Création de la Session
+    if (!insertedUser) {
+      throw createError({ statusCode: 500, statusMessage: 'Erreur lors de la création du compte.' })
+    }
+
+    if (data.status === 'mentor') {
+      await tx.insert(mentorProfiles).values({
+        userId: insertedUser.id,
+        cityInFrance: data.cityCurrentFr || null,
+        availableHoursMonth: data.availableHoursMonth ?? 4,
+        maxMentees: data.maxMentees ?? 2,
+        acceptsRemote: data.acceptsRemote ?? true,
+        acceptsInperson: data.acceptsInperson ?? false,
+        helpTopics: data.helpTopics ?? [],
+        motivation: data.motivation || null,
+        yearsInFrance: data.yearsInFrance ?? null,
+        languages: data.languages ?? ['français'],
+        linkedinUrl: data.linkedinUrl || null,
+        presentation: data.presentation || null,
+        isValidated: false,
+      })
+    }
+    
+    return insertedUser
+  })
   const sessionId = await createSession({
     userId: newUser.id,
     email: newUser.email,

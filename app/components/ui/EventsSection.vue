@@ -38,10 +38,9 @@
             </div>
             
             <div class="event-card__footer">
-              <a v-if="event.registrationUrl" :href="event.registrationUrl" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm btn--full" @click.stop>
-                S'inscrire
-              </a>
-              <button v-else class="btn btn--outline btn--sm btn--full" disabled @click.stop>Bientôt disponible</button>
+              <NuxtLink :to="`/events/${event.id}`" class="btn btn--primary btn--sm btn--full" @click.stop>
+                Plus de détails
+              </NuxtLink>
             </div>
           </div>
         </div>
@@ -67,7 +66,7 @@
           <NuxtLink to="/events" class="btn btn--outline btn--lg">{{ $t('events.cta') }}</NuxtLink>
         </div>
         <div class="events__visual reveal--right reveal">
-          <img src="/community-event.png" alt="Événement CAP ALI" loading="lazy" >
+          <NuxtImg format="webp" src="/community-event.png" alt="Événement CAP ALI" loading="lazy" />
         </div>
       </div>
     </div>

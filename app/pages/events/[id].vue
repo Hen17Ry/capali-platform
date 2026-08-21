@@ -27,11 +27,14 @@
             </div>
             
             <div class="event-actions mt-8">
-              <a v-if="event.registrationUrl" :href="event.registrationUrl" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--lg">
+              <NuxtLink v-if="gallery" :to="`/galleries/${gallery.id}`" class="btn btn--primary btn--lg" style="background: var(--gold-600); border-color: var(--gold-600);">
+                Voir la galerie photo
+              </NuxtLink>
+              <button v-else-if="!isPastEvent" class="btn btn--primary btn--lg" @click="showRegistrationModal = true">
                 S'inscrire à l'événement
-              </a>
-              <button v-else class="btn btn--outline btn--lg" disabled>
-                Inscription bientôt disponible
+              </button>
+              <button v-else class="btn btn--outline btn--lg" style="background: rgba(255,255,255,0.1); color: white; border-color: rgba(255,255,255,0.2);" disabled>
+                Événement terminé
               </button>
             </div>
           </div>
@@ -63,12 +66,30 @@
                   <span class="label">Lieu :</span>
                   <span class="value">{{ event.type === 'online' ? 'En ligne' : event.city || 'Non spécifié' }}</span>
                 </li>
+                <li v-if="event.registrationDeadline">
+                  <span class="label">Date limite d'inscription :</span>
+                  <span class="value">{{ formatDate(event.registrationDeadline) }}</span>
+                </li>
+                <li v-if="event.isPaid">
+                  <span class="label">Tarif :</span>
+                  <span class="value price-highlight">{{ event.priceEur }} €</span>
+                </li>
+                <li v-else>
+                  <span class="label">Tarif :</span>
+                  <span class="value price-highlight text-green-600">Gratuit</span>
+                </li>
               </ul>
               
               <div class="sidebar-actions">
-                <a v-if="event.registrationUrl" :href="event.registrationUrl" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--full">
+                <NuxtLink v-if="gallery" :to="`/galleries/${gallery.id}`" class="btn btn--primary btn--full" style="background: var(--gold-600); border-color: var(--gold-600);">
+                  Voir la galerie
+                </NuxtLink>
+                <button v-else-if="!isPastEvent" class="btn btn--primary btn--full" @click="showRegistrationModal = true">
                   S'inscrire
-                </a>
+                </button>
+                <button v-else class="btn btn--outline btn--full" disabled>
+                  Terminé
+                </button>
               </div>
             </div>
             
@@ -81,15 +102,133 @@
         </div>
       </section>
     </div>
+    
+    <ClientOnly>
+      <EventsEventRegistrationModal 
+        v-if="event"
+        v-model="showRegistrationModal" 
+        :event="event"
+        @success="handleRegistrationSuccess"
+      />
+      
+      <UiBaseModal
+        v-model="paymentStatusModal.show"
+        :title="paymentStatusModal.title"
+        max-width="400px"
+      >
+        <div class="text-center py-4">
+          <div v-if="paymentStatusModal.type === 'success'" class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+          </div>
+          <div v-else class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </div>
+          
+          <p class="text-neutral-700 text-lg">{{ paymentStatusModal.message }}</p>
+          
+          <button class="btn btn--primary mt-6 w-full" @click="paymentStatusModal.show = false">
+            Fermer
+          </button>
+        </div>
+      </UiBaseModal>
+    </ClientOnly>
   </div>
 </template>
 
 <script setup lang="ts">
 const route = useRoute()
+const router = useRouter()
 const eventId = route.params.id as string
 
-const { data: response, pending } = await useFetch<{ data: any }>(`/api/events/${eventId}`)
+const { data: response, pending, refresh } = await useFetch<{ data: any }>(`/api/events/${eventId}`)
 const event = computed(() => response.value?.data)
+
+const { data: galleryRes } = await useFetch<{ data: any }>(`/api/galleries/by-event/${eventId}`)
+const gallery = computed(() => galleryRes.value?.data)
+
+const isPastEvent = computed(() => {
+  if (!event.value) return false
+  return new Date(event.value.eventDate) < new Date()
+})
+
+const showRegistrationModal = ref(false)
+
+const paymentStatusModal = reactive({
+  show: false,
+  title: '',
+  message: '',
+  type: 'success' as 'success' | 'error'
+})
+
+function showAlert(title: string, message: string, type: 'success' | 'error' = 'success') {
+  paymentStatusModal.title = title
+  paymentStatusModal.message = message
+  paymentStatusModal.type = type
+  paymentStatusModal.show = true
+}
+
+// Si l'utilisateur revient après un paiement Stripe ou Kkiapay
+onMounted(async () => {
+  if (route.query.payment === 'success') {
+    const sessionId = route.query.session_id as string
+    const attendeeId = route.query.attendeeId as string
+    
+    if (sessionId && attendeeId) {
+      try {
+        const res = await $fetch(`/api/events/${eventId}/verify`, {
+          method: 'POST',
+          body: {
+            attendeeId,
+            provider: 'stripe',
+            sessionId
+          }
+        })
+        if (res.success) {
+          showAlert('Paiement réussi', 'Paiement Stripe réussi ! Vous êtes bien inscrit. Un mail de confirmation vous a été envoyé.')
+          handleRegistrationSuccess()
+        } else {
+          showAlert('Échec du paiement', 'Le paiement Stripe n\'a pas pu être validé.', 'error')
+        }
+      } catch(e: any) {
+        showAlert('Erreur', 'Erreur lors de la validation Stripe : ' + (e?.data?.message || e?.message), 'error')
+      }
+    }
+    router.replace({ query: {} }) // Nettoyer l'URL
+  } else if (route.query.payment === 'canceled') {
+    showAlert('Paiement annulé', 'Le paiement Stripe a été annulé.', 'error')
+    router.replace({ query: {} })
+  } else if (route.query.payment === 'kkiapay_success') {
+    // Vérification du paiement Kkiapay après redirection
+    const transactionId = route.query.transaction_id as string
+    const attendeeId = route.query.attendeeId as string
+    
+    if (transactionId && attendeeId) {
+      try {
+        const res = await $fetch(`/api/events/${eventId}/verify`, {
+          method: 'POST',
+          body: {
+            attendeeId,
+            provider: 'kkiapay',
+            transactionId
+          }
+        })
+        if (res.success) {
+          showAlert('Inscription confirmée', 'Paiement Kkiapay réussi ! Vous êtes bien inscrit. Un mail de confirmation vous a été envoyé.')
+          handleRegistrationSuccess()
+        } else {
+          showAlert('Échec de validation', 'Le paiement Kkiapay n\'a pas pu être validé.', 'error')
+        }
+      } catch(e: any) {
+        showAlert('Erreur', 'Erreur lors de la validation Kkiapay : ' + (e?.data?.message || e?.message), 'error')
+      }
+    }
+    router.replace({ query: {} }) // Nettoyer l'URL
+  }
+})
+
+function handleRegistrationSuccess() {
+  refresh() // Rafraîchir les données (utile si places limitées)
+}
 
 useHead({
   title: computed(() => event.value?.title ? `${event.value.title} — Événements CAP ALI` : 'Événement CAP ALI'),
@@ -243,6 +382,11 @@ function formatDescription(text: string) {
   font-size: var(--text-sm);
   color: var(--neutral-500);
   font-weight: 500;
+}
+
+.price-highlight {
+  font-size: var(--text-lg);
+  font-weight: 700;
 }
 
 .sidebar-list .value {

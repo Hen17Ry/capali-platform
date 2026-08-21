@@ -1,5 +1,6 @@
 import { db } from '~~/server/db'
-import { resources } from '~~/server/db/schema'
+import { resources, users } from '~~/server/db/schema'
+import { emailService } from '~~/server/utils/email'
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
@@ -27,6 +28,21 @@ export default defineEventHandler(async (event) => {
       publishedAt: body.isDraft === false ? new Date() : null,
     })
     .returning()
+
+  // Si la ressource est publiée (non draft), on notifie les utilisateurs
+  if (created && created.isDraft === false) {
+    const allUsers = await db.select({ email: users.email }).from(users)
+    const emails = allUsers.map(u => u.email).filter(Boolean) as string[]
+
+    if (emails.length > 0) {
+      const config = useRuntimeConfig()
+      const resourceLink = `${config.public.appUrl || 'https://capali.org'}/resources/${created.id}`
+
+      // On peut ajuster sendNewResourceAlert pour prendre un array d'emails, je le mettrai à jour dans emailService
+      emailService.sendNewResourceAlert(emails, created.title, resourceLink)
+        .catch(err => console.error("Erreur lors de l'envoi de l'alerte ressource:", err))
+    }
+  }
 
   return { data: created }
 })

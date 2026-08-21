@@ -18,8 +18,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Copie uniquement du build généré (standalone)
+# Copie uniquement du build généré (standalone) et des templates d'emails
 COPY --from=builder /app/.output /app/.output
+COPY --from=builder /app/emails /app/emails
 
 # Configuration du port
 EXPOSE 3000

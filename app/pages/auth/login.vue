@@ -23,7 +23,10 @@
           </div>
 
           <div class="form-group">
-            <label class="form-label">Mot de passe</label>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <label class="form-label">Mot de passe</label>
+              <NuxtLink to="/auth/forgot-password" class="auth-link-small">Mot de passe oublié ?</NuxtLink>
+            </div>
             <div class="input-password">
               <input v-model="form.password" :type="showPassword ? 'text' : 'password'" class="form-input" placeholder="••••••••" required autocomplete="current-password" >
               <button type="button" class="input-password__toggle" :aria-label="showPassword ? 'Masquer' : 'Afficher'" @click="showPassword = !showPassword">
@@ -286,6 +289,16 @@ async function handleLogin() {
 }
 
 .auth-link:hover {
+  text-decoration: underline;
+}
+
+.auth-link-small {
+  font-size: 12px;
+  color: var(--green-600);
+  font-weight: 500;
+}
+
+.auth-link-small:hover {
   text-decoration: underline;
 }
 
