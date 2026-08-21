@@ -38,8 +38,8 @@ export default defineEventHandler(async (event) => {
       const config = useRuntimeConfig()
       const resourceLink = `${config.public.appUrl || 'https://capali.org'}/resources/${created.id}`
 
-      // On peut ajuster sendNewResourceAlert pour prendre un array d'emails, je le mettrai à jour dans emailService
       emailService.sendNewResourceAlert(emails, created.title, resourceLink)
+        // eslint-disable-next-line no-console
         .catch(err => console.error("Erreur lors de l'envoi de l'alerte ressource:", err))
     }
   }

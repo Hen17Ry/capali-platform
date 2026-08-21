@@ -1,6 +1,6 @@
 import { db } from '~~/server/db'
 import { events } from '~~/server/db/schema'
-import { desc, gt, or, isNull } from 'drizzle-orm'
+import { desc } from 'drizzle-orm'
 
 export default defineEventHandler(async () => {
   const rows = await db

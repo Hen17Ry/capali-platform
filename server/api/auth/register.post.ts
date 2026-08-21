@@ -29,8 +29,6 @@ const registerSchema = z.object({
   presentation: z.string().max(500).optional(),
 })
 
-type RegisterData = z.infer<typeof registerSchema>
-
 // --- Helpers pour découper la complexité ---
 
 async function ensureEmailIsUnique(email: string) {
@@ -45,16 +43,16 @@ async function ensureEmailIsUnique(email: string) {
   }
 }
 
-
-
 function dispatchEmails(user: any, status: string) {
   // L'ajout du .catch() corrige l'erreur "unhandled-promise" de l'audit
   emailService.sendWelcomeEmail(user.email, user.name)
+    // eslint-disable-next-line no-console
     .catch((err) => console.error("Échec de l'envoi de l'email de bienvenue:", err))
 
   if (status === 'mentor') {
     // Envoyer une notification aux admins
     emailService.sendAdminAlert('Nouveau Mentor', `${user.name} a postulé pour devenir mentor.`)
+      // eslint-disable-next-line no-console
       .catch((err) => console.error("Échec de l'envoi de l'alerte admin:", err))
   }
 }

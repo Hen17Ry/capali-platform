@@ -76,6 +76,7 @@ export default defineEventHandler(async (event) => {
 
     return { url: session.url }
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.error('Stripe error:', error)
     throw createError({
       statusCode: 500,

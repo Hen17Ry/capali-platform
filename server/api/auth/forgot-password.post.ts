@@ -54,6 +54,7 @@ export default defineEventHandler(async (event) => {
       message: "Si cette adresse correspond à un compte, un email a été envoyé." 
     }
   } catch (error: any) {
+    // eslint-disable-next-line no-console
     console.error('Erreur lors de la demande de réinitialisation:', error)
     throw createError({
       statusCode: 500,

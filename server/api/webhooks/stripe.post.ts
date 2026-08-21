@@ -25,6 +25,7 @@ export default defineEventHandler(async (event) => {
       process.env.STRIPE_WEBHOOK_SECRET || 'whsec_placeholder'
     )
   } catch (err: any) {
+    // eslint-disable-next-line no-console
     console.error('Webhook signature verification failed.', err.message)
     throw createError({ statusCode: 400, message: `Webhook Error: ${err.message}` })
   }
@@ -45,12 +46,14 @@ export default defineEventHandler(async (event) => {
           })
           .where(eq(donations.id, donationId))
           
+        // eslint-disable-next-line no-console
         console.log(`Donation ${donationId} marked as completed.`)
       }
       break
     }
     // Handle other events as needed
     default:
+      // eslint-disable-next-line no-console
       console.log(`Unhandled event type ${stripeEvent.type}`)
   }
 

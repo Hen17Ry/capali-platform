@@ -130,6 +130,7 @@ export default defineEventHandler(async (event) => {
     return { data: result }
   } catch (err: any) {
     if (err.statusCode) throw err
+    // eslint-disable-next-line no-console
     console.error('[scrape] Error:', err.message)
     throw createError({
       statusCode: 422,
